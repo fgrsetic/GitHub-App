@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.franjo.github"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [enableCrashReporting: "true"]
+        }
+        debug{
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation project(":presentation")
+    implementation project(":domain")
+    implementation project(":data")
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$version_dagger"
+    implementation "com.google.dagger:dagger-android:$version_dagger"
+    implementation "com.google.dagger:dagger-android-support:$version_dagger"
+    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
+    kapt "com.google.dagger:dagger-compiler:$version_dagger"
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
+
+}
