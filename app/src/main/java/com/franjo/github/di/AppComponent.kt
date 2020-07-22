@@ -10,7 +10,6 @@ import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-@SuppressWarnings("unchecked")
 @Singleton
 @Component(
     modules = [
@@ -18,14 +17,16 @@ import javax.inject.Singleton
         UseCaseModule::class,
         RepositoryModule::class,
         ViewModelModule::class,
-        ActivityModule::class,
         FragmentModule::class,
+        ActivityModule::class,
         AndroidSupportInjectionModule::class
     ]
 )
 interface AppComponent {
+
     @Component.Builder
     interface Builder {
+
         @BindsInstance
         fun application(application: Application): Builder
 

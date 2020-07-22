@@ -1,7 +1,7 @@
 package com.franjo.github.model
 
 import android.os.Parcelable
-import com.franjo.github.domain.entity.Repository
+import com.franjo.github.domain.model.Repository
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "kotlin-kapt"
+apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion 30
@@ -15,13 +16,27 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE*")
+    }
+
+    compileOptions {
+        setSourceCompatibility(JavaVersion.VERSION_1_8)
+        setTargetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
@@ -39,28 +54,37 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 
     // Retrofit for networking
-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    api "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    api "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
 
     // OkHttp - efficient HTTP client
-    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
+    api "com.squareup.okhttp3:okhttp:$version_okhttp"
+    api "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
 
     // Moshi for parsing the JSON format
-    implementation "com.squareup.moshi:moshi:$version_moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    api "com.squareup.moshi:moshi:$version_moshi"
+    api "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
     // Dagger
-    implementation "com.google.dagger:dagger:$version_dagger"
-    implementation "com.google.dagger:dagger-android:$version_dagger"
-    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
-
+    implementation "com.google.dagger:dagger:2.28.1"
+    implementation "com.google.dagger:dagger-android:2.28.1"
+    implementation "com.google.dagger:dagger-android-support:2.28.1"
+    kapt "com.google.dagger:dagger-android-processor:2.28.1"
+    kapt "com.google.dagger:dagger-compiler:2.28.1"
 
     // Test
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "io.mockk:mockk:$version_mockK"
+    androidTestImplementation "io.mockk:mockk-android:$version_mockK"
+
+    androidTestImplementation "androidx.test:runner:1.2.0"
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$version_junit_api"
+    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.2.0"
+    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.2.0"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine_test"
 
 }
+
+
+

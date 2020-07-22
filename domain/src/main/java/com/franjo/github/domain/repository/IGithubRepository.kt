@@ -1,6 +1,6 @@
 package com.franjo.github.domain.repository
 
-import com.franjo.github.domain.entity.GithubRepositoryItem
+import com.franjo.github.domain.model.Repository
 import com.franjo.github.domain.shared.Result
 
 interface IGithubRepository {
@@ -9,5 +9,5 @@ interface IGithubRepository {
         query: String,
         sort: String,
         page: Int
-    ): Result<Exception, List<GithubRepositoryItem>>
+    ): Result<Exception, List<Repository>>
 }

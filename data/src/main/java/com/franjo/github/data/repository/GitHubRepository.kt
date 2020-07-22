@@ -3,14 +3,14 @@ package com.franjo.github.data.repository
 import com.franjo.github.data.network.dto.github_repository.NetworkRepositoryContainer
 import com.franjo.github.data.network.dto.github_repository.asDomainObject
 import com.franjo.github.data.network.service.RestApiInterface
-import com.franjo.github.domain.entity.Repository
+import com.franjo.github.domain.model.Repository
 import com.franjo.github.domain.repository.IGithubRepository
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.Result
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class GithubRepository(
+class GitHubRepository(
     private val dispatcherProvider: DispatcherProvider,
     private val restApiInterface: RestApiInterface
 ) : IGithubRepository {

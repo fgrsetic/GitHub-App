@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: "kotlin-kapt"
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt"
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 21
@@ -15,12 +14,15 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
         vectorDrawables.useSupportLibrary = true
     }
 
+    android.buildFeatures.dataBinding = true
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -31,16 +33,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget =  JavaVersion.VERSION_1_8.toString()
     }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(":domain")
 
     implementation "androidx.appcompat:appcompat:$version_appcompat"
@@ -80,11 +77,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
 
     // Dagger
-    implementation "com.google.dagger:dagger:$version_dagger"
-    implementation "com.google.dagger:dagger-android:$version_dagger"
-    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
+    implementation "com.google.dagger:dagger:2.28.1"
+    implementation "com.google.dagger:dagger-android:2.28.1"
+    implementation "com.google.dagger:dagger-android-support:2.28.1"
+    kapt "com.google.dagger:dagger-android-processor:2.28.1"
+    kapt "com.google.dagger:dagger-compiler:2.28.1"
 
     // Joda time library for dealing with time
     implementation "joda-time:joda-time:$version_joda"
@@ -94,10 +91,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
 
     // Logging
-    implementation "com.jakewharton.timber:timber:$version_timber"
+    implementation "com.jakewharton.timber:timber:4.7.1"
 
     // Glide for images
-    implementation "com.github.bumptech.glide:glide:$version_glide"
+    implementation "com.github.bumptech.glide:glide:4.11.0"
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
@@ -107,9 +104,10 @@ dependencies {
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
-
-    // Testing
+    // Test
     testImplementation 'junit:junit:4.13'
+    testImplementation "io.mockk:mockk:$version_mockK"
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 

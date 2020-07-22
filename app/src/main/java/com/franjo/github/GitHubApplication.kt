@@ -1,22 +1,22 @@
 package com.franjo.github
 
-import android.app.Activity
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import com.franjo.github.di.AppComponent
+import com.franjo.github.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
 
-class GitHubApplication : MultiDexApplication(), HasActivityInjector {
+class GitHubApplication : Application(), HasAndroidInjector {
 
     private lateinit var appComponent: AppComponent
 
     @Inject
-    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun activityInjector(): AndroidInjector<Activity> = activityInjector
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreate() {
         super.onCreate()

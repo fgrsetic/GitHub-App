@@ -1,4 +1,4 @@
-package com.franjo.github.domain.entity
+package com.franjo.github.domain.model
 
 
 data class Repository(

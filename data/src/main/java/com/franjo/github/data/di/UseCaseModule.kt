@@ -1,5 +1,7 @@
 package com.franjo.github.data.di
 
+import com.franjo.github.domain.repository.IGithubRepository
+import com.franjo.github.domain.usecase.GetSearchedRepositories
 import dagger.Module
 import dagger.Provides
 
@@ -8,7 +10,7 @@ class UseCaseModule {
 
     @Provides
     fun provideGetRepositoryListItems(
-        dispatcherProvider: DispatcherProvider
-    ) = GetRepositoryListItems(dispatcherProvider)
+        githubRepository: IGithubRepository
+    ) = GetSearchedRepositories(githubRepository)
 
 }
