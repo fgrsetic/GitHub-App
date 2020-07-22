@@ -1,15 +1,15 @@
 package com.franjo.github
 
 import android.app.Activity
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.franjo.github.di.AppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import javax.inject.Inject
 import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
 
-class GitHubApplication : Application(), HasActivityInjector {
+class GitHubApplication : MultiDexApplication(), HasActivityInjector {
 
     private lateinit var appComponent: AppComponent
 

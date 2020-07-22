@@ -1,17 +1,16 @@
 package com.franjo.github.data.di
 
-import com.franjo.github.data.BuildConfig
-import com.franjo.github.data.network.RestApiInterface
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.franjo.github.data.network.service.BASE_URL
+import com.franjo.github.data.network.service.RestApiInterface
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
-import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -19,33 +18,26 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(
-        interceptor: Interceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        interceptor: Interceptor
     ): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
+        return OkHttpClient.Builder().addInterceptor(interceptor).build()
+    }
 
-        if (BuildConfig.DEBUG) {
-            builder.addInterceptor(httpLoggingInterceptor)
-        }
-
-        return builder.build()
+    // Moshi object that Retrofit will be using with Kotlin adapter for full Kotlin compatibility
+    @Provides
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
     }
 
     @Provides
-    fun provideGson(): Gson {
-        return GsonBuilder()
-            .setLenient()
-            .create()
-    }
-
-    @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }
 
@@ -55,32 +47,4 @@ class NetworkModule {
         return retrofit.create(RestApiInterface::class.java)
     }
 
-    @Provides
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        return httpLoggingInterceptor
-    }
-
-    @Provides
-    fun provideRequestInterceptor(): Interceptor {
-        return Interceptor { chain ->
-
-            val url = chain.request()
-                .url()
-                .newBuilder()
-                .addQueryParameter(OPTION_QUERY, OPTION_VALUE)
-                .addQueryParameter(LANGUAGE_QUERY, getLocalizedLanguageForApi().language.toString())
-                .addQueryParameter(MOBILE_KEY_QUERY, MOBILE_KEY_VALUE)
-                .build()
-
-            val request = chain.request()
-                .newBuilder()
-                .url(url)
-                .build()
-
-            return@Interceptor chain.proceed(request)
-        }
-    }
 }

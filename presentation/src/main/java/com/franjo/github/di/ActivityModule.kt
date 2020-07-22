@@ -1,6 +1,5 @@
 package com.franjo.github.di
 
-import com.evolutio.presentation.di.FragmentModule
 import com.franjo.github.presentation.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

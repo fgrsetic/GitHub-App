@@ -23,11 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [enableCrashReporting: "true"]
         }
-        debug{
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [enableCrashReporting: "false"]
-        }
     }
 
     compileOptions {
@@ -51,6 +46,9 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$version_dagger"
     kapt "com.google.dagger:dagger-android-processor:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
+
+    // Multidex
+    implementation "com.android.support:multidex:$version_multidex"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 

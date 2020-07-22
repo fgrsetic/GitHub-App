@@ -2,8 +2,7 @@ package com.franjo.github.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.evolutio.presentation.di.ViewModelFactory
-import com.evolutio.presentation.di.ViewModelKey
+import com.franjo.github.MainViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -19,9 +18,5 @@ abstract class ViewModelModule {
     @ViewModelKey(MainViewModel::class)
     abstract fun mainViewModel(viewModel: MainViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SearchViewModel::class)
-    abstract fun calendarViewModel(viewModel: SearchViewModel): ViewModel
 
 }

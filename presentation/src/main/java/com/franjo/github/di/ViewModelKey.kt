@@ -1,4 +1,4 @@
-package com.evolutio.presentation.di
+package com.franjo.github.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
