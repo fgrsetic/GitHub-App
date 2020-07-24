@@ -10,6 +10,6 @@ class DispatcherModule {
 
     @Provides
     @Singleton
-    fun provideDispatcherProvider() = DispatcherProvider
+    fun providesDispatcherProvider() = DispatcherProvider
 
 }

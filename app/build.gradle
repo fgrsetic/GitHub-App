@@ -30,6 +30,12 @@ android {
     }
     buildToolsVersion '29.0.3'
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    android.buildFeatures.dataBinding = true
+
 }
 
 dependencies {
@@ -41,10 +47,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
 
     // Dagger
-    implementation "com.google.dagger:dagger:2.28.1"
-    implementation "com.google.dagger:dagger-android:2.28.1"
-    implementation "com.google.dagger:dagger-android-support:2.28.1"
-    kapt "com.google.dagger:dagger-android-processor:2.28.1"
-    kapt "com.google.dagger:dagger-compiler:2.28.1"
+    api "com.google.dagger:dagger:$version_dagger"
+    kapt "com.google.dagger:dagger-compiler:$version_dagger"
+    api "com.google.dagger:dagger-android:$version_dagger"
+    api "com.google.dagger:dagger-android-support:$version_dagger"
+    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
 
 }

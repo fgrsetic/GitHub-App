@@ -97,7 +97,7 @@ data class NetworkRepository(
     @Json(name = "has_wiki")
     val hasWiki: Boolean = false,
     @Json(name = "homepage")
-    val homepage: String = "",
+    val homepage: String?,
     @Json(name = "hooks_url")
     val hooksUrl: String = "",
     @Json(name = "html_url")
@@ -115,11 +115,11 @@ data class NetworkRepository(
     @Json(name = "labels_url")
     val labelsUrl: String = "",
     @Json(name = "language")
-    val language: String = "",
+    val language: String?,
     @Json(name = "languages_url")
     val languagesUrl: String = "",
     @Json(name = "license")
-    val license: License = License(),
+    val license: Any?,
     @Json(name = "merges_url")
     val mergesUrl: String = "",
     @Json(name = "milestones_url")
@@ -180,19 +180,6 @@ data class NetworkRepository(
     val watchersCount: Int = 0
 )
 
-@JsonClass(generateAdapter = true)
-data class License(
-    @Json(name = "key")
-    val key: String = "",
-    @Json(name = "name")
-    val name: String = "",
-    @Json(name = "node_id")
-    val nodeId: String = "",
-    @Json(name = "spdx_id")
-    val spdxId: String = "",
-    @Json(name = "url")
-    val url: String = ""
-)
 
 // Repository name, author name, author thumbnail, watcher count, fork count, issue count, stars, programming language,
 // created, lastUpdated, lastUpdated, projectHtmlUrl, ownerHtmlUrl, ownerUrl
@@ -206,7 +193,7 @@ fun NetworkRepositoryContainer.asDomainObject(): List<Repository> {
             forks = it.forksCount,
             issuesCount = it.openIssuesCount,
             starsCount = it.stargazersCount,
-            programmingLanguage = it.language,
+            programmingLanguage = it.language.toString(),
             createdAt = it.createdAt,
             updatedAt = it.updatedAt,
             htmlUrl = it.htmlUrl,

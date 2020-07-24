@@ -5,7 +5,7 @@ apply plugin: "kotlin-kapt"
 dependencies {
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
 
     // Android KTX
     implementation "androidx.core:core-ktx:$version_core"

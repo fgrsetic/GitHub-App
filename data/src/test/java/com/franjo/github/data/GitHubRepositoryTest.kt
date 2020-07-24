@@ -1,18 +1,17 @@
 package com.franjo.github.data
 
-import com.franjo.github.data.network.service.RestApiInterface
+import com.franjo.github.data.network.service.GitHubApiService
 import com.franjo.github.domain.shared.DispatcherProvider
 import io.mockk.clearAllMocks
 import org.junit.Test
 import io.mockk.mockk
-import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
 
 
 internal class GitHubRepositoryTest {
 
     private val dispatcherProvider: DispatcherProvider = mockk()
-    private val restApiInterface: RestApiInterface = mockk()
+    private val gitHubApiService: GitHubApiService = mockk()
 
 
     @BeforeEach

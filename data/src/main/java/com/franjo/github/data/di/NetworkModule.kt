@@ -2,13 +2,12 @@ package com.franjo.github.data.di
 
 import com.franjo.github.data.BuildConfig
 import com.franjo.github.data.network.service.BASE_URL
-import com.franjo.github.data.network.service.RestApiInterface
+import com.franjo.github.data.network.service.GitHubApiService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,17 +19,12 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(
-        headerInterceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-
         val builder = OkHttpClient.Builder()
-            .addInterceptor(headerInterceptor)
-
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(httpLoggingInterceptor)
         }
-
         return builder.build()
     }
 
@@ -42,6 +36,7 @@ class NetworkModule {
             .build()
     }
 
+    // OkHttp logging messages -> verbose logcat
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -49,6 +44,7 @@ class NetworkModule {
         return httpLoggingInterceptor
     }
 
+    // Retrofit class generates an implementation of the GitHubApiService interface
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
@@ -61,8 +57,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): RestApiInterface {
-        return retrofit.create(RestApiInterface::class.java)
+    fun provideApiService(retrofit: Retrofit): GitHubApiService {
+        return retrofit.create(GitHubApiService::class.java)
     }
 
 }

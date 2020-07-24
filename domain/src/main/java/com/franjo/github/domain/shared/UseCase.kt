@@ -1,4 +1,4 @@
-package com.evolutio.domain.shared
+package com.franjo.github.domain.shared
 
 /**
  *

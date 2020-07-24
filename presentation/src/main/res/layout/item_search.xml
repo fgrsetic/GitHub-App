@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.franjo.github.presentation.model.RepositoryUI" />
+
+        <variable
+            name="listener"
+            type="com.franjo.github.presentation.OnItemClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> listener.onItemClick(item)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_thumbnail_owner"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbnailPath="@{item.thumbnail}"
+                    tools:background="@tools:sample/backgrounds/scenic"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:text="@{item.author}"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_thumbnail_owner"
+                    app:layout_constraintTop_toTopOf="@+id/iv_thumbnail_owner"
+                    tools:text="fgrsetic/GithubApp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_watchers"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_watchers"
+                    app:layout_constraintStart_toEndOf="@+id/iv_thumbnail_owner"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_author"
+                    app:srcCompat="@drawable/ic_watcher"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_watchers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{String.valueOf(item.watcherCount)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_watchers"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_forks"
+                    app:layout_constraintStart_toEndOf="@+id/iv_watchers"
+                    app:layout_constraintTop_toTopOf="@+id/iv_watchers"
+                    tools:text="35000" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_forks"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_forks"
+                    app:layout_constraintStart_toEndOf="@+id/tv_watchers"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_author"
+                    app:srcCompat="@drawable/ic_fork"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_forks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{String.valueOf(item.forkCount)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_forks"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_issues"
+                    app:layout_constraintStart_toEndOf="@+id/iv_forks"
+                    app:layout_constraintTop_toTopOf="@+id/iv_forks"
+                    tools:text="35000" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_issues"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_issues"
+                    app:layout_constraintStart_toEndOf="@+id/tv_forks"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_author"
+                    app:srcCompat="@drawable/ic_issue"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_issues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{String.valueOf(item.issuesCount)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_issues"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_issues"
+                    app:layout_constraintTop_toTopOf="@+id/iv_issues"
+                    tools:text="35000" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

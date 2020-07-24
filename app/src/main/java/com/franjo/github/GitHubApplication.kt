@@ -1,9 +1,8 @@
 package com.franjo.github
 
 import android.app.Application
-import com.franjo.github.di.AppComponent
-import com.franjo.github.di.DaggerAppComponent
-import dagger.android.AndroidInjector
+import com.franjo.github.di.ApplicationComponent
+import com.franjo.github.di.DaggerApplicationComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
@@ -11,18 +10,18 @@ import javax.inject.Inject
 
 class GitHubApplication : Application(), HasAndroidInjector {
 
-    private lateinit var appComponent: AppComponent
+    private lateinit var applicationComponent: ApplicationComponent
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
+    override fun androidInjector(): DispatchingAndroidInjector<Any>? = androidInjector
 
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.builder().application(this).build()
-        appComponent.inject(this)
+        applicationComponent = DaggerApplicationComponent.builder().application(this).create()
+        applicationComponent.inject(this)
     }
 }
 
