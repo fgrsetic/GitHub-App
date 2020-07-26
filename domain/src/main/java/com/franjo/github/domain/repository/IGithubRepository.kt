@@ -1,13 +1,7 @@
 package com.franjo.github.domain.repository
 
-import com.franjo.github.domain.model.Repository
-import com.franjo.github.domain.shared.Result
+interface IGithubRepository<T> {
 
-interface IGithubRepository {
+    fun getSearchResultStream(query: String, sortBy: String): T
 
-    suspend fun loadRepositoriesFromServer(
-        query: String,
-        sort: String,
-        page: Int
-    ): Result<Exception, List<Repository>>
 }

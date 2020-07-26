@@ -1,21 +1,16 @@
 package com.franjo.github.domain.usecase
 
-import com.franjo.github.domain.model.Repository
-import com.franjo.github.domain.model.SearchRequest
 import com.franjo.github.domain.repository.IGithubRepository
-import com.franjo.github.domain.shared.UseCaseWithParams
 import javax.inject.Inject
-import com.franjo.github.domain.shared.Result
 
-class GetSearchedRepositories @Inject constructor(
-    private val githubRepository: IGithubRepository
-) : UseCaseWithParams<SearchRequest, Result<Exception, List<Repository>>>() {
+class GetSearchedRepositories<T> @Inject constructor(
+    private val githubRepository: IGithubRepository<T>
+) {
 
-    override suspend fun buildUseCase(params: SearchRequest): Result<Exception, List<Repository>> =
-        githubRepository.loadRepositoriesFromServer(
-            query = params.query,
-            sort = params.sort,
-            page = params.page
+    fun invoke(query: String, sortBy: String): T =
+        githubRepository.getSearchResultStream(
+            query,
+            sortBy
         )
 
 }

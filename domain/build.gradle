@@ -13,9 +13,12 @@ dependencies {
     // Coroutines for getting off the UI thread
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
 
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
+
     // Dagger
-    implementation "com.google.dagger:dagger:2.28.1"
-    kapt "com.google.dagger:dagger-compiler:2.28.1"
+    implementation "com.google.dagger:dagger:$version_dagger"
+    kapt "com.google.dagger:dagger-compiler:$version_dagger"
 
     // Test
     testImplementation 'junit:junit:4.13'

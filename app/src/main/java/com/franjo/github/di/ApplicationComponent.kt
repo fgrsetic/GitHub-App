@@ -5,7 +5,6 @@ import com.franjo.github.GitHubApplication
 import com.franjo.github.data.di.NetworkModule
 import com.franjo.github.data.di.RepositoryModule
 import com.franjo.github.domain.di.DispatcherModule
-import com.franjo.github.domain.di.UseCaseModule
 import com.franjo.github.presentation.di.ActivityModule
 import com.franjo.github.presentation.di.FragmentModule
 import com.franjo.github.presentation.di.ViewModelModule
@@ -20,7 +19,6 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         NetworkModule::class,
         RepositoryModule::class,
-        UseCaseModule::class,
         ViewModelModule::class,
         FragmentModule::class,
         ActivityModule::class,

@@ -39,9 +39,9 @@ class NetworkModule {
     // OkHttp logging messages -> verbose logcat
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        return httpLoggingInterceptor
+        val logger = HttpLoggingInterceptor()
+        logger.level = HttpLoggingInterceptor.Level.BODY
+        return logger
     }
 
     // Retrofit class generates an implementation of the GitHubApiService interface

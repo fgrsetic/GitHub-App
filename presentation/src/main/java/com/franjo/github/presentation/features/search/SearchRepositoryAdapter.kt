@@ -4,28 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.franjo.github.presentation.BaseViewHolder
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.model.RepositoryUI
 
 
+// PagingDataAdapter to update the RecyclerView that presents the data
 class SearchRepositoryAdapter(private val listener: OnItemClickListener) :
-    RecyclerView.Adapter<BaseViewHolder>() {
+    PagingDataAdapter<RepositoryUI, BaseViewHolder>(DIFF_CALLBACK) {
 
-    private val mDiffer = AsyncListDiffer(this, DIFF_CALLBACK)
-
-
-    fun submitList(list: List<RepositoryUI>) {
-        mDiffer.submitList(list)
-    }
-
-    override fun getItemCount(): Int {
-        return mDiffer.currentList.size
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -39,9 +29,11 @@ class SearchRepositoryAdapter(private val listener: OnItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val item = mDiffer.currentList[position]
-        holder.bind(item, listener)
-        holder.itemView.setOnClickListener { listener.onItemClick(item) }
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(item, listener)
+            holder.itemView.setOnClickListener { listener.onItemClick(item) }
+        }
     }
 
     companion object {
@@ -51,7 +43,7 @@ class SearchRepositoryAdapter(private val listener: OnItemClickListener) :
                     oldItem: RepositoryUI,
                     newItem: RepositoryUI
                 ): Boolean {
-                    return oldItem.author == newItem.author
+                    return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(

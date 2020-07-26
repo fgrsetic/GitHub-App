@@ -1,6 +1,6 @@
 package com.franjo.github.data.network.dto.github_repository
 
-import com.franjo.github.domain.model.Repository
+import com.franjo.github.domain.model.Repo
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -19,25 +19,27 @@ import com.squareup.moshi.JsonClass
 }
  */
 @JsonClass(generateAdapter = true)
-data class NetworkRepositoryContainer(
+data class GithubApiResponse(
     @Json(name = "total_count")
-    val totalCount: Int,
+    val totalCount: Int = 0,
     @Json(name = "incomplete_results")
     val incompleteResults: Boolean,
     @Json(name = "items")
-    val repositoryItems: List<NetworkRepository>
+    val repositoryItems: List<RepositoryItem> = emptyList()
 )
 
 @JsonClass(generateAdapter = true)
-data class NetworkRepository(
+data class RepositoryItem(
+    @Json(name = "id")
+    val id: Int = 0,
     @Json(name = "archive_url")
-    val archiveUrl: String = "",
+    val archiveUrl: String? = "",
     @Json(name = "archived")
-    val archived: Boolean = false,
+    val archived: Boolean? = false,
     @Json(name = "assignees_url")
-    val assigneesUrl: String = "",
+    val assigneesUrl: String? = "",
     @Json(name = "blobs_url")
-    val blobsUrl: String = "",
+    val blobsUrl: String? = "",
     @Json(name = "branches_url")
     val branchesUrl: String = "",
     @Json(name = "clone_url")
@@ -61,7 +63,7 @@ data class NetworkRepository(
     @Json(name = "deployments_url")
     val deploymentsUrl: String = "",
     @Json(name = "description")
-    val description: String = "",
+    val description: String? = "",
     @Json(name = "disabled")
     val disabled: Boolean = false,
     @Json(name = "downloads_url")
@@ -102,8 +104,6 @@ data class NetworkRepository(
     val hooksUrl: String = "",
     @Json(name = "html_url")
     val htmlUrl: String = "",
-    @Json(name = "id")
-    val id: Int = 0,
     @Json(name = "issue_comment_url")
     val issueCommentUrl: String = "",
     @Json(name = "issue_events_url")
@@ -181,11 +181,12 @@ data class NetworkRepository(
 )
 
 
-// Repository name, author name, author thumbnail, watcher count, fork count, issue count, stars, programming language,
+// Repo name, author name, author thumbnail, watcher count, fork count, issue count, stars, programming language,
 // created, lastUpdated, lastUpdated, projectHtmlUrl, ownerHtmlUrl, ownerUrl
-fun NetworkRepositoryContainer.asDomainObject(): List<Repository> {
+fun GithubApiResponse.asDomainObject(): List<Repo> {
     return repositoryItems.map {
-        Repository(
+        Repo(
+            id = it.id,
             name = it.name,
             author = it.owner.login,
             thumbnail = it.owner.avatarUrl,

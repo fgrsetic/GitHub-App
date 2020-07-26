@@ -1,7 +1,7 @@
 package com.franjo.github.domain.model
 
 
-data class Repository(
+data class Repo(
     val author: String = "",
     val archiveUrl: String = "",
     val archived: Boolean = false,
@@ -79,6 +79,7 @@ data class Repository(
     val watchers: Int = 0,
     val watcherCount: Int = 0
 )
+
 
 
 

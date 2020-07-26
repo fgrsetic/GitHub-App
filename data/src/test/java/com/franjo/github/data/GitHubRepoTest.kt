@@ -8,7 +8,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 
 
-internal class GitHubRepositoryTest {
+internal class GitHubRepoTest {
 
     private val dispatcherProvider: DispatcherProvider = mockk()
     private val gitHubApiService: GitHubApiService = mockk()

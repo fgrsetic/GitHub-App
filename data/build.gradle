@@ -66,6 +66,9 @@ dependencies {
     api "com.squareup.moshi:moshi:$version_moshi"
     api "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
+
     // Dagger
     implementation "com.google.dagger:dagger:2.28.1"
     implementation "com.google.dagger:dagger-android:2.28.1"

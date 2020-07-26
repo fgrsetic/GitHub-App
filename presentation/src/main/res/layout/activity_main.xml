@@ -14,10 +14,12 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:popupTheme="@style/MaterialComponents.PopupOverlay"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            app:logo="@drawable/ic_logo_git_icon"
+            app:titleMarginStart="32dp"
+            app:popupTheme="@style/MaterialComponents.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

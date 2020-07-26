@@ -84,6 +84,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$version_room"
 
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
+
     // Dagger
     api "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"

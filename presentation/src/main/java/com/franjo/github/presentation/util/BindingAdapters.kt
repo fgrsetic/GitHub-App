@@ -1,8 +1,12 @@
 package com.franjo.github.presentation.util
 
+import android.opengl.Visibility
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,14 +15,6 @@ import com.franjo.github.presentation.features.search.GithubApiStatus
 import com.franjo.github.presentation.features.search.SearchRepositoryAdapter
 import com.franjo.github.presentation.model.RepositoryUI
 
-
-@BindingAdapter("repositorySearchList")
-fun bindSearchRepositoryList(recyclerView: RecyclerView, repositoryList: List<RepositoryUI>?) {
-    val adapter: SearchRepositoryAdapter = recyclerView.adapter as SearchRepositoryAdapter
-    if (repositoryList != null) {
-        adapter.submitList(repositoryList)
-    }
-}
 
 // Binding adapter used to display images from URL using Glide
 @BindingAdapter("thumbnailPath")
@@ -51,6 +47,7 @@ fun bindStatus(statusImageView: ImageView, status: GithubApiStatus?) {
             statusImageView.visibility = View.GONE
     }
 }
+
 
 
 

@@ -1,44 +1,37 @@
 package com.franjo.github.data.repository
 
-import com.franjo.github.data.network.dto.github_repository.NetworkRepositoryContainer
-import com.franjo.github.data.network.dto.github_repository.asDomainObject
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.domain.model.Repository
+import com.franjo.github.domain.model.Repo
 import com.franjo.github.domain.repository.IGithubRepository
-import com.franjo.github.domain.shared.DispatcherProvider
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import com.franjo.github.domain.shared.Result
-
-class GitHubRepository (
-    private val dispatcherProvider: DispatcherProvider,
-    private val gitHubApiService: GitHubApiService
-) : IGithubRepository {
+import com.franjo.github.domain.shared.PAGE_SIZE
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
-    override suspend fun loadRepositoriesFromServer(
-        query: String,
-        sort: String,
-        page: Int
-    ): Result<Exception, List<Repository>> =
-        withContext(dispatcherProvider.provideIOContext()) {
-            val result = try {
-                gitHubApiService.getRepositorySearchList(query, sort, page)
-            } catch (e: Exception) {
-                return@withContext if (e is HttpException) {
-                    // Http exception
-                    Result.build { throw Exception(e.message()) }
-                } else {
-                    // Throwable
-                    Result.build { throw Exception(e.message) }
-                }
+class GitHubRepository @Inject constructor(
+    private val apiService: GitHubApiService
+) : IGithubRepository<Flow<PagingData<Repo>>> {
+
+    // Search repositories where names match the query
+    // The Flow emits a new PagingData whenever new data is loaded by the PagingSource
+    override fun getSearchResultStream(query: String, sortBy: String): Flow<PagingData<Repo>> {
+        // The Pager.flow creates a Flow<PagingData> based on a configuration
+        // and a function that defines how to instantiate the PagingSource
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                GithubPagingSource(
+                    apiService,
+                    query,
+                    sortBy
+                )
             }
-
-            return@withContext if (result.isSuccessful && result.body() != null) {
-                Result.build { (result.body() as NetworkRepositoryContainer).asDomainObject() }
-            } else {
-                Result.build { throw Exception(result.message()) }
-            }
-        }
-
+        ).flow
+    }
 }

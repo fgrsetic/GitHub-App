@@ -1,79 +1,171 @@
 package com.franjo.github.presentation.features.search
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.ExperimentalPagingApi
+import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBinding
-import com.franjo.github.presentation.util.generateDividerDecoration
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class SearchRepositoryFragment : Fragment() {
+class SearchRepositoryFragment :
+    BaseFragment<FragmentSearchRepositoryBinding, SearchRepositoryViewModel>() {
 
-    //override fun getFragmentView(): Int = R.layout.fragment_search_repository
-
-
-    @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
-
-    private val viewModel: SearchRepositoryViewModel by lazy {
-        ViewModelProvider(this, modelFactory).get(SearchRepositoryViewModel::class.java)
-    }
+    override fun getFragmentView(): Int = R.layout.fragment_search_repository
+    override fun getViewModel(): Class<SearchRepositoryViewModel> =
+        SearchRepositoryViewModel::class.java
 
     private var searchResultAdapter: SearchRepositoryAdapter? = null
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+    private var searchJob: Job? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentSearchRepositoryBinding.inflate(inflater)
-
-        // Set the lifecycleOwner so DataBinding can observe LiveData
-        binding.lifecycleOwner = this
-
-        binding.viewModel = viewModel
-
-        setAdapter(binding)
-        observeDetailsNavigation()
-
-        return binding.root
-    }
-
-    private fun setAdapter(binding: FragmentSearchRepositoryBinding) {
-        searchResultAdapter = SearchRepositoryAdapter(listener = OnItemClickListener { repository ->
-            viewModel.toRepositoryDetailsNavigate(repository)
-        })
-        binding.root.findViewById<RecyclerView>(R.id.rv_search).apply {
-            adapter = searchResultAdapter
-            addItemDecoration(context.generateDividerDecoration())
+    fun search(query: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.searchRepository(query).collectLatest {
+                searchResultAdapter?.submitData(it)
+            }
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
-    private fun observeDetailsNavigation() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding.viewModel = viewModel
+
+        initAdapter()
+
+        val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
+        search(query)
+        initSearch(query)
+
+        navigateToDetails()
+        navigateToSortDialogFragment()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+    }
+
+    private fun initAdapter() {
+        searchResultAdapter = SearchRepositoryAdapter(listener = OnItemClickListener { repository ->
+            viewModel.toRepositoryDetailsNavigate(repository)
+        })
+        binding.rvSearch.adapter = searchResultAdapter
+    }
+
+    private fun navigateToDetails() {
         viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
             val action =
                 SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
                     repository
                 )
             NavHostFragment.findNavController(this).navigate(action)
+            // Tell the ViewModel we've made the navigate call to prevent multiple navigation
             viewModel.onRepositoryDetailsNavigated()
         })
+    }
+
+    private fun initSearch(query: String) {
+        binding.searchRepo.setText(query)
+
+        binding.searchRepo.setOnEditorActionListener { _, actionId, _ ->
+            // IME_ACTION_GO -> the action key performs a "go" operation
+            // to take the user to the target of the text they typed
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                updateRepoListFromInput()
+                true
+            } else {
+                false
+            }
+        }
+        binding.searchRepo.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                updateRepoListFromInput()
+                true
+            } else {
+                false
+            }
+        }
+
+        lifecycleScope.launch {
+            @OptIn(ExperimentalPagingApi::class)
+            (searchResultAdapter?.dataRefreshFlow?.collect {
+                binding.rvSearch.scrollToPosition(0)
+            })
+        }
+    }
+
+    private fun updateRepoListFromInput() {
+        binding.searchRepo.text.trim().let {
+            if (it.isNotEmpty()) {
+                binding.rvSearch.scrollToPosition(0)
+                search(it.toString())
+            }
+        }
+    }
+
+    private fun showEmptyList(show: Boolean) {
+        if (show) {
+            binding.emptyList.visibility = View.VISIBLE
+            binding.rvSearch.visibility = View.GONE
+        } else {
+            binding.emptyList.visibility = View.GONE
+            binding.rvSearch.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_main, menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        when (item.itemId) {
+            R.id.action_sort -> openSortDialog()
+        }
+        return true
+    }
+
+    private fun openSortDialog() {
+        viewModel.showSortDialogFragment()
+    }
+
+    private fun navigateToSortDialogFragment() {
+        viewModel.navigateToSortDialogFragment.observe(viewLifecycleOwner, Observer {it ->
+            val action = SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToSortDialogFragment()
+            NavHostFragment.findNavController(this).navigate(action)
+            viewModel.showSortFragmentComplete()
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchJob?.cancel()
+    }
+
+    companion object {
+        private const val LAST_SEARCH_QUERY: String = "last_search_query"
+        private const val DEFAULT_QUERY = ""
     }
 
 }
