@@ -6,7 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.franjo.github.domain.model.Repo
+import com.franjo.github.domain.service.ISharedPrefsService
 import com.franjo.github.domain.shared.DispatcherProvider
+import com.franjo.github.domain.shared.SORT_REPO_KEY
+import com.franjo.github.domain.shared.SORT_STARS
 import com.franjo.github.domain.usecase.GetSearchedRepositories
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.RepositoryUI
@@ -19,6 +22,7 @@ enum class GithubApiStatus { LOADING, ERROR, DONE }
 
 class SearchRepositoryViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
+    private val sharedPrefsService: ISharedPrefsService,
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcherProvider) {
 
@@ -28,9 +32,8 @@ class SearchRepositoryViewModel @Inject constructor(
     private val _navigateToRepositoryDetails by lazy { MutableLiveData<RepositoryUI>() }
     val navigateToRepositoryDetails: LiveData<RepositoryUI> get() = _navigateToRepositoryDetails
 
-    private val _navigateToSortDialogFragment by lazy { MutableLiveData<Boolean>() }
-    val navigateToSortDialogFragment: LiveData<Boolean> get() = _navigateToSortDialogFragment
-
+    private val _status = MutableLiveData<GithubApiStatus>()
+    val status: LiveData<GithubApiStatus> get() = _status
 
 
     fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
@@ -39,8 +42,9 @@ class SearchRepositoryViewModel @Inject constructor(
             return lastResult
         }
         currentQueryValue = queryString
+        val sortBy = sharedPrefsService.getValue(SORT_REPO_KEY, SORT_STARS)
         val newResult: Flow<PagingData<RepositoryUI>> =
-            getSearchedRepositories.invoke(queryString, "stars")
+            getSearchedRepositories.invoke(queryString, sortBy as String)
                 .map { pagingData ->
                     pagingData.map { it.asPresentationModel() }
                     // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
@@ -58,13 +62,5 @@ class SearchRepositoryViewModel @Inject constructor(
 
     fun onRepositoryDetailsNavigated() {
         _navigateToRepositoryDetails.value = null
-    }
-
-    fun showSortDialogFragment() {
-        _navigateToSortDialogFragment.value = true
-    }
-
-    fun showSortFragmentComplete() {
-        _navigateToSortDialogFragment.value = null
     }
 }

@@ -11,14 +11,24 @@
 
     <!--Sort radio buttons -->
     <string name="sort_stars">Stars</string>
-    <string name="sort_forks">Stars</string>
-    <string name="sort_updates">Stars</string>
+    <string name="sort_forks">Forks</string>
+    <string name="sort_updates">Updates</string>
+    <string name="sort_title">Sort</string>
 
     <string-array name="sort_dialog">
         <item>Stars</item>
         <item>Forks</item>
         <item>Updated</item>
     </string-array>
+
+    <string name="init_message">"Please enter search query "</string>
+    <string name="retry">Retry</string>
+
+    <!-- Details screen -->
+    <string name="name_label">Name:</string>
+    <string name="created_at">Created At:</string>
+    <string name="updated_at">Updated At:</string>
+    <string name="programming_language">Programming language:</string>
 
 
 </resources>

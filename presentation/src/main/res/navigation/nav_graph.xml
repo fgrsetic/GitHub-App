@@ -19,10 +19,6 @@
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
 
-        <action
-            android:id="@+id/action_searchRepositoryFragment_to_sortDialogFragment"
-            app:destination="@id/sortDialogFragment" />
-
     </fragment>
 
     <fragment
@@ -32,16 +28,12 @@
         tools:layout="@layout/fragment_repository_details">
 
         <action
-            android:id="@+id/searchRepositoryFragment"
+            android:id="@+id/action_repositoryDetailsFragment_to_searchRepositoryFragment"
             app:destination="@id/searchRepositoryFragment" />
+
         <argument
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
     </fragment>
-    <fragment
-        android:id="@+id/sortDialogFragment"
-        android:name="com.franjo.github.presentation.features.search.SortDialogFragment"
-        android:label="sort_dialog_fragment"
-        tools:layout="@layout/sort_dialog_fragment" />
 
 </navigation>

@@ -7,13 +7,6 @@ import retrofit2.http.Query
 
 interface GitHubApiService {
 
-    // enum constants to match the query values our service expects
-    enum class GithubApiFilter(val value: String) {
-        SORT_STARS(value = "stars"),
-        SORT_FORKS(value = "forks"),
-        SORT_UPDATES(value = "updates")
-    }
-
     // Get repos initially ordered by stars.
     @GET(SEARCH_REPOSITORY_PATH)
     suspend fun searchRepositories(

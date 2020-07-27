@@ -37,7 +37,7 @@ fun bindStatus(statusImageView: ImageView, status: GithubApiStatus?) {
     when (status) {
         GithubApiStatus.LOADING -> {
             statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.loading_animation)
+            statusImageView.setImageResource(R.drawable.icon_broken_image)
         }
         GithubApiStatus.ERROR -> {
             statusImageView.visibility = View.VISIBLE

@@ -1,20 +1,27 @@
 package com.franjo.github.presentation.features.search
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBinding
+import com.franjo.github.presentation.features.search.SortDialogFragment.Companion.TAG
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 class SearchRepositoryFragment :
     BaseFragment<FragmentSearchRepositoryBinding, SearchRepositoryViewModel>() {
@@ -27,15 +34,6 @@ class SearchRepositoryFragment :
 
     private var searchJob: Job? = null
 
-    fun search(query: String) {
-        searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
-            viewModel.searchRepository(query).collectLatest {
-                searchResultAdapter?.submitData(it)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -43,17 +41,17 @@ class SearchRepositoryFragment :
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         binding.viewModel = viewModel
 
         initAdapter()
 
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        search(query)
+
         initSearch(query)
 
         navigateToDetails()
-        navigateToSortDialogFragment()
+
+        binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -62,9 +60,36 @@ class SearchRepositoryFragment :
     }
 
     private fun initAdapter() {
+        binding.rvSearch.adapter = searchResultAdapter?.withLoadStateHeaderAndFooter(
+            header = ReposLoadStateAdapter { searchResultAdapter!!.retry() },
+            footer = ReposLoadStateAdapter { searchResultAdapter!!.retry() }
+        )
         searchResultAdapter = SearchRepositoryAdapter(listener = OnItemClickListener { repository ->
             viewModel.toRepositoryDetailsNavigate(repository)
         })
+
+        searchResultAdapter!!.addLoadStateListener { loadState ->
+            // Only show the list if refresh succeeds
+            binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh
+            binding.ivLoadingAnimation.isVisible = loadState.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails.
+            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    context,
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
         binding.rvSearch.adapter = searchResultAdapter
     }
 
@@ -102,12 +127,13 @@ class SearchRepositoryFragment :
             }
         }
 
-        lifecycleScope.launch {
-            @OptIn(ExperimentalPagingApi::class)
-            (searchResultAdapter?.dataRefreshFlow?.collect {
-                binding.rvSearch.scrollToPosition(0)
-            })
-        }
+//        lifecycleScope.launch {
+//            @OptIn(ExperimentalPagingApi::class)
+//            (searchResultAdapter?.dataRefreshFlow?.collect {
+//                binding.rvSearch.scrollToPosition(0)
+////                showEnterQueryMessage(true)
+//            })
+//        }
     }
 
     private fun updateRepoListFromInput() {
@@ -115,17 +141,17 @@ class SearchRepositoryFragment :
             if (it.isNotEmpty()) {
                 binding.rvSearch.scrollToPosition(0)
                 search(it.toString())
+                hideKeyboardFrom(requireContext(), binding.rvSearch)
             }
         }
     }
 
-    private fun showEmptyList(show: Boolean) {
-        if (show) {
-            binding.emptyList.visibility = View.VISIBLE
-            binding.rvSearch.visibility = View.GONE
-        } else {
-            binding.emptyList.visibility = View.GONE
-            binding.rvSearch.visibility = View.VISIBLE
+    fun search(query: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.searchRepository(query).collect {
+                searchResultAdapter?.submitData(it)
+            }
         }
     }
 
@@ -141,26 +167,20 @@ class SearchRepositoryFragment :
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_sort -> openSortDialog()
+            R.id.action_sort -> setupConfirmationDialogButtons()
         }
         return true
     }
 
-    private fun openSortDialog() {
-        viewModel.showSortDialogFragment()
+    private fun setupConfirmationDialogButtons() {
+        val sortDialogFragment = SortDialogFragment()
+        sortDialogFragment.show(childFragmentManager, TAG)
     }
 
-    private fun navigateToSortDialogFragment() {
-        viewModel.navigateToSortDialogFragment.observe(viewLifecycleOwner, Observer {it ->
-            val action = SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToSortDialogFragment()
-            NavHostFragment.findNavController(this).navigate(action)
-            viewModel.showSortFragmentComplete()
-        })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        searchJob?.cancel()
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     companion object {

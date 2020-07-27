@@ -21,7 +21,7 @@ class GithubPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> {
         // Key of the page to be loaded
         val position = params.key ?: STARTING_PAGE_INDEX
-        val apiQuery = query + IN_QUALIFIER
+        val apiQuery = query
         return try {
             val response =
                 apiService.searchRepositories(apiQuery, sortBy, position, params.loadSize)

@@ -38,8 +38,6 @@ abstract class BaseFragment<T : ViewDataBinding, VM: ViewModel> : Fragment() {
         // Set the lifecycleOwner so DataBinding can observe LiveData
         binding.lifecycleOwner = this
 
-      //  viewModel = ViewModelProvider(this, modelFactory).get(getViewModel())
-
         return binding.root
     }
 

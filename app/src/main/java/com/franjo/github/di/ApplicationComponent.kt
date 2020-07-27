@@ -4,6 +4,7 @@ import android.app.Application
 import com.franjo.github.GitHubApplication
 import com.franjo.github.data.di.NetworkModule
 import com.franjo.github.data.di.RepositoryModule
+import com.franjo.github.data.di.ServiceModule
 import com.franjo.github.domain.di.DispatcherModule
 import com.franjo.github.presentation.di.ActivityModule
 import com.franjo.github.presentation.di.FragmentModule
@@ -22,7 +23,8 @@ import javax.inject.Singleton
         ViewModelModule::class,
         FragmentModule::class,
         ActivityModule::class,
-        DispatcherModule::class
+        DispatcherModule::class,
+        ServiceModule::class
     ]
 )
 interface ApplicationComponent {
