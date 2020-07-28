@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -8,8 +7,17 @@
     <data>
 
         <variable
+            name="item"
+            type="com.franjo.github.presentation.model.RepositoryUI" />
+
+        <variable
             name="viewModelDetails"
-            type="com.franjo.github.presentation.features.details.RepositoryDetailsViewModel" />
+            type="com.franjo.github.presentation.features.repository_details.RepositoryDetailsViewModel" />
+
+        <variable
+            name="iconListener"
+            type="com.franjo.github.presentation.OnIconClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,13 +26,13 @@
 
         <ImageView
             android:id="@+id/ivThumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:thumbnailPath="@{viewModelDetails.selectedRepo.thumbnail}"
             tools:ignore="ContentDescription"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -33,8 +41,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/name_label"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvCreatedAtLabel"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
@@ -45,8 +54,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModelDetails.selectedRepo.author.concat(@string/forward_slash).concat(viewModelDetails.selectedRepo.name)}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvNameLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvNameLabel"
@@ -60,7 +72,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="@string/created_at"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvLastUpdatedAtLabel"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
@@ -71,8 +83,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModelDetails.selectedRepo.createdAt}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvCreatedAtLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvCreatedAtLabel"
@@ -86,7 +101,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="@string/updated_at"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvProgrammingLanguageLabel"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
@@ -97,8 +112,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModelDetails.selectedRepo.updatedAt}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvLastUpdatedAtLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvLastUpdatedAtLabel"
@@ -112,7 +130,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:text="@string/programming_language"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/ivWatchers"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
@@ -123,8 +141,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModelDetails.selectedRepo.programmingLanguage}"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvProgrammingLanguageLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvProgrammingLanguageLabel"
@@ -137,7 +158,12 @@
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/ivForks"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/tvWatcherCount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
             app:layout_constraintTop_toBottomOf="@+id/tvProgrammingLanguageLabel"
             app:srcCompat="@drawable/ic_watcher"
@@ -147,11 +173,12 @@
             android:id="@+id/tvWatcherCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{String.valueOf(viewModelDetails.selectedRepo.watcherCount)}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivWatchers"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivWatchers"
             app:layout_constraintTop_toTopOf="@+id/ivWatchers"
             tools:text="100" />
@@ -161,10 +188,11 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/ivIssues"
-            app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/ivWatchers"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStars"
+            app:layout_constraintEnd_toStartOf="@+id/tvForksCount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvStarsCount"
+            app:layout_constraintTop_toTopOf="@+id/ivStars"
             app:srcCompat="@drawable/ic_fork"
             tools:ignore="ContentDescription" />
 
@@ -172,11 +200,12 @@
             android:id="@+id/tvForksCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{String.valueOf(viewModelDetails.selectedRepo.forkCount)}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivForks"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivForks"
             app:layout_constraintTop_toTopOf="@+id/ivForks"
             tools:text="1200" />
@@ -186,10 +215,11 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/ivStars"
-            app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/ivForks"
+            app:layout_constraintBottom_toBottomOf="@+id/ivForks"
+            app:layout_constraintEnd_toStartOf="@+id/tvIssuesCount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvForksCount"
+            app:layout_constraintTop_toTopOf="@+id/ivForks"
             app:srcCompat="@drawable/ic_issue"
             tools:ignore="ContentDescription" />
 
@@ -197,46 +227,55 @@
             android:id="@+id/tvIssuesCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{String.valueOf(viewModelDetails.selectedRepo.issuesCount)}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivIssues"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/ivIssues"
             app:layout_constraintTop_toTopOf="@+id/ivIssues"
             tools:text="50" />
+
+        <ImageView
+            android:id="@+id/ivStars"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivWatchers"
+            app:layout_constraintEnd_toStartOf="@+id/tvStarsCount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvWatcherCount"
+            app:layout_constraintTop_toTopOf="@+id/ivWatchers"
+            app:srcCompat="@drawable/ic_star"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvStarsCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{String.valueOf(viewModelDetails.selectedRepo.starsCount)}"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivStars"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivStars"
             app:layout_constraintTop_toTopOf="@+id/ivStars"
             tools:text="323" />
-
-        <ImageView
-            android:id="@+id/ivStars"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintStart_toEndOf="@+id/ivThumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/ivIssues"
-            app:srcCompat="@drawable/ic_star"
-            tools:ignore="ContentDescription" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="231dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -246,12 +285,11 @@
             android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline"
-            app:tabBackground="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:tabBackground="@android:color/white"
             app:tabIndicatorColor="@color/colorPrimaryDark"
-            app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextColor="@android:color/white" />
+            app:tabTextColor="@color/colorPrimary" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -261,6 +299,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

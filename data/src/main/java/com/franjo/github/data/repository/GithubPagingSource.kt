@@ -18,10 +18,16 @@ class GithubPagingSource @Inject constructor(
     private val sortBy: String
 ) : PagingSource<Int, Repo>() {
 
+    // The LoadParams object keeps information related to the load operation
+    // LoadResult can take one of the following types: LoadResult.Page, if the result was successful
+    // or LoadResult.Error, in case of error
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repo> {
-        // Key of the page to be loaded
+        // Key of the page to be loaded. If this is the first time that load is called, LoadParams.key will be null
+        // The type of the paging key - in our case, the Github API uses 1-based index numbers for pages
+        // STARTING_PAGE_INDEX is a initial page key
+        // loadSize - the requested number of items to load
         val position = params.key ?: STARTING_PAGE_INDEX
-        val apiQuery = query
+        val apiQuery = query + IN_QUALIFIER
         return try {
             val response =
                 apiService.searchRepositories(apiQuery, sortBy, position, params.loadSize)

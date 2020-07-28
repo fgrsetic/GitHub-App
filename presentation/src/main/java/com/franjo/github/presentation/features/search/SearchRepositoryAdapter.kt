@@ -7,13 +7,19 @@ import androidx.databinding.ViewDataBinding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.franjo.github.presentation.BaseViewHolder
+import com.franjo.github.presentation.OnIconClickListener
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.model.RepositoryUI
 
 
 // PagingDataAdapter to update the RecyclerView that presents the data
-class SearchRepositoryAdapter(private val listener: OnItemClickListener) :
+// PagingDataAdapter gets notified whenever the PagingData content is loaded
+// and then it signals the RecyclerView to update
+class SearchRepositoryAdapter(
+    private val rowListener: OnItemClickListener,
+    private val iconListener: OnIconClickListener
+) :
     PagingDataAdapter<RepositoryUI, BaseViewHolder>(DIFF_CALLBACK) {
 
 
@@ -31,8 +37,10 @@ class SearchRepositoryAdapter(private val listener: OnItemClickListener) :
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item, listener)
-            holder.itemView.setOnClickListener { listener.onItemClick(item) }
+            holder.bind(item, rowListener)
+            holder.itemView.setOnClickListener { rowListener.onItemClick(item) }
+            holder.bind(item, iconListener)
+            holder.itemView.setOnClickListener { iconListener.onIconClick(item) }
         }
     }
 

@@ -9,26 +9,34 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import com.franjo.github.presentation.BaseFragment
+import com.franjo.github.presentation.OnIconClickListener
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBinding
 import com.franjo.github.presentation.features.search.SortDialogFragment.Companion.TAG
+import com.franjo.github.presentation.model.RepositoryUI
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class SearchRepositoryFragment :
-    BaseFragment<FragmentSearchRepositoryBinding, SearchRepositoryViewModel>() {
+class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>() {
 
     override fun getFragmentView(): Int = R.layout.fragment_search_repository
-    override fun getViewModel(): Class<SearchRepositoryViewModel> =
-        SearchRepositoryViewModel::class.java
+
+    @Inject
+    lateinit var modelFactory: ViewModelProvider.Factory
+
+    val viewModel: SearchRepositoryViewModel by lazy {
+        ViewModelProvider(this, modelFactory).get(SearchRepositoryViewModel::class.java)
+    }
 
     private var searchResultAdapter: SearchRepositoryAdapter? = null
 
@@ -46,12 +54,14 @@ class SearchRepositoryFragment :
         initAdapter()
 
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-
         initSearch(query)
 
-        navigateToDetails()
+        navigateToRepositoryDetails()
+        navigateToUserDetails()
 
+        // retry button should trigger a reload of the PagingData
         binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -60,48 +70,67 @@ class SearchRepositoryFragment :
     }
 
     private fun initAdapter() {
-        binding.rvSearch.adapter = searchResultAdapter?.withLoadStateHeaderAndFooter(
-            header = ReposLoadStateAdapter { searchResultAdapter!!.retry() },
-            footer = ReposLoadStateAdapter { searchResultAdapter!!.retry() }
-        )
-        searchResultAdapter = SearchRepositoryAdapter(listener = OnItemClickListener { repository ->
-            viewModel.toRepositoryDetailsNavigate(repository)
-        })
+        searchResultAdapter = SearchRepositoryAdapter(
+            rowListener = object : OnItemClickListener {
+                override fun onItemClick(item: RepositoryUI?) {
+                    item?.let { viewModel.toRepositoryDetailsNavigate(it) }
+                }
 
+            },
+            iconListener = object : OnIconClickListener {
+                override fun onIconClick(item: RepositoryUI?) {
+                    item?.let { viewModel.toUserDetailsNavigate(it) }
+                }
+            })
+
+
+        // This callback notifies us every time there's a change in the load state via a CombinedLoadStates object
+        // CombinedLoadStates gives us the load state for the PageSource we defined
+        // or for the RemoteMediator needed for network and database case
+        // CombinedLoadStates.refresh - represents the load state for loading the PagingData for the first time
         searchResultAdapter!!.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds
             binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
-            // Show loading spinner during initial load or refresh
+            // Show loading spinner animation during initial load or refresh
             binding.ivLoadingAnimation.isVisible = loadState.source.refresh is LoadState.Loading
-            // Show the retry state if initial load or refresh fails.
+            // Show the retry state if initial load or refresh fails
             binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
 
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
-                ?: loadState.append as? LoadState.Error
-                ?: loadState.prepend as? LoadState.Error
             errorState?.let {
-                Toast.makeText(
-                    context,
-                    "\uD83D\uDE28 Wooops ${it.error}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(context, "Something went wrong ", Toast.LENGTH_LONG).show()
             }
         }
 
         binding.rvSearch.adapter = searchResultAdapter
     }
 
-    private fun navigateToDetails() {
+    private fun navigateToRepositoryDetails() {
         viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
-            val action =
-                SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
-                    repository
-                )
-            NavHostFragment.findNavController(this).navigate(action)
-            // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-            viewModel.onRepositoryDetailsNavigated()
+            if (repository != null) {
+                val action =
+                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
+                        repository
+                    )
+                NavHostFragment.findNavController(this).navigate(action)
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                viewModel.onRepositoryDetailsNavigated()
+            }
+        })
+    }
+
+    private fun navigateToUserDetails() {
+        viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
+            if (repository != null) {
+                val action =
+                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToUserDetailsFragment(
+                        repository
+                    )
+                NavHostFragment.findNavController(this).navigate(action)
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                viewModel.onUserDetailsNavigated()
+            }
         })
     }
 
@@ -127,29 +156,38 @@ class SearchRepositoryFragment :
             }
         }
 
-//        lifecycleScope.launch {
-//            @OptIn(ExperimentalPagingApi::class)
-//            (searchResultAdapter?.dataRefreshFlow?.collect {
-//                binding.rvSearch.scrollToPosition(0)
-////                showEnterQueryMessage(true)
-//            })
-//        }
+        // Instead of resetting the position on new search,
+        // we should reset the position when the list adapter is updated with the result of a new search.
+        // We collect from this flow when we initialize the search in the initSearch method
+        // and at every new emission of the flow, let's scroll to position 0.
+        lifecycleScope.launch {
+            @OptIn(ExperimentalPagingApi::class)
+            (searchResultAdapter?.dataRefreshFlow?.collect {
+                binding.rvSearch.scrollToPosition(0)
+            })
+        }
     }
 
     private fun updateRepoListFromInput() {
         binding.searchRepo.text.trim().let {
             if (it.isNotEmpty()) {
-                binding.rvSearch.scrollToPosition(0)
                 search(it.toString())
                 hideKeyboardFrom(requireContext(), binding.rvSearch)
             }
         }
     }
 
+    // To be able to work with Flow<PagingData>, we need to launch a new coroutine
     fun search(query: String) {
+        // We want to ensure that whenever the user searches for a new query,
+        // the previous query is cancelled. We hold a reference
+        // to a new Job that will be cancelled every time there is a search for a new query
         searchJob?.cancel()
+        // lifecycleScope is responsible for canceling the request when the activity is recreated
         searchJob = lifecycleScope.launch {
+            // Collect the PagingData result
             viewModel.searchRepository(query).collect {
+                // Pass the PagingData to the adapter
                 searchResultAdapter?.submitData(it)
             }
         }

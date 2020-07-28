@@ -11,8 +11,12 @@
             type="com.franjo.github.presentation.model.RepositoryUI" />
 
         <variable
-            name="listener"
+            name="rowListener"
             type="com.franjo.github.presentation.OnItemClickListener" />
+
+        <variable
+            name="iconListener"
+            type="com.franjo.github.presentation.OnIconClickListener" />
 
     </data>
 
@@ -24,13 +28,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> listener.onItemClick(item)}"
+            android:onClick="@{() -> rowListener.onItemClick(item)}"
             app:cardCornerRadius="6dp"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,6 +53,7 @@
                     android:layout_height="60dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
+                    android:onClick="@{() -> iconListener.onIconClick(item)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -63,6 +68,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:ellipsize="end"
+                    android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:text="@{item.author}"
                     android:textSize="20sp"
@@ -152,7 +158,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

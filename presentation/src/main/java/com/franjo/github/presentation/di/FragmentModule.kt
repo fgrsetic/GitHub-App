@@ -1,6 +1,6 @@
 package com.franjo.github.presentation.di
 
-import com.franjo.github.presentation.features.details.RepositoryDetailsFragment
+import com.franjo.github.presentation.features.repository_details.RepositoryDetailsFragment
 import com.franjo.github.presentation.features.search.SearchRepositoryFragment
 import com.franjo.github.presentation.features.search.SortDialogFragment
 import dagger.Module

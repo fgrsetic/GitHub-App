@@ -17,6 +17,7 @@ class GitHubRepository @Inject constructor(
 
     // Search repositories where names match the query
     // The Flow emits a new PagingData whenever new data is loaded by the PagingSource
+    // The Flow is coroutines library for representing an async sequence, or stream, of values
     override fun getSearchResultStream(query: String, sortBy: String): Flow<PagingData<Repo>> {
         // The Pager.flow creates a Flow<PagingData> based on a configuration
         // and a function that defines how to instantiate the PagingSource

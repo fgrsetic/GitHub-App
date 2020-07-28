@@ -15,6 +15,7 @@ import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.asPresentationModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,33 +27,22 @@ class SearchRepositoryViewModel @Inject constructor(
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcherProvider) {
 
-    private var currentQueryValue: String? = null
-    private var currentSearchResult: Flow<PagingData<RepositoryUI>>? = null
-
     private val _navigateToRepositoryDetails by lazy { MutableLiveData<RepositoryUI>() }
     val navigateToRepositoryDetails: LiveData<RepositoryUI> get() = _navigateToRepositoryDetails
 
-    private val _status = MutableLiveData<GithubApiStatus>()
-    val status: LiveData<GithubApiStatus> get() = _status
+    private val _navigateToUserDetails by lazy { MutableLiveData<RepositoryUI>() }
+    val navigateToUserDetails: LiveData<RepositoryUI> get() = _navigateToUserDetails
 
 
     fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
-        val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
-            return lastResult
-        }
-        currentQueryValue = queryString
         val sortBy = sharedPrefsService.getValue(SORT_REPO_KEY, SORT_STARS)
-        val newResult: Flow<PagingData<RepositoryUI>> =
-            getSearchedRepositories.invoke(queryString, sortBy as String)
-                .map { pagingData ->
-                    pagingData.map { it.asPresentationModel() }
-                    // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
-                    // If we're doing any operations on the Flow, like map or filter,
-                    // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
-                }.cachedIn(viewModelScope)
-        currentSearchResult = newResult
-        return newResult
+        return getSearchedRepositories.invoke(queryString, sortBy as String)
+            .map { pagingData ->
+                pagingData.map { it.asPresentationModel() }
+                // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
+                // If we're doing any operations on the Flow, like map or filter,
+                // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
+            }.cachedIn(viewModelScope).catch { cause: Throwable -> cause.message }
     }
 
     // Navigation
@@ -62,5 +52,13 @@ class SearchRepositoryViewModel @Inject constructor(
 
     fun onRepositoryDetailsNavigated() {
         _navigateToRepositoryDetails.value = null
+    }
+
+    fun toUserDetailsNavigate(repository: RepositoryUI) {
+        _navigateToUserDetails.value = repository
+    }
+
+    fun onUserDetailsNavigated() {
+        _navigateToUserDetails.value = null
     }
 }

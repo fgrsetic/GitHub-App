@@ -19,7 +19,7 @@ import com.squareup.moshi.JsonClass
 }
  */
 @JsonClass(generateAdapter = true)
-data class GithubApiResponse(
+data class RepositoryApiResponse(
     @Json(name = "total_count")
     val totalCount: Int = 0,
     @Json(name = "incomplete_results")
@@ -113,19 +113,19 @@ data class RepositoryItem(
     @Json(name = "keys_url")
     val keysUrl: String? = "",
     @Json(name = "labels_url")
-    val labelsUrl: String = "",
+    val labelsUrl: String? = "",
     @Json(name = "language")
-    val language: String?,
+    val language: String? = "",
     @Json(name = "languages_url")
     val languagesUrl: String? = "",
     @Json(name = "license")
-    val license: Any?,
+    val license: Any? = "",
     @Json(name = "merges_url")
     val mergesUrl: String? = "",
     @Json(name = "milestones_url")
     val milestonesUrl: String? = "",
     @Json(name = "mirror_url")
-    val mirrorUrl: Any? = null,
+    val mirrorUrl: Any? = "",
     @Json(name = "name")
     val name: String? = "",
     @Json(name = "node_id")
@@ -183,7 +183,7 @@ data class RepositoryItem(
 
 // Repo name, author name, author thumbnail, watcher count, fork count, issue count, stars, programming language,
 // created, lastUpdated, lastUpdated, projectHtmlUrl, ownerHtmlUrl, ownerUrl
-fun GithubApiResponse.asDomainObject(): List<Repo> {
+fun RepositoryApiResponse.asDomainObject(): List<Repo> {
     return repositoryItems.map {
         Repo(
             id = it.id,

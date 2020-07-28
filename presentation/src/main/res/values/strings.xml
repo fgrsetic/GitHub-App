@@ -8,6 +8,7 @@
 
     <string name="search_hint">GitHub Repository</string>
     <string name="no_results">No results 😓</string>
+    <string name="no_search">No search</string>
 
     <!--Sort radio buttons -->
     <string name="sort_stars">Stars</string>
@@ -28,7 +29,19 @@
     <string name="name_label">Name:</string>
     <string name="created_at">Created At:</string>
     <string name="updated_at">Updated At:</string>
-    <string name="programming_language">Programming language:</string>
+    <string name="programming_language">Prog. language:</string>
+    <string name="forward_slash">/</string>
+    <string name="about_fragment">About Fragment</string>
+    <string name="releases_fragment">Releases Fragment</string>
+    <string name="contributors_fragment">Contributors Fragment</string>
+    <string name="web">www</string>
+
+
+    <string-array name="details_tab_layout_titles">
+        <item>About</item>
+        <item>Releases</item>
+        <item>Contributors</item>
+    </string-array>
 
 
 </resources>
