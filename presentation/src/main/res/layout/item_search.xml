@@ -71,7 +71,9 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:text="@{item.author}"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_thumbnail_owner"
                     app:layout_constraintTop_toTopOf="@+id/iv_thumbnail_owner"
@@ -160,4 +162,5 @@
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -1,4 +1,4 @@
-package com.franjo.github.domain.model
+package com.franjo.github.domain.model.repository
 
 
 data class Repo(

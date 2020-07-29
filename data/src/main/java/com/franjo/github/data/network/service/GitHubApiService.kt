@@ -3,6 +3,7 @@ package com.franjo.github.data.network.service
 import com.franjo.github.data.network.dto.github_repository.RepositoryApiResponse
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
 import com.franjo.github.domain.shared.SORT_STARS
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,7 +22,7 @@ interface GitHubApiService {
     ): RepositoryApiResponse
 
     @GET(USER_PATH)
-    suspend fun getUserData(
+    fun getUserData(
         @Path("userName") userName: String
-    ): UserApiResponse
+    ): Deferred<UserApiResponse>
 }

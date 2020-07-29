@@ -36,5 +36,4 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     abstract fun getFragmentView(): Int
-
 }

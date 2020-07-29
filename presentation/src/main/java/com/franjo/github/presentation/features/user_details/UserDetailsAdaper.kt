@@ -8,16 +8,14 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.franjo.github.presentation.BaseViewHolder
-import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
-import com.franjo.github.presentation.model.RepositoryUI
+import com.franjo.github.presentation.model.UserDataRowItem
 
-class UserDetailsAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<BaseViewHolder>() {
+class UserDetailsAdapter() : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mDiffer = AsyncListDiffer(this, DIFF_CALLBACK)
 
-
-    fun submitList(list: List<RepositoryUI>?) {
+    fun submitList(list: List<UserDataRowItem>?) {
         mDiffer.submitList(list)
     }
 
@@ -27,26 +25,37 @@ class UserDetailsAdapter(private val listener: OnItemClickListener) : RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, R.layout.item_user_details, parent, false)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            layoutInflater,
+            R.layout.item_user_details,
+            parent,
+            false
+        )
         return BaseViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item = mDiffer.currentList[position]
-        holder.bind(item, listener)
-        holder.itemView.setOnClickListener { listener.onItemClick(item) }
+        holder.bind(item)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<RepositoryUI> = object : DiffUtil.ItemCallback<RepositoryUI>() {
-            override fun areItemsTheSame(oldItem: RepositoryUI, newItem: RepositoryUI): Boolean {
-                return oldItem.id == newItem.id
-            }
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<UserDataRowItem> =
+            object : DiffUtil.ItemCallback<UserDataRowItem>() {
+                override fun areItemsTheSame(
+                    oldItem: UserDataRowItem,
+                    newItem: UserDataRowItem
+                ): Boolean {
+                    return oldItem.description == newItem.description
+                }
 
-            override fun areContentsTheSame(oldItem: RepositoryUI, newItem: RepositoryUI): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: UserDataRowItem,
+                    newItem: UserDataRowItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 
 }

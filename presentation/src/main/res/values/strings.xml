@@ -27,14 +27,39 @@
 
     <!-- Details screen -->
     <string name="name_label">Name:</string>
-    <string name="created_at">Created At:</string>
-    <string name="updated_at">Updated At:</string>
     <string name="programming_language">Prog. language:</string>
     <string name="forward_slash">/</string>
     <string name="about_fragment">About Fragment</string>
     <string name="releases_fragment">Releases Fragment</string>
     <string name="contributors_fragment">Contributors Fragment</string>
     <string name="web">www</string>
+
+    <!-- UserDataRowItem-->
+    <string name="username">Username:</string>
+    <string name="company">Company:</string>
+    <string name="blog">Blog:</string>
+    <string name="location">Location:</string>
+    <string name="email">Email:</string>
+    <string name="hireable">Hireable:</string>
+    <string name="bio">Bio:</string>
+    <string name="public_repos">Public Repos:</string>
+    <string name="public_gists">Public Gists:</string>
+    <string name="followers">Followers:</string>
+    <string name="following">Following:</string>
+    <string name="created_at">Created At:</string>
+    <string name="updated_at">Updated At:</string>
+    <string name="avatar_url">Avatar URL:</string>
+    <string name="events_url">Events URL:</string>
+    <string name="followers_url">Followers URL:</string>
+    <string name="following_url">Following URL:</string>
+    <string name="gists_url">Gists URL:</string>
+    <string name="gravatar_id">Gravatar URL:</string>
+    <string name="html_url">Html URL:</string>
+    <string name="id">Id:</string>
+    <string name="node_id">Node ID:</string>
+    <string name="organizations_url">Organizations URL:</string>
+    <string name="repos_url">Repos URL:</string>
+    <string name="starred_url">Starred URL:</string>
 
 
     <string-array name="details_tab_layout_titles">

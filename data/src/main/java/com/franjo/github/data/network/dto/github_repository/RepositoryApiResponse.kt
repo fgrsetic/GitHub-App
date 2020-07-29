@@ -1,15 +1,9 @@
 package com.franjo.github.data.network.dto.github_repository
 
-import com.franjo.github.domain.model.Repo
+import com.franjo.github.domain.model.repository.Repo
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-
-/**
- * DataTransferObject go in this file. It is responsible for parsing responses from the server
- * or formatting objects to send to the server. We should convert these to domain objects before
- * using them.
- */
 
 /**  This is to parse first level of network result
 {
@@ -180,26 +174,23 @@ data class RepositoryItem(
     val watchersCount: Int = 0
 )
 
-
-// Repo name, author name, author thumbnail, watcher count, fork count, issue count, stars, programming language,
-// created, lastUpdated, lastUpdated, projectHtmlUrl, ownerHtmlUrl, ownerUrl
 fun RepositoryApiResponse.asDomainObject(): List<Repo> {
     return repositoryItems.map {
         Repo(
             id = it.id,
-            name = it.name.toString(),
-            author = it.owner.login.toString(),
-            thumbnail = it.owner.avatarUrl.toString(),
+            name = it.name.orEmpty(),
+            author = it.owner.login.orEmpty(),
+            thumbnail = it.owner.avatarUrl.orEmpty(),
             watchers = it.watchers,
             forks = it.forksCount,
             issuesCount = it.openIssuesCount,
             starsCount = it.stargazersCount,
-            programmingLanguage = it.language.toString(),
-            createdAt = it.createdAt.toString(),
-            updatedAt = it.updatedAt.toString(),
-            htmlUrl = it.htmlUrl.toString(),
-            ownerHtmlUrl = it.owner.htmlUrl.toString(),
-            ownerUrl = it.owner.url.toString()
+            programmingLanguage = it.language.orEmpty(),
+            createdAt = it.createdAt.orEmpty(),
+            updatedAt = it.updatedAt.orEmpty(),
+            htmlUrl = it.htmlUrl.orEmpty(),
+            ownerHtmlUrl = it.owner.htmlUrl.orEmpty(),
+            ownerUrl = it.owner.url.orEmpty()
         )
     }
 }

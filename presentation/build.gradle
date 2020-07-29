@@ -118,6 +118,8 @@ dependencies {
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // Test
     testImplementation 'junit:junit:4.13'
     testImplementation "io.mockk:mockk:$version_mockK"

@@ -1,8 +1,6 @@
 package com.franjo.github.presentation
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -33,7 +31,8 @@ class BaseActivity : AppCompatActivity(R.layout.activity_main) {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration.Builder(
             R.id.searchRepositoryFragment,
-            R.id.repositoryDetailsFragment
+            R.id.repositoryDetailsFragment,
+            R.id.userDetailsFragment
         ).build()
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -44,5 +43,4 @@ class BaseActivity : AppCompatActivity(R.layout.activity_main) {
         return (Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp()
                 || super.onSupportNavigateUp())
     }
-
 }

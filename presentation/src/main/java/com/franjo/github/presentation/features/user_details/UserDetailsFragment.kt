@@ -1,32 +1,72 @@
 package com.franjo.github.presentation.features.user_details
 
-import androidx.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Patterns
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
+import com.franjo.github.domain.shared.DispatcherProvider
+import com.franjo.github.domain.usecase.GetUserData
+import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.R
+import com.franjo.github.presentation.databinding.FragmentUserDetailsBinding
+import com.franjo.github.presentation.model.RepositoryUI
+import com.franjo.github.presentation.model.UserUI
+import com.franjo.github.presentation.util.AndroidResourceManager
+import javax.inject.Inject
 
-class UserDetailsFragment : Fragment() {
+class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
-    companion object {
-        fun newInstance() = UserDetailsFragment()
-    }
+    override fun getFragmentView(): Int = R.layout.fragment_user_details
+
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
+
+    @Inject
+    lateinit var userData: GetUserData
+
+    @Inject
+    lateinit var resourceManager: AndroidResourceManager
 
     private lateinit var viewModel: UserDetailsViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.user_details_fragment, container, false)
-    }
+    private lateinit var repository: RepositoryUI
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(UserDetailsViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        repository = UserDetailsFragmentArgs.fromBundle(requireArguments()).repository
+        val modelFactory =
+            UserDetailsViewModelFactory(repository, dispatcherProvider, resourceManager, userData)
+        viewModel = ViewModelProvider(this, modelFactory).get(UserDetailsViewModel::class.java)
+        binding.viewModel = viewModel
+
+        viewModel.getUserData(repository.author)
+
+        binding.rvUserDetails.adapter = UserDetailsAdapter()
+        setHasOptionsMenu(true)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.details_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_go_to_web -> viewModel.userData.value?.get(0)?.let { openBrowser(it) }
+        }
+        return true
+    }
+
+    private fun openBrowser(user: UserUI) {
+        if (Patterns.WEB_URL.matcher(user.url).matches()) {
+            user.url.let { url ->
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                requireContext().startActivity(i)
+            }
+        }
+    }
 }

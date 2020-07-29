@@ -7,15 +7,12 @@ import android.util.Patterns
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.franjo.github.presentation.BaseFragment
-import com.franjo.github.presentation.OnIconClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentRepositoryDetailsBinding
-import com.franjo.github.presentation.features.search.SearchRepositoryFragmentDirections
 import com.franjo.github.presentation.model.RepositoryUI
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -32,7 +29,8 @@ class RepositoryDetailsFragment :
 
         repository = RepositoryDetailsFragmentArgs.fromBundle(requireArguments()).repository
         val modelFactory = RepositoryDetailsViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, modelFactory).get(RepositoryDetailsViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, modelFactory).get(RepositoryDetailsViewModel::class.java)
         binding.viewModelDetails = viewModel
 
         bindAdapter()
@@ -73,7 +71,6 @@ class RepositoryDetailsFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.details_main, menu)
     }
 
@@ -89,7 +86,7 @@ class RepositoryDetailsFragment :
 
     private fun openBrowser(repository: RepositoryUI) {
         if (Patterns.WEB_URL.matcher(repository.htmlUrl).matches()) {
-            repository.htmlUrl.let {url ->
+            repository.htmlUrl.let { url ->
                 val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 requireContext().startActivity(i)
             }

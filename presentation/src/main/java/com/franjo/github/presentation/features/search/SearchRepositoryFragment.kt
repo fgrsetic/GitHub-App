@@ -23,11 +23,14 @@ import com.franjo.github.presentation.features.search.SortDialogFragment.Compani
 import com.franjo.github.presentation.model.RepositoryUI
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>() {
+
+    val PERSISTENT_VARIABLE_BUNDLE_KEY = "persistentVariable"
 
     override fun getFragmentView(): Int = R.layout.fragment_search_repository
 
@@ -38,35 +41,23 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         ViewModelProvider(this, modelFactory).get(SearchRepositoryViewModel::class.java)
     }
 
-    private var searchResultAdapter: SearchRepositoryAdapter? = null
-
     private var searchJob: Job? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private var searchResultAdapter: SearchRepositoryAdapter? = null
+    
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.viewModel = viewModel
 
+        val query = binding.searchRepo.text.trim().toString()
+
         initAdapter()
-
-        val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
-
         navigateToRepositoryDetails()
         navigateToUserDetails()
-
         // retry button should trigger a reload of the PagingData
         binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+        setHasOptionsMenu(true)
     }
 
     private fun initAdapter() {
@@ -83,12 +74,17 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
                 }
             })
 
-
         // This callback notifies us every time there's a change in the load state via a CombinedLoadStates object
         // CombinedLoadStates gives us the load state for the PageSource we defined
-        // or for the RemoteMediator needed for network and database case
         // CombinedLoadStates.refresh - represents the load state for loading the PagingData for the first time
         searchResultAdapter!!.addLoadStateListener { loadState ->
+
+            if (binding.rvSearch.isVisible == loadState.source.refresh is LoadState.Loading
+                && binding.ivLoadingAnimation.isVisible == loadState.source.refresh is LoadState.NotLoading
+                && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error) {
+                binding.ivNoSearch.visibility = View.GONE
+            }
+
             // Only show the list if refresh succeeds
             binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner animation during initial load or refresh
@@ -106,34 +102,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         binding.rvSearch.adapter = searchResultAdapter
     }
 
-    private fun navigateToRepositoryDetails() {
-        viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
-            if (repository != null) {
-                val action =
-                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
-                        repository
-                    )
-                NavHostFragment.findNavController(this).navigate(action)
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                viewModel.onRepositoryDetailsNavigated()
-            }
-        })
-    }
 
-    private fun navigateToUserDetails() {
-        viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
-            if (repository != null) {
-                val action =
-                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToUserDetailsFragment(
-                        repository
-                    )
-                NavHostFragment.findNavController(this).navigate(action)
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                viewModel.onUserDetailsNavigated()
-            }
-        })
-    }
-
+    // Search
     private fun initSearch(query: String) {
         binding.searchRepo.setText(query)
 
@@ -186,12 +156,43 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         // lifecycleScope is responsible for canceling the request when the activity is recreated
         searchJob = lifecycleScope.launch {
             // Collect the PagingData result
-            viewModel.searchRepository(query).collect {
+            viewModel.searchRepository(query).collectLatest {
                 // Pass the PagingData to the adapter
                 searchResultAdapter?.submitData(it)
             }
         }
     }
+
+
+    // Navigation
+    private fun navigateToRepositoryDetails() {
+        viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
+            if (repository != null) {
+                val action =
+                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
+                        repository
+                    )
+                NavHostFragment.findNavController(this).navigate(action)
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                viewModel.onRepositoryDetailsNavigated()
+            }
+        })
+    }
+
+    private fun navigateToUserDetails() {
+        viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
+            if (repository != null) {
+                val action =
+                    SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToUserDetailsFragment(
+                        repository
+                    )
+                NavHostFragment.findNavController(this).navigate(action)
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                viewModel.onUserDetailsNavigated()
+            }
+        })
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -219,11 +220,6 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         val imm: InputMethodManager =
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    companion object {
-        private const val LAST_SEARCH_QUERY: String = "last_search_query"
-        private const val DEFAULT_QUERY = ""
     }
 
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.franjo.github.domain.model.Repo
+import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.service.ISharedPrefsService
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.SORT_REPO_KEY
@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-
-enum class GithubApiStatus { LOADING, ERROR, DONE }
 
 class SearchRepositoryViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
