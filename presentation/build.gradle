@@ -50,9 +50,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
     implementation "com.google.android.material:material:$version_material"
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-
+    implementation "androidx.preference:preference:$version_preferences"
+    implementation "androidx.viewpager2:viewpager2:$version_view_pager2"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
@@ -80,12 +79,6 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$version_moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
-    // Room database
-    implementation "androidx.room:room-runtime:$version_room"
-    implementation "androidx.room:room-ktx:$version_room"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt "androidx.room:room-compiler:$version_room"
-
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:$version_paging"
 
@@ -96,19 +89,12 @@ dependencies {
     api "com.google.dagger:dagger-android-support:$version_dagger"
     kapt "com.google.dagger:dagger-android-processor:$version_dagger"
 
-
-    // Joda time library for dealing with time
-    implementation "joda-time:joda-time:$version_joda"
-
     // ViewModel and LiveData (arch components)
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
 
-    // Logging
-    implementation "com.jakewharton.timber:timber:4.7.1"
-
     // Glide for images
-    implementation "com.github.bumptech.glide:glide:4.11.0"
+    implementation "com.github.bumptech.glide:glide:$version_glide"
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
@@ -124,7 +110,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation "io.mockk:mockk:$version_mockK"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 }

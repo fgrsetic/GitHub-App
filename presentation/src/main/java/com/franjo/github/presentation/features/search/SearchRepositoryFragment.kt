@@ -30,8 +30,6 @@ import javax.inject.Inject
 
 class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>() {
 
-    val PERSISTENT_VARIABLE_BUNDLE_KEY = "persistentVariable"
-
     override fun getFragmentView(): Int = R.layout.fragment_search_repository
 
     @Inject

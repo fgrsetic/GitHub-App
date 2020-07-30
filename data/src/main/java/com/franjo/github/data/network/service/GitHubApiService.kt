@@ -22,7 +22,7 @@ interface GitHubApiService {
     ): RepositoryApiResponse
 
     @GET(USER_PATH)
-    fun getUserData(
+    fun getUserDataAsync(
         @Path("userName") userName: String
     ): Deferred<UserApiResponse>
 }

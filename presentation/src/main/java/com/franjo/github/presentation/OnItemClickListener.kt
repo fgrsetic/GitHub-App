@@ -11,6 +11,3 @@ interface OnIconClickListener {
     fun onIconClick(item: RepositoryUI?)
 }
 
-interface OnClickListener {
-    fun onClick(item: UserUI?)
-}

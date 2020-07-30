@@ -1,4 +1,4 @@
-package com.franjo.github.data.data_source
+package com.franjo.github.data.repository
 
 import androidx.paging.PagingSource
 import com.franjo.github.data.network.dto.github_repository.asDomainObject
