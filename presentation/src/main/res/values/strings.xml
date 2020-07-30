@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">GitHub App</string>
-    <string name="action_sort">Sort</string>
+    <string name="app_name">GitHub-App</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="details_fragment_label">Repository details</string>
@@ -57,6 +56,9 @@
         <item>Releases</item>
         <item>Contributors</item>
     </string-array>
+
+    <string name="action_login">Login</string>
+    <string name="action_sort">Sort</string>
 
 
 </resources>

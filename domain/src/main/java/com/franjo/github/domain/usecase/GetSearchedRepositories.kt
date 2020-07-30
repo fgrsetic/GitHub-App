@@ -7,7 +7,7 @@ class GetSearchedRepositories<T> @Inject constructor(
     private val githubRepository: IGithubRepository<T>
 ) {
 
-    fun invoke(query: String, sortBy: String): T =
+    fun getSearchResultStream(query: String, sortBy: String): T =
         githubRepository.getSearchResultStream(
             query,
             sortBy

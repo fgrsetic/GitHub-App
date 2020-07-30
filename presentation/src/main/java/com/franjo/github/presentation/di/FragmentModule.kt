@@ -1,5 +1,6 @@
 package com.franjo.github.presentation.di
 
+import com.franjo.github.presentation.features.login.LoginFragment
 import com.franjo.github.presentation.features.repository_details.RepositoryDetailsFragment
 import com.franjo.github.presentation.features.search.SearchRepositoryFragment
 import com.franjo.github.presentation.features.search.SortDialogFragment
@@ -26,6 +27,10 @@ abstract class FragmentModule {
     @ContributesAndroidInjector
     @FragmentScope
     internal abstract fun contributesUserDetailsFragment(): UserDetailsFragment
+
+    @ContributesAndroidInjector
+    @FragmentScope
+    internal abstract fun contributeLoginFragment(): LoginFragment
 
     @Scope
     @MustBeDocumented

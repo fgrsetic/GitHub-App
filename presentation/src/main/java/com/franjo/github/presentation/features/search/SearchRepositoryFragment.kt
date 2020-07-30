@@ -78,7 +78,6 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
                 && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error) {
                 binding.ivNoSearch.visibility = View.GONE
             }
-
             // Only show the list if refresh succeeds
             binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner animation during initial load or refresh
@@ -191,6 +190,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_sort -> setupConfirmationDialogButtons()
+            R.id.action_login -> viewModel.login()
         }
         return true
     }

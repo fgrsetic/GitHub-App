@@ -9,7 +9,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.franjo.github.domain.shared.CODE_PARAMETER
+import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.presentation.databinding.ActivityBaseBinding
+import com.franjo.github.presentation.features.login.LoginViewModel
+import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.activity_base.*
 import javax.inject.Inject
@@ -21,9 +25,13 @@ class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
+    @Inject
+    lateinit var loginViewModel: LoginViewModel
+
     private lateinit var binding: ActivityBaseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_base)
 
@@ -42,4 +50,13 @@ class BaseActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp())
     }
 
+    // Fetch the receiving intent when redirected from browser
+    override fun onResume() {
+        super.onResume()
+        val uri = intent.data
+        if (uri != null && uri.toString().startsWith(REDIRECT_URI_CALLBACK)) {
+            val code = uri.getQueryParameter(CODE_PARAMETER)
+            loginViewModel.accessToken(code)
+        }
+    }
 }

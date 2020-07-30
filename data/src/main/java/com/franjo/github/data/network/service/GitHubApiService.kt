@@ -2,11 +2,12 @@ package com.franjo.github.data.network.service
 
 import com.franjo.github.data.network.dto.github_repository.RepositoryApiResponse
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
+import com.franjo.github.data.network.dto.token.TokenRequest
+import com.franjo.github.data.network.dto.token.TokenResponse
 import com.franjo.github.domain.shared.SORT_STARS
 import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.Response
+import retrofit2.http.*
 
 interface GitHubApiService {
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
@@ -24,4 +25,10 @@ interface GitHubApiService {
     fun getUserDataAsync(
         @Path("userName") userName: String
     ): Deferred<UserApiResponse>
+
+    @POST
+    suspend fun getAccessTokenAsync(
+        @Url authUrl: String,
+        @Body tokenBody: TokenRequest
+    ): Deferred<TokenResponse>
 }
