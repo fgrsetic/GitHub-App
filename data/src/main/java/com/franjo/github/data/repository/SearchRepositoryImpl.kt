@@ -43,6 +43,8 @@ class SearchRepositoryImpl @Inject constructor(
         ).flow
     }
 
+
+    // User data
     override suspend fun getUserDataDeferredAsync(query: String): User {
         return withContext(dispatcher.provideIOContext()) {
             apiService.getUserDataAsync(userName = query).await().asDomainObject()
