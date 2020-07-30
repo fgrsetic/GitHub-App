@@ -84,6 +84,7 @@ dependencies {
 
     // Dagger
     api "com.google.dagger:dagger:$version_dagger"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
     api "com.google.dagger:dagger-android:$version_dagger"
     api "com.google.dagger:dagger-android-support:$version_dagger"
