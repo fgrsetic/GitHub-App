@@ -33,11 +33,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     override fun getFragmentView(): Int = R.layout.fragment_search_repository
 
     @Inject
-    lateinit var modelFactory: ViewModelProvider.Factory
-
-    val viewModel: SearchRepositoryViewModel by lazy {
-        ViewModelProvider(this, modelFactory).get(SearchRepositoryViewModel::class.java)
-    }
+    lateinit var viewModel: SearchRepositoryViewModel
 
     private var searchJob: Job? = null
     private var searchResultAdapter: SearchRepositoryAdapter? = null
@@ -78,7 +74,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         searchResultAdapter!!.addLoadStateListener { loadState ->
 
             if (binding.rvSearch.isVisible == loadState.source.refresh is LoadState.Loading
-                && binding.ivLoadingAnimation.isVisible == loadState.source.refresh is LoadState.NotLoading
+                && binding.progressBar.isVisible == loadState.source.refresh is LoadState.NotLoading
                 && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error) {
                 binding.ivNoSearch.visibility = View.GONE
             }
@@ -86,7 +82,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
             // Only show the list if refresh succeeds
             binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner animation during initial load or refresh
-            binding.ivLoadingAnimation.isVisible = loadState.source.refresh is LoadState.Loading
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails
             binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
 
@@ -123,23 +119,13 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
                 false
             }
         }
-
-        // Instead of resetting the position on new search,
-        // we should reset the position when the list adapter is updated with the result of a new search.
-        // We collect from this flow when we initialize the search in the initSearch method
-        // and at every new emission of the flow, let's scroll to position 0.
-        lifecycleScope.launch {
-            @OptIn(ExperimentalPagingApi::class)
-            (searchResultAdapter?.dataRefreshFlow?.collect {
-                binding.rvSearch.scrollToPosition(0)
-            })
-        }
     }
 
     private fun updateRepoListFromInput() {
         binding.searchRepo.text.trim().let {
             if (it.isNotEmpty()) {
                 search(it.toString())
+                binding.rvSearch.scrollToPosition(0)
                 hideKeyboardFrom(requireContext(), binding.rvSearch)
             }
         }

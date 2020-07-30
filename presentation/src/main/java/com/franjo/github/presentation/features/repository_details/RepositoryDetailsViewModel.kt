@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.franjo.github.presentation.model.RepositoryUI
+import javax.inject.Inject
 
-class RepositoryDetailsViewModel(
+class RepositoryDetailsViewModel @Inject constructor(
     repository: RepositoryUI
 ) : ViewModel() {
 

@@ -4,13 +4,11 @@ import com.franjo.github.data.network.dto.github_user.UserApiResponse
 import com.franjo.github.data.network.dto.github_user.asDomainObject
 import com.franjo.github.data.network.service.GitHubApiService
 import com.franjo.github.data.repository.SearchRepositoryImpl
-import com.franjo.github.domain.model.user.User
 import com.franjo.github.domain.shared.DispatcherProvider
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach

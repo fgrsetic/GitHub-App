@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 

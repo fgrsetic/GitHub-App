@@ -1,12 +1,15 @@
 package com.franjo.github.presentation.features.user_details
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetUserData
@@ -16,6 +19,8 @@ import com.franjo.github.presentation.databinding.FragmentUserDetailsBinding
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.UserUI
 import com.franjo.github.presentation.util.AndroidResourceManager
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.activity_base.*
 import javax.inject.Inject
 
 class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
@@ -33,6 +38,11 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
     private lateinit var viewModel: UserDetailsViewModel
     private lateinit var repository: RepositoryUI
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

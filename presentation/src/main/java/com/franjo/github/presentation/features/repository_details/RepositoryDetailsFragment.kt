@@ -1,6 +1,9 @@
 package com.franjo.github.presentation.features.repository_details
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
@@ -15,6 +18,8 @@ import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentRepositoryDetailsBinding
 import com.franjo.github.presentation.model.RepositoryUI
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.activity_base.*
 
 class RepositoryDetailsFragment :
     BaseFragment<FragmentRepositoryDetailsBinding>() {
@@ -23,6 +28,11 @@ class RepositoryDetailsFragment :
 
     private lateinit var viewModel: RepositoryDetailsViewModel
     private lateinit var repository: RepositoryUI
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

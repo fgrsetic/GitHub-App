@@ -6,7 +6,6 @@ import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetUserData
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.util.IResourceManager
-import javax.inject.Inject
 
 class UserDetailsViewModelFactory (
     private val repository: RepositoryUI,

@@ -3,12 +3,9 @@
     <string name="action_sort">Sort</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="search_fragment_label">GitHub Repository</string>
     <string name="details_fragment_label">Repository details</string>
 
     <string name="search_hint">GitHub Repository</string>
-    <string name="no_results">No results 😓</string>
-    <string name="no_search">No search</string>
 
     <!--Sort radio buttons -->
     <string name="sort_stars">Stars</string>
@@ -16,13 +13,6 @@
     <string name="sort_updates">Updates</string>
     <string name="sort_title">Sort</string>
 
-    <string-array name="sort_dialog">
-        <item>Stars</item>
-        <item>Forks</item>
-        <item>Updated</item>
-    </string-array>
-
-    <string name="init_message">"Please enter search query "</string>
     <string name="retry">Retry</string>
 
     <!-- Details screen -->

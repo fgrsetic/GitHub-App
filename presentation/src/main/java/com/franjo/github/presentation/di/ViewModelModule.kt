@@ -10,11 +10,11 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class ViewModelModule {
 
-    @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(SearchRepositoryViewModel::class)
-    internal abstract fun searchRepositoryViewModel(viewModel: SearchRepositoryViewModel): ViewModel
+//    @Binds
+//    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+//
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(SearchRepositoryViewModel::class)
+//    internal abstract fun searchRepositoryViewModel(viewModel: SearchRepositoryViewModel): ViewModel
 }

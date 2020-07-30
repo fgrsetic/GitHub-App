@@ -10,7 +10,6 @@ import com.franjo.github.presentation.R
 import com.franjo.github.presentation.features.user_details.LoadingApiStatus
 import com.franjo.github.presentation.features.user_details.UserDetailsAdapter
 import com.franjo.github.presentation.model.UserDataRowItem
-import com.franjo.github.presentation.model.UserUI
 
 @BindingAdapter("userDetailsList")
 fun bindUserDetailsList(recyclerView: RecyclerView, list: List<UserDataRowItem>?) {

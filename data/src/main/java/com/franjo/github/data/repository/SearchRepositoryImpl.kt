@@ -11,7 +11,6 @@ import com.franjo.github.domain.repository.IGithubRepository
 import com.franjo.github.domain.repository.IUserRepository
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.PAGE_SIZE
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -29,16 +28,9 @@ class SearchRepositoryImpl @Inject constructor(
         // The Pager.flow creates a Flow<PagingData> based on a configuration
         // and a function that defines how to instantiate the PagingSource
         return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                enablePlaceholders = false
-            ),
+            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
             pagingSourceFactory = {
-                SearchRepositoryPagingSource(
-                    apiService,
-                    query,
-                    sortBy
-                )
+                SearchRepositoryPagingSource(apiService, query, sortBy)
             }
         ).flow
     }

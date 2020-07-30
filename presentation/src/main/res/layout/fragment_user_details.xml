@@ -76,7 +76,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/rvUserDetails"
-            app:loadingStatus="@{viewModel.status}">
+            app:loadingStatus="@{viewModel.status}"
+            tools:ignore="ContentDescription">
 
         </ImageView>
 

@@ -2,14 +2,14 @@ package com.franjo.github.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.franjo.github.presentation.databinding.ActivityBaseBinding
-import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.activity_base.*
 import javax.inject.Inject
@@ -22,7 +22,6 @@ class BaseActivity : AppCompatActivity() {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     private lateinit var binding: ActivityBaseBinding
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,20 +29,17 @@ class BaseActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations
-        val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.searchRepositoryFragment,
-            R.id.repositoryDetailsFragment,
-            R.id.userDetailsFragment
-        ).build()
-
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        findViewById<Toolbar>(R.id.toolbar).setupWithNavController(
+            navController,
+            appBarConfiguration
+        )
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return (Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp()
                 || super.onSupportNavigateUp())
     }
+
 }

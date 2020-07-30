@@ -11,7 +11,7 @@ import com.franjo.github.presentation.BaseViewHolder
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.model.UserDataRowItem
 
-class UserDetailsAdapter() : RecyclerView.Adapter<BaseViewHolder>() {
+class UserDetailsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val mDiffer = AsyncListDiffer(this, DIFF_CALLBACK)
 

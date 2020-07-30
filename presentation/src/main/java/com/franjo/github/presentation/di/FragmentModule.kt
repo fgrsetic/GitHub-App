@@ -25,7 +25,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     @FragmentScope
-    internal abstract fun contributesUSerDetailsFragment(): UserDetailsFragment
+    internal abstract fun contributesUserDetailsFragment(): UserDetailsFragment
 
     @Scope
     @MustBeDocumented

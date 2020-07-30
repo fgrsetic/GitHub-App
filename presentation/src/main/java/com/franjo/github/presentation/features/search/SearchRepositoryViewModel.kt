@@ -25,10 +25,10 @@ class SearchRepositoryViewModel @Inject constructor(
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcherProvider) {
 
-    private val _navigateToRepositoryDetails by lazy { MutableLiveData<RepositoryUI>() }
+    private val _navigateToRepositoryDetails = MutableLiveData<RepositoryUI>()
     val navigateToRepositoryDetails: LiveData<RepositoryUI> get() = _navigateToRepositoryDetails
 
-    private val _navigateToUserDetails by lazy { MutableLiveData<RepositoryUI>() }
+    private val _navigateToUserDetails = MutableLiveData<RepositoryUI>()
     val navigateToUserDetails: LiveData<RepositoryUI> get() = _navigateToUserDetails
 
 

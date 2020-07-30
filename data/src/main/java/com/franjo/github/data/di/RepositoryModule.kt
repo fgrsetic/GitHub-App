@@ -17,7 +17,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRepositoryImpl1(
+    fun provideRemoteRepositoryImplSearch(
         dispatcher: DispatcherProvider,
         gitHubApiService: GitHubApiService
     ): IGithubRepository<Flow<PagingData<Repo>>> =
@@ -25,7 +25,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRepositoryImpl2(
+    fun provideRemoteRepositoryImplUser(
         dispatcher: DispatcherProvider,
         gitHubApiService: GitHubApiService
     ): IUserRepository = SearchRepositoryImpl(dispatcher, gitHubApiService)
