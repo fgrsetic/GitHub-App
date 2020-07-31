@@ -9,10 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.OnIconClickListener
@@ -22,7 +20,6 @@ import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBindin
 import com.franjo.github.presentation.features.search.SortDialogFragment.Companion.TAG
 import com.franjo.github.presentation.model.RepositoryUI
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -86,7 +83,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
             binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
 
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
-            val errorState = loadState.source.append as? LoadState.Error
+            val errorState = loadState.source.refresh as? LoadState.Error
             errorState?.let {
                 Toast.makeText(context, "Something went wrong ", Toast.LENGTH_LONG).show()
             }

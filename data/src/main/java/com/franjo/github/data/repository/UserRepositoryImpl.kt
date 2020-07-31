@@ -16,7 +16,7 @@ class UserRepositoryImpl @Inject constructor(
     // User data
     override suspend fun getUserData(query: String): User {
         return withContext(dispatcherProvider.provideIOContext()) {
-            apiService.getUserDataAsync(userName = query).await().asDomainObject()
+            apiService.getUserDataAsync(userName = query).asDomainObject()
         }
     }
 }

@@ -18,8 +18,8 @@ abstract class ViewModelModule {
 //    @ViewModelKey(SearchRepositoryViewModel::class)
 //    internal abstract fun searchRepositoryViewModel(viewModel: SearchRepositoryViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(LoginViewModel::class)
-//    internal abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    internal abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
 }

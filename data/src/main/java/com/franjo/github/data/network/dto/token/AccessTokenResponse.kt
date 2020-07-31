@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Json
 
 @JsonClass(generateAdapter = true)
-data class TokenResponse(
+data class AccessTokenResponse(
     @Json(name = "access_token")
     val accessToken: String = "",
     @Json(name = "scope")

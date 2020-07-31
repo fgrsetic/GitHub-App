@@ -32,6 +32,9 @@
         <argument
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
+        <action
+            android:id="@+id/action_searchRepositoryFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
 
     </fragment>
 
@@ -66,5 +69,9 @@
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
 
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.franjo.github.presentation.features.login.LoginFragment"
+        android:label="LoginFragment" />
 
 </navigation>

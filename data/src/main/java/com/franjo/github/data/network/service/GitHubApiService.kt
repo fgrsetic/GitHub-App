@@ -1,17 +1,18 @@
 package com.franjo.github.data.network.service
 
 import com.franjo.github.data.network.dto.github_repository.RepositoryApiResponse
+import com.franjo.github.data.network.dto.github_user.AuthenticatedUserResponse
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
-import com.franjo.github.data.network.dto.token.TokenRequest
-import com.franjo.github.data.network.dto.token.TokenResponse
+import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
+import com.franjo.github.data.network.dto.token.AccessTokenResponse
 import com.franjo.github.domain.shared.SORT_STARS
-import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 import com.franjo.github.domain.shared.ResultWrapper
+import retrofit2.Response
 
 interface GitHubApiService {
-    // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
 
+    // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
     // Get repos initially ordered by stars.
     @GET(SEARCH_REPOSITORY_PATH)
     suspend fun searchRepositories(
@@ -22,13 +23,16 @@ interface GitHubApiService {
     ): RepositoryApiResponse
 
     @GET(USER_PATH)
-    fun getUserDataAsync(
+    suspend fun getUserDataAsync(
         @Path("userName") userName: String
-    ): Deferred<UserApiResponse>
+    ): UserApiResponse
 
     @POST
     suspend fun getAccessToken(
         @Url authUrl: String,
-        @Body tokenBody: TokenRequest
-    ): ResultWrapper<Exception, TokenResponse>
+        @Body authorizationTokenBody: AuthorizationTokenRequest
+    ): Response<AccessTokenResponse>
+
+    @GET(AUTHENTICATED_USER_PATH)
+    suspend fun getPrivateUserData(): AuthenticatedUserResponse
 }

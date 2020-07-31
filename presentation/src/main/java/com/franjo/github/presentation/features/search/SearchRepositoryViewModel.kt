@@ -1,5 +1,6 @@
 package com.franjo.github.presentation.features.search
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
@@ -10,8 +11,8 @@ import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.SORT_REPO_KEY
 import com.franjo.github.domain.shared.SORT_STARS
-import com.franjo.github.domain.usecase.GetSearchedRepositories
 import com.franjo.github.domain.usecase.GetLoginRequest
+import com.franjo.github.domain.usecase.GetSearchedRepositories
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.asPresentationModel
@@ -46,7 +47,8 @@ class SearchRepositoryViewModel @Inject constructor(
                 // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
                 // If we're doing any operations on the Flow, like map or filter,
                 // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
-            }.cachedIn(viewModelScope).catch { cause: Throwable -> cause.message }
+            }
+            .cachedIn(viewModelScope)
     }
 
 

@@ -1,34 +1,34 @@
 package com.franjo.github.presentation.features.login
 
-import androidx.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.R
+import com.franjo.github.presentation.databinding.FragmentLoginBinding
+import com.franjo.github.presentation.features.user_details.UserDetailsAdapter
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
-    companion object {
-        fun newInstance() = LoginFragment()
-    }
+    override fun getFragmentView(): Int = R.layout.fragment_login
 
     @Inject
     lateinit var viewModel: LoginViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        // TODO: Use the ViewModel
+        binding.viewModel = viewModel
+
+        binding.rvUserDetails.adapter = UserDetailsAdapter()
+
     }
 
 }

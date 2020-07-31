@@ -9,8 +9,7 @@ class GetAccessToken @Inject constructor(
     private val repository: IAuthenticationRepository
 ) : UseCaseWithParams<String, ResultWrapper<Exception, Unit>>() {
 
-    // Fetch result if token is success
-    override suspend fun buildUseCase(params: String): ResultWrapper<Exception, Unit> {
-        return repository.getAccessToken(params)
-    }
+    override suspend fun buildUseCase(params: String): ResultWrapper<Exception, Unit> =
+        repository.getAccessToken(params)
+
 }
