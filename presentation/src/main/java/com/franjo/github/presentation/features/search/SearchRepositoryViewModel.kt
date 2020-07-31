@@ -6,14 +6,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.franjo.github.domain.model.repository.Repo
-import com.franjo.github.domain.service.ISharedPrefsService
+import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.SORT_REPO_KEY
 import com.franjo.github.domain.shared.SORT_STARS
 import com.franjo.github.domain.usecase.GetSearchedRepositories
-import com.franjo.github.domain.usecase.LoginStart
+import com.franjo.github.domain.usecase.GetLoginRequest
 import com.franjo.github.presentation.BaseViewModel
-import com.franjo.github.presentation.features.user_details.LoadingApiStatus
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.asPresentationModel
 import kotlinx.coroutines.flow.Flow
@@ -24,9 +23,9 @@ import javax.inject.Inject
 
 class SearchRepositoryViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
-    private val sharedPrefsService: ISharedPrefsService,
+    private val sharedPrefs: ISharedPrefs,
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>,
-    private val requestLogin: LoginStart
+    private val requestGetLogin: GetLoginRequest
 ) : BaseViewModel(dispatcherProvider) {
 
     private val _navigateToRepositoryDetails = MutableLiveData<RepositoryUI>()
@@ -35,11 +34,10 @@ class SearchRepositoryViewModel @Inject constructor(
     private val _navigateToUserDetails = MutableLiveData<RepositoryUI>()
     val navigateToUserDetails: LiveData<RepositoryUI> get() = _navigateToUserDetails
 
-    private val _status = MutableLiveData<LoadingApiStatus>()
-    val status: LiveData<LoadingApiStatus> get() = _status
 
+    // 1) Search
     fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
-        val sortBy = sharedPrefsService.getValue(SORT_REPO_KEY, SORT_STARS)
+        val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
         return getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
             .map { pagingData ->
                 pagingData.map {
@@ -51,7 +49,16 @@ class SearchRepositoryViewModel @Inject constructor(
             }.cachedIn(viewModelScope).catch { cause: Throwable -> cause.message }
     }
 
-    // Navigation
+
+    // 2) Login
+    fun login() {
+        viewModelScope.launch {
+            requestGetLogin.execute()
+        }
+    }
+
+
+    // 3) Navigation
     fun toRepositoryDetailsNavigate(repository: RepositoryUI) {
         _navigateToRepositoryDetails.value = repository
     }
@@ -68,9 +75,4 @@ class SearchRepositoryViewModel @Inject constructor(
         _navigateToUserDetails.value = null
     }
 
-    fun login() {
-        viewModelScope.launch {
-            requestLogin.execute()
-        }
-    }
 }

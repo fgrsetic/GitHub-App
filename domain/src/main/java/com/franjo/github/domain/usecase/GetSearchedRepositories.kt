@@ -1,14 +1,14 @@
 package com.franjo.github.domain.usecase
 
-import com.franjo.github.domain.repository.IGithubRepository
+import com.franjo.github.domain.repository.IGithubSearchRepository
 import javax.inject.Inject
 
 class GetSearchedRepositories<T> @Inject constructor(
-    private val githubRepository: IGithubRepository<T>
+    private val githubSearchRepository: IGithubSearchRepository<T>
 ) {
 
     fun getSearchResultStream(query: String, sortBy: String): T =
-        githubRepository.getSearchResultStream(
+        githubSearchRepository.getSearchResultStream(
             query,
             sortBy
         )

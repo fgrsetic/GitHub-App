@@ -6,8 +6,8 @@ import com.franjo.github.data.network.dto.token.TokenRequest
 import com.franjo.github.data.network.dto.token.TokenResponse
 import com.franjo.github.domain.shared.SORT_STARS
 import kotlinx.coroutines.Deferred
-import retrofit2.Response
 import retrofit2.http.*
+import com.franjo.github.domain.shared.ResultWrapper
 
 interface GitHubApiService {
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
@@ -27,8 +27,8 @@ interface GitHubApiService {
     ): Deferred<UserApiResponse>
 
     @POST
-    suspend fun getAccessTokenAsync(
+    suspend fun getAccessToken(
         @Url authUrl: String,
         @Body tokenBody: TokenRequest
-    ): Deferred<TokenResponse>
+    ): ResultWrapper<Exception, TokenResponse>
 }

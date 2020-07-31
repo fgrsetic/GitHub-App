@@ -131,7 +131,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     }
 
     // To be able to work with Flow<PagingData>, we need to launch a new coroutine
-    fun search(query: String) {
+    private fun search(query: String) {
         // We want to ensure that whenever the user searches for a new query,
         // the previous query is cancelled. We hold a reference
         // to a new Job that will be cancelled every time there is a search for a new query
@@ -179,15 +179,10 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_main, menu)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_sort -> setupConfirmationDialogButtons()
             R.id.action_login -> viewModel.login()

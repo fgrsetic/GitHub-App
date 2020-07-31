@@ -3,7 +3,8 @@ package com.franjo.github.data
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
 import com.franjo.github.data.network.dto.github_user.asDomainObject
 import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.data.repository.SearchRepositoryImpl
+import com.franjo.github.data.repository.GithubSearchRepositoryImpl
+import com.franjo.github.data.repository.UserRepositoryImpl
 import com.franjo.github.domain.shared.DispatcherProvider
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -15,17 +16,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
-internal class SearchRepositoryImplTest {
+internal class GithubSearchRepositoryImplTest {
 
     private val dispatcherProvider: DispatcherProvider = mockk()
     private var gitHubApiService: GitHubApiService = mockk(relaxed = true)
-    private lateinit var repository: SearchRepositoryImpl
+    private lateinit var repository: UserRepositoryImpl
     private lateinit var mockResponse: UserApiResponse
 
     @BeforeEach
     fun setUp() {
         clearAllMocks()
-        repository = SearchRepositoryImpl(dispatcherProvider, gitHubApiService)
+        repository = UserRepositoryImpl(dispatcherProvider, gitHubApiService)
         mockResponse = mockk(relaxed = true)
     }
 
@@ -40,7 +41,7 @@ internal class SearchRepositoryImplTest {
                 mockResponse
             }
             // When
-            val actualResult = repository.getUserDataDeferredAsync("User")
+            val actualResult = repository.getUserData("User")
             // Then verify whether the mock was invoked as expected
             coVerify { gitHubApiService.getUserDataAsync(any()).await() }
             val expectedResult = mockResponse.asDomainObject()
