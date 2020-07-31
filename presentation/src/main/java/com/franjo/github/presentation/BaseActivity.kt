@@ -56,7 +56,9 @@ class BaseActivity : AppCompatActivity() {
         val uri = intent.data
         if (uri != null && uri.toString().startsWith(REDIRECT_URI_CALLBACK)) {
             val code = uri.getQueryParameter(CODE_PARAMETER)
-            loginViewModel.accessToken(code)
+            if (code != null) {
+                loginViewModel.accessToken(code)
+            }
         }
     }
 }

@@ -9,6 +9,6 @@ class GetUserData @Inject constructor(
 ) {
 
     suspend fun execute(query: String): User =
-        userData.getUserDataDeferredAsync(query)
+        userData.getUserData(query)
 
 }

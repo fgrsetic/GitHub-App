@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.franjo.github.domain.service.ISharedPrefsService
+import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.SORT_FORKS
 import com.franjo.github.domain.shared.SORT_REPO_KEY
 import com.franjo.github.domain.shared.SORT_STARS
@@ -26,7 +26,7 @@ class SortDialogFragment : DialogFragment() {
     }
 
     @Inject
-    lateinit var sharedPrefsService: ISharedPrefsService
+    lateinit var sharedPrefs: ISharedPrefs
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -47,24 +47,24 @@ class SortDialogFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        when (sharedPrefsService.getValue(SORT_REPO_KEY, SORT_STARS) as String) {
+        when (sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS) as String) {
             SORT_STARS -> rb_stars.isChecked = true
             SORT_FORKS -> rb_forks.isChecked = true
             SORT_UPDATES -> rb_updates.isChecked = true
         }
 
         rb_stars.setOnClickListener {
-            sharedPrefsService.saveValue(SORT_REPO_KEY, SORT_STARS)
+            sharedPrefs.saveValue(SORT_REPO_KEY, SORT_STARS)
             dialog?.dismiss()
         }
 
         rb_forks.setOnClickListener {
-            sharedPrefsService.saveValue(SORT_REPO_KEY, SORT_FORKS)
+            sharedPrefs.saveValue(SORT_REPO_KEY, SORT_FORKS)
             dialog?.dismiss()
         }
 
         rb_updates.setOnClickListener {
-            sharedPrefsService.saveValue(SORT_REPO_KEY, SORT_UPDATES)
+            sharedPrefs.saveValue(SORT_REPO_KEY, SORT_UPDATES)
             dialog?.dismiss()
         }
 

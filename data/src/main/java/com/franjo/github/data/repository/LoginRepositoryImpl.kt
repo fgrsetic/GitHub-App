@@ -10,7 +10,9 @@ import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.domain.shared.SCOPE
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(private val app: Application) : ILoginRepository {
+class LoginRepositoryImpl @Inject constructor(
+    private val app: Application
+) : ILoginRepository {
 
 
     override fun login() {
@@ -27,7 +29,5 @@ class LoginRepositoryImpl @Inject constructor(private val app: Application) : IL
         app.startActivity(intent)
     }
 
-    override suspend fun getAccessToken(code: String) {
-        
-    }
+
 }

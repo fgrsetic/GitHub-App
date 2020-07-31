@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 // Defines the source of data and how to retrieve data from that source
 // It asynchronously loads the data
-class SearchRepositoryPagingSource (
+class GithubSearchPagingSource (
     private val apiService: GitHubApiService,
     private val query: String,
     private val sortBy: String

@@ -1,13 +1,13 @@
-package com.franjo.github.data.service
+package com.franjo.github.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.franjo.github.domain.service.ISharedPrefsService
+import com.franjo.github.domain.repository.ISharedPrefs
 import java.util.concurrent.ConcurrentHashMap
 
-class SharedPrefsServiceImpl(private val context: Context?) :
-    ISharedPrefsService {
+class SharedPrefsImpl(private val context: Context?) :
+    ISharedPrefs {
 
     @Volatile
     private var cacheBoolean = ConcurrentHashMap<String, Boolean>()

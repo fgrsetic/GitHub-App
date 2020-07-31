@@ -2,7 +2,9 @@ package com.franjo.github.presentation.features.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
 import com.franjo.github.domain.shared.DispatcherProvider
+import com.franjo.github.domain.shared.ResultWrapper
 import com.franjo.github.domain.usecase.GetAccessToken
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.features.user_details.LoadingApiStatus
@@ -19,15 +21,13 @@ class LoginViewModel @Inject constructor(
     val status: LiveData<LoadingApiStatus> get() = _status
 
 
-    fun accessToken(code: String?) {
-        viewModelScope.launch {
-            try {
-                _status.value = LoadingApiStatus.LOADING
-                code?.let { getAccessToken.execute(it) }
+    fun accessToken(code: String) = viewModelScope.launch {
+        _status.value = LoadingApiStatus.LOADING
+        when (getAccessToken.execute(code)) {
+            is ResultWrapper.Success -> {
                 _status.value = LoadingApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = LoadingApiStatus.ERROR
             }
+            is ResultWrapper.Error -> _status.value = LoadingApiStatus.ERROR
         }
     }
 }

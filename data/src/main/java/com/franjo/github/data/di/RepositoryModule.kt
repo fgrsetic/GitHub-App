@@ -3,12 +3,9 @@ package com.franjo.github.data.di
 import android.app.Application
 import androidx.paging.PagingData
 import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.data.repository.LoginRepositoryImpl
-import com.franjo.github.data.repository.SearchRepositoryImpl
+import com.franjo.github.data.repository.*
 import com.franjo.github.domain.model.repository.Repo
-import com.franjo.github.domain.repository.IGithubRepository
-import com.franjo.github.domain.repository.ILoginRepository
-import com.franjo.github.domain.repository.IUserRepository
+import com.franjo.github.domain.repository.*
 import com.franjo.github.domain.shared.DispatcherProvider
 import dagger.Module
 import dagger.Provides
@@ -20,24 +17,44 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRepositoryImplSearch(
+    fun providesGithubSearchRepositoryImpl(
         dispatcher: DispatcherProvider,
         gitHubApiService: GitHubApiService
-    ): IGithubRepository<Flow<PagingData<Repo>>> =
-        SearchRepositoryImpl(dispatcher, gitHubApiService)
+    ): IGithubSearchRepository<Flow<PagingData<Repo>>> =
+        GithubSearchRepositoryImpl(gitHubApiService)
 
     @Provides
     @Singleton
-    fun provideRemoteRepositoryImplUser(
+    fun providesUserRepositoryImpl(
         dispatcher: DispatcherProvider,
         gitHubApiService: GitHubApiService
-    ): IUserRepository = SearchRepositoryImpl(dispatcher, gitHubApiService)
-
+    ): IUserRepository = UserRepositoryImpl(dispatcher, gitHubApiService)
 
     @Provides
     @Singleton
     fun provideLoginRepositoryImpl(
         app: Application
     ): ILoginRepository = LoginRepositoryImpl(app)
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationRepositoryImpl(
+        dispatcherProvider: DispatcherProvider,
+        apiService: GitHubApiService,
+        encryptedPrefs: IEncryptedPrefs
+    ): IAuthenticationRepository =
+        AuthenticationRepositoryImpl(dispatcherProvider, apiService, encryptedPrefs)
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefs(githubApplication: Application): ISharedPrefs =
+        SharedPrefsImpl(
+            githubApplication
+        )
+
+    @Provides
+    @Singleton
+    fun provideEncryptedPrefs(app: Application): IEncryptedPrefs =
+        EncryptedSharedPrefsImpl(app)
 
 }

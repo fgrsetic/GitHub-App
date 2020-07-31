@@ -77,6 +77,9 @@ dependencies {
 
     // Preferences
     implementation "androidx.preference:preference:$version_preferences"
+
+    // Encrypted shared preferences
+    implementation 'androidx.security:security-crypto:1.1.0-alpha01'
     
     // Test
     testImplementation "io.mockk:mockk:$version_mockK"
