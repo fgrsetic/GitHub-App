@@ -19,9 +19,9 @@ const val SORT_UPDATES = "updated"
 
 
 
-const val CLIENT_ID = "e84c0241ca9da49962d2"
+// const val CLIENT_ID = "e84c0241ca9da49962d2"
 const val SCOPE = "repo" // -> or user
-const val CLIENT_SECRET = "5b9b3ea522c73c1dc3cf2961019934fed25e8cb2"
+// const val CLIENT_SECRET = "5b9b3ea522c73c1dc3cf2961019934fed25e8cb2"
 const val CODE_PARAMETER = "code"
 const val REDIRECT_URI_CALLBACK = "searchgithubrepo://callback"
 

@@ -3,9 +3,9 @@ package com.franjo.github.data.repository
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
+import com.franjo.github.data.BuildConfig
 import com.franjo.github.data.network.service.AUTHORIZE_USER_URL
 import com.franjo.github.domain.repository.ILoginRepository
-import com.franjo.github.domain.shared.CLIENT_ID
 import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.domain.shared.SCOPE
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class LoginRepositoryImpl @Inject constructor(
             Intent.ACTION_VIEW,
             Uri.parse(
                 AUTHORIZE_USER_URL
-                        + "?client_id=" + CLIENT_ID
+                        + "?client_id=" + BuildConfig.CLIENT_ID
                         + "&scope=" + SCOPE
                         + "&redirect_uri=" + REDIRECT_URI_CALLBACK
             )
