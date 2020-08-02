@@ -2,6 +2,7 @@ package com.franjo.github.presentation.features.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 class SearchRepositoryViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
+    private val state: SavedStateHandle,
     private val sharedPrefs: ISharedPrefs,
     private val getAccessToken: GetAccessToken,
     private val getLogin: GetLogin,
@@ -37,6 +39,15 @@ class SearchRepositoryViewModel @Inject constructor(
 
     private val _navigateToPrivateUserDetails = MutableLiveData<Boolean>()
     val navigateToPrivateUserDetails: LiveData<Boolean> get() = _navigateToPrivateUserDetails
+
+
+    fun saveSearchQuery(query: String) {
+        state.set(LAST_SEARCH_QUERY, query)
+    }
+
+    fun getSearchQuery(): String {
+        return state.get(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
+    }
 
 
     // 1) Search
@@ -89,5 +100,10 @@ class SearchRepositoryViewModel @Inject constructor(
         viewModelScope.launch {
             getAccessToken.execute(code)
         }
+
+    companion object {
+        const val LAST_SEARCH_QUERY: String = "last_search_query"
+        const val DEFAULT_QUERY = "Android"
+    }
 
 }
