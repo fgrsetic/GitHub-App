@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def clientPropertiesFile = rootProject.file("keystore.properties")
+def clientProperties = new Properties()
+clientProperties.load(new FileInputStream(clientPropertiesFile))
+
 android {
     compileSdkVersion 30
 
@@ -14,6 +18,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "CLIENT_ID", clientProperties["CLIENT_ID"])
+        buildConfigField("String", "CLIENT_SECRET", clientProperties["CLIENT_SECRET"])
     }
 
     buildTypes {

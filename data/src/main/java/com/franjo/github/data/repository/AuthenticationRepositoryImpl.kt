@@ -1,5 +1,6 @@
 package com.franjo.github.data.repository
 
+import com.franjo.github.data.BuildConfig
 import com.franjo.github.data.network.dto.github_user.asDomainObject
 import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
 import com.franjo.github.data.network.service.GitHubApiService
@@ -8,8 +9,6 @@ import com.franjo.github.domain.model.user.AuthenticatedUser
 import com.franjo.github.domain.repository.IAuthenticationRepository
 import com.franjo.github.domain.repository.IEncryptedPrefs
 import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
-import com.franjo.github.domain.shared.CLIENT_ID
-import com.franjo.github.domain.shared.CLIENT_SECRET
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
@@ -23,8 +22,8 @@ class AuthenticationRepositoryImpl @Inject constructor(
         try {
             val result = apiService2.getAccessToken(
                 AuthorizationTokenRequest(
-                    CLIENT_ID,
-                    CLIENT_SECRET,
+                    BuildConfig.CLIENT_ID,
+                    BuildConfig.CLIENT_SECRET,
                     code
                 )
             )
