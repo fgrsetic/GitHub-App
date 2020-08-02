@@ -3,6 +3,8 @@ package com.franjo.github.presentation.features.search
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -47,16 +49,17 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         super.onActivityCreated(savedInstanceState)
         binding.viewModel = viewModel
 
-        val query = binding.searchRepo.text.trim().toString()
+        val query = viewModel.getSearchQuery()
 
         initAdapter()
+        search(query)
         initSearch(query)
         navigateToRepositoryDetails()
         navigateToUserDetails()
         navigateToPrivateUser()
+        listenEditTextQuery()
         // retry button should trigger a reload of the PagingData
         binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
-
     }
 
     private fun initAdapter() {
@@ -152,6 +155,16 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         }
     }
 
+    private fun listenEditTextQuery() {
+        binding.searchRepo.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                viewModel.saveSearchQuery(s.trim().toString())
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
+    }
+
 
     // Navigation
     private fun navigateToRepositoryDetails() {
@@ -220,5 +233,4 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         val sortDialogFragment = SortDialogFragment()
         sortDialogFragment.show(childFragmentManager, TAG)
     }
-
 }
