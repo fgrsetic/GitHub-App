@@ -2,13 +2,10 @@ package com.franjo.github.presentation.features.repository_details
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +16,6 @@ import com.franjo.github.presentation.databinding.FragmentRepositoryDetailsBindi
 import com.franjo.github.presentation.model.RepositoryUI
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.activity_base.*
 
 class RepositoryDetailsFragment :
     BaseFragment<FragmentRepositoryDetailsBinding>() {
@@ -34,6 +30,11 @@ class RepositoryDetailsFragment :
         super.onAttach(context)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -44,13 +45,12 @@ class RepositoryDetailsFragment :
         binding.viewModelDetails = viewModel
 
         bindAdapter()
-        setHasOptionsMenu(true)
 
         binding.ivThumbnail.setOnClickListener {
             viewModel.toUserDetailsNavigate(repository)
         }
 
-        observeUserDetails()
+        navigateToUserDetails()
     }
 
     private fun bindAdapter() {
@@ -65,7 +65,7 @@ class RepositoryDetailsFragment :
             }).attach()
     }
 
-    private fun observeUserDetails() {
+    private fun navigateToUserDetails() {
         viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
             if (repository != null) {
                 val action =
@@ -79,9 +79,11 @@ class RepositoryDetailsFragment :
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.details_main, menu)
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.actionWeb).isVisible = true
+        menu.findItem(R.id.actionLogin).isVisible = false
+        menu.findItem(R.id.actionPrivateUser).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,7 +91,7 @@ class RepositoryDetailsFragment :
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_go_to_web -> openBrowser(repository)
+            R.id.actionWeb -> openBrowser(repository)
         }
         return true
     }
@@ -102,5 +104,4 @@ class RepositoryDetailsFragment :
             }
         }
     }
-
 }

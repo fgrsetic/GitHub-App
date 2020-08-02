@@ -3,6 +3,7 @@ package com.franjo.github.data.di
 import android.app.Application
 import androidx.paging.PagingData
 import com.franjo.github.data.network.service.GitHubApiService
+import com.franjo.github.data.network.service.GitHubApiService2
 import com.franjo.github.data.repository.*
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.*
@@ -41,9 +42,10 @@ class RepositoryModule {
     fun provideAuthenticationRepositoryImpl(
         dispatcherProvider: DispatcherProvider,
         apiService: GitHubApiService,
+        apiService2: GitHubApiService2,
         encryptedPrefs: IEncryptedPrefs
     ): IAuthenticationRepository =
-        AuthenticationRepositoryImpl(dispatcherProvider, apiService, encryptedPrefs)
+        AuthenticationRepositoryImpl(apiService, apiService2, encryptedPrefs)
 
     @Provides
     @Singleton

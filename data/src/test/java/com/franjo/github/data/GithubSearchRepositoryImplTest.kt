@@ -3,7 +3,6 @@ package com.franjo.github.data
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
 import com.franjo.github.data.network.dto.github_user.asDomainObject
 import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.data.repository.GithubSearchRepositoryImpl
 import com.franjo.github.data.repository.UserRepositoryImpl
 import com.franjo.github.domain.shared.DispatcherProvider
 import io.mockk.clearAllMocks
@@ -36,14 +35,14 @@ internal class GithubSearchRepositoryImplTest {
             coEvery { dispatcherProvider.provideIOContext() } returns Dispatchers.Unconfined
             // Given behavior of mock, describes what response should be returned for which call
             coEvery {
-                gitHubApiService.getUserDataAsync(any()).await()
+                gitHubApiService.getUserDataAsync(any())
             } coAnswers {
                 mockResponse
             }
             // When
             val actualResult = repository.getUserData("User")
             // Then verify whether the mock was invoked as expected
-            coVerify { gitHubApiService.getUserDataAsync(any()).await() }
+            coVerify { gitHubApiService.getUserDataAsync(any()) }
             val expectedResult = mockResponse.asDomainObject()
             assert(expectedResult == actualResult)
         }

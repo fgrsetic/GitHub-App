@@ -1,4 +1,4 @@
-package com.franjo.github.presentation.features.user_details
+package com.franjo.github.presentation.features.user_details.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +17,12 @@ class UserDetailsViewModelFactory (
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserDetailsViewModel::class.java)) {
-            return UserDetailsViewModel(repository, dispatcherProvider, resourcesManager, getUserData) as T
+            return UserDetailsViewModel(
+                repository,
+                dispatcherProvider,
+                resourcesManager,
+                getUserData
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

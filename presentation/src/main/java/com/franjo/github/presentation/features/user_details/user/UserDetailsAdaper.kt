@@ -1,4 +1,4 @@
-package com.franjo.github.presentation.features.user_details
+package com.franjo.github.presentation.features.user_details.user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,9 @@ import com.franjo.github.presentation.model.UserDataRowItem
 
 class UserDetailsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val mDiffer = AsyncListDiffer(this, DIFF_CALLBACK)
+    private val mDiffer = AsyncListDiffer(this,
+        DIFF_CALLBACK
+    )
 
     fun submitList(list: List<UserDataRowItem>?) {
         mDiffer.submitList(list)

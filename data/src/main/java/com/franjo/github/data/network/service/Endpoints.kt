@@ -1,6 +1,8 @@
 package com.franjo.github.data.network.service
 
-const val BASE_URL = "https://api.github.com/"
+const val BASE_URL_SEARCH = "https://api.github.com/"
+
+const val BASE_URL_PRIVATE_USER = "https://github.com/"
 
 const val SEARCH_REPOSITORY_PATH = "search/repositories"
 
@@ -14,15 +16,11 @@ const val USER_PATH = "/users/{userName}"
 // 5. App uses the authorization token to request an access token
 
 const val AUTHORIZE_USER_URL =  "https://github.com/login/oauth/authorize"
-const val AUTHORIZATION_TOKEN_URL = "https://github.com/login/oauth/access_token"
+const val AUTHORIZATION_TOKEN_ENDPOINT = "login/oauth/access_token"
 
-// 6. Save token
-const val ACCESS_TOKEN_KEY = "access_token"
-const val SECRET_SHARED_PREFS = "secret_shared_prefs"
-
+// 6. Save token to secured prefs
 // 7. Access token can be used for all following requests
-const val AUTHENTICATED_USER_PATH = "/user"
-
+const val AUTHENTICATED_USER_ENDPOINT = "/user"
 
 
 

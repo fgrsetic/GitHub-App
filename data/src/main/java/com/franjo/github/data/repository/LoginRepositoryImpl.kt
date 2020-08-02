@@ -14,7 +14,6 @@ class LoginRepositoryImpl @Inject constructor(
     private val app: Application
 ) : ILoginRepository {
 
-
     // Redirect users to Requests GitHub access and get authorization token
     override fun login() {
         val intent = Intent(

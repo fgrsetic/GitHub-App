@@ -25,6 +25,10 @@ const val CLIENT_SECRET = "5b9b3ea522c73c1dc3cf2961019934fed25e8cb2"
 const val CODE_PARAMETER = "code"
 const val REDIRECT_URI_CALLBACK = "searchgithubrepo://callback"
 
+// Encrypted shared prefs
+const val ACCESS_TOKEN_KEY = "access_token"
+const val SECRET_SHARED_PREFS = "secret_shared_prefs"
+
 
 
 

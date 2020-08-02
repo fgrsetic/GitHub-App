@@ -57,6 +57,7 @@
         <item>Contributors</item>
     </string-array>
 
+    <string name="action_private_user">Private user</string>
     <string name="action_login">Login</string>
     <string name="action_sort">Sort</string>
 

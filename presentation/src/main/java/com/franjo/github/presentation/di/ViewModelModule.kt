@@ -1,8 +1,7 @@
 package com.franjo.github.presentation.di
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.franjo.github.presentation.features.login.LoginViewModel
+import com.franjo.github.presentation.features.user_details.private_user.PrivateUserViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,6 +19,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(LoginViewModel::class)
-    internal abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
+    @ViewModelKey(PrivateUserViewModel::class)
+    internal abstract fun privateUserViewModel(viewModel: PrivateUserViewModel): ViewModel
 }

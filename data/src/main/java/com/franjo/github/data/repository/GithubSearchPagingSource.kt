@@ -8,7 +8,6 @@ import com.franjo.github.domain.shared.IN_QUALIFIER
 import com.franjo.github.domain.shared.STARTING_PAGE_INDEX
 import okio.IOException
 import retrofit2.HttpException
-import javax.inject.Inject
 
 // Defines the source of data and how to retrieve data from that source
 // It asynchronously loads the data

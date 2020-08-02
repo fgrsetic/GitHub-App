@@ -1,6 +1,5 @@
 package com.franjo.github.presentation.features.search
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
@@ -11,13 +10,13 @@ import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.SORT_REPO_KEY
 import com.franjo.github.domain.shared.SORT_STARS
-import com.franjo.github.domain.usecase.GetLoginRequest
+import com.franjo.github.domain.usecase.GetAccessToken
+import com.franjo.github.domain.usecase.GetLogin
 import com.franjo.github.domain.usecase.GetSearchedRepositories
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.asPresentationModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +24,9 @@ import javax.inject.Inject
 class SearchRepositoryViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val sharedPrefs: ISharedPrefs,
-    private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>,
-    private val requestGetLogin: GetLoginRequest
+    private val getAccessToken: GetAccessToken,
+    private val getLogin: GetLogin,
+    private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcherProvider) {
 
     private val _navigateToRepositoryDetails = MutableLiveData<RepositoryUI>()
@@ -34,6 +34,9 @@ class SearchRepositoryViewModel @Inject constructor(
 
     private val _navigateToUserDetails = MutableLiveData<RepositoryUI>()
     val navigateToUserDetails: LiveData<RepositoryUI> get() = _navigateToUserDetails
+
+    private val _navigateToPrivateUserDetails = MutableLiveData<Boolean>()
+    val navigateToPrivateUserDetails: LiveData<Boolean> get() = _navigateToPrivateUserDetails
 
 
     // 1) Search
@@ -51,16 +54,7 @@ class SearchRepositoryViewModel @Inject constructor(
             .cachedIn(viewModelScope)
     }
 
-
-    // 2) Login
-    fun login() {
-        viewModelScope.launch {
-            requestGetLogin.execute()
-        }
-    }
-
-
-    // 3) Navigation
+    // 2) Navigation
     fun toRepositoryDetailsNavigate(repository: RepositoryUI) {
         _navigateToRepositoryDetails.value = repository
     }
@@ -76,5 +70,24 @@ class SearchRepositoryViewModel @Inject constructor(
     fun onUserDetailsNavigated() {
         _navigateToUserDetails.value = null
     }
+
+    fun toPrivateUserNavigate() {
+        _navigateToPrivateUserDetails.value = true
+    }
+
+    fun onPrivateUserNavigated() {
+        _navigateToPrivateUserDetails.value = false
+    }
+
+    // 3) Login to GitHub for authorization
+    fun startLoginFlow() {
+        getLogin.login()
+    }
+
+    // 4) Access token after authorization
+    fun accessToken(code: String) =
+        viewModelScope.launch {
+            getAccessToken.execute(code)
+        }
 
 }

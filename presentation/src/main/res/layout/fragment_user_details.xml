@@ -12,13 +12,13 @@
 
         <variable
             name="viewModel"
-            type="com.franjo.github.presentation.features.user_details.UserDetailsViewModel" />
+            type="com.franjo.github.presentation.features.user_details.user.UserDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.user_details.UserDetailsFragment">
+        tools:context=".features.user_details.user.UserDetailsFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageView"
@@ -58,8 +58,8 @@
             android:id="@+id/rvUserDetails"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingBottom="8dp"
             android:paddingTop="4dp"
+            android:paddingBottom="8dp"
             android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,17 +69,26 @@
             app:userDetailsList="@{viewModel.userRowData}"
             tools:listitem="@layout/item_user_details" />
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/rvUserDetails"
             app:loadingStatus="@{viewModel.status}"
-            tools:ignore="ContentDescription">
+            app:errorStatus="@{ivErrorStatus}"
+            tools:ignore="ContentDescription" />
 
-        </ImageView>
+        <ImageView
+            android:id="@+id/ivErrorStatus"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rvUserDetails"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

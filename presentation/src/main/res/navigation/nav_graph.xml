@@ -29,12 +29,18 @@
             app:popEnterAnim="@anim/fade_enter"
             app:popExitAnim="@anim/fade_exit" />
 
+        <action
+            android:id="@+id/action_searchRepositoryFragment_to_private_user_fragment"
+            app:destination="@id/privateUserFragment"
+            app:enterAnim="@anim/fade_enter"
+            app:exitAnim="@anim/fade_exit"
+            app:popEnterAnim="@anim/fade_enter"
+            app:popExitAnim="@anim/fade_exit" />
+
         <argument
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
-        <action
-            android:id="@+id/action_searchRepositoryFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+
 
     </fragment>
 
@@ -52,26 +58,36 @@
             app:popEnterAnim="@anim/fade_enter"
             app:popExitAnim="@anim/fade_exit" />
 
+        <action
+            android:id="@+id/action_repositoryDetailsFragment_to_privateUserFragment"
+            app:destination="@id/privateUserFragment" />
+
         <argument
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
+
 
     </fragment>
 
     <fragment
         android:id="@+id/userDetailsFragment"
-        android:name="com.franjo.github.presentation.features.user_details.UserDetailsFragment"
+        android:name="com.franjo.github.presentation.features.user_details.user.UserDetailsFragment"
         android:label="User details"
         tools:layout="@layout/fragment_user_details">
+
+        <action
+            android:id="@+id/action_userDetailsFragment_to_privateUserFragment"
+            app:destination="@id/privateUserFragment" />
 
         <argument
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
 
     </fragment>
+
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.franjo.github.presentation.features.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:id="@+id/privateUserFragment"
+        android:name="com.franjo.github.presentation.features.user_details.private_user.PrivateUserFragment"
+        android:label="Private user" />
 
 </navigation>

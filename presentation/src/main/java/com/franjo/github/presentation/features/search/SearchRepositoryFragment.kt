@@ -3,7 +3,10 @@ package com.franjo.github.presentation.features.search
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -34,7 +37,11 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
 
     private var searchJob: Job? = null
     private var searchResultAdapter: SearchRepositoryAdapter? = null
-    
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -46,9 +53,10 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         initSearch(query)
         navigateToRepositoryDetails()
         navigateToUserDetails()
+        navigateToPrivateUser()
         // retry button should trigger a reload of the PagingData
         binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
-        setHasOptionsMenu(true)
+
     }
 
     private fun initAdapter() {
@@ -72,7 +80,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
 
             if (binding.rvSearch.isVisible == loadState.source.refresh is LoadState.Loading
                 && binding.progressBar.isVisible == loadState.source.refresh is LoadState.NotLoading
-                && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error) {
+                && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error
+            ) {
                 binding.ivNoSearch.visibility = View.GONE
             }
             // Only show the list if refresh succeeds
@@ -173,16 +182,36 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         })
     }
 
+    private fun navigateToPrivateUser() {
+        viewModel.navigateToPrivateUserDetails.observe(
+            viewLifecycleOwner,
+            Observer { isPrivateUser ->
+                if (isPrivateUser == true) {
+                    val action =
+                        SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToPrivateUserFragment()
+                    NavHostFragment.findNavController(this).navigate(action)
+                    // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                    viewModel.onPrivateUserNavigated()
+                }
+            })
+    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.actionSort)?.isVisible = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_sort -> setupConfirmationDialogButtons()
-            R.id.action_login -> viewModel.login()
+            R.id.actionSort -> setupConfirmationDialogButtons()
+            R.id.actionLogin -> viewModel.startLoginFlow()
+            R.id.actionPrivateUser -> viewModel.toPrivateUserNavigate()
         }
         return true
     }
@@ -190,12 +219,6 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     private fun setupConfirmationDialogButtons() {
         val sortDialogFragment = SortDialogFragment()
         sortDialogFragment.show(childFragmentManager, TAG)
-    }
-
-    private fun hideKeyboardFrom(context: Context, view: View) {
-        val imm: InputMethodManager =
-            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

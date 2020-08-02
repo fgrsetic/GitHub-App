@@ -6,9 +6,9 @@ import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
-import com.franjo.github.data.network.service.ACCESS_TOKEN_KEY
-import com.franjo.github.data.network.service.SECRET_SHARED_PREFS
 import com.franjo.github.domain.repository.IEncryptedPrefs
+import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
+import com.franjo.github.domain.shared.SECRET_SHARED_PREFS
 
 
 class EncryptedSharedPrefsImpl(context: Context) : IEncryptedPrefs {

@@ -3,14 +3,14 @@ package com.franjo.github.data.network.service
 import com.franjo.github.data.network.dto.github_repository.RepositoryApiResponse
 import com.franjo.github.data.network.dto.github_user.AuthenticatedUserResponse
 import com.franjo.github.data.network.dto.github_user.UserApiResponse
-import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
 import com.franjo.github.data.network.dto.token.AccessTokenResponse
+import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
 import com.franjo.github.domain.shared.SORT_STARS
-import retrofit2.http.*
-import com.franjo.github.domain.shared.ResultWrapper
 import retrofit2.Response
+import retrofit2.http.*
 
 interface GitHubApiService {
+
 
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
     // Get repos initially ordered by stars.
@@ -27,12 +27,18 @@ interface GitHubApiService {
         @Path("userName") userName: String
     ): UserApiResponse
 
-    @POST
-    suspend fun getAccessToken(
-        @Url authUrl: String,
-        @Body authorizationTokenBody: AuthorizationTokenRequest
-    ): Response<AccessTokenResponse>
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @GET(AUTHENTICATED_USER_ENDPOINT)
+    suspend fun getAuthenticatedUserData(@Header("Authorization") token: String): AuthenticatedUserResponse
 
-    @GET(AUTHENTICATED_USER_PATH)
-    suspend fun getPrivateUserData(): AuthenticatedUserResponse
+}
+
+interface GitHubApiService2 {
+
+    @POST(AUTHORIZATION_TOKEN_ENDPOINT)
+    suspend fun getAccessToken(@Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
+
 }
