@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "kotlin-kapt"
 apply plugin: "de.mannodermaus.android-junit5"
 
-def clientPropertiesFile = rootProject.file("keystore.properties")
-def clientProperties = new Properties()
-clientProperties.load(new FileInputStream(clientPropertiesFile))
+def gradlePropertiesFile = rootProject.file("gradle.properties")
+def gradleProperties = new Properties()
+gradleProperties.load(new FileInputStream(gradlePropertiesFile))
 
 android {
     compileSdkVersion 30
@@ -21,8 +21,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "CLIENT_ID", clientProperties["CLIENT_ID"])
-        buildConfigField("String", "CLIENT_SECRET", clientProperties["CLIENT_SECRET"])
+        buildConfigField("String", "CLIENT_ID", gradleProperties["CLIENT_ID"])
+        buildConfigField("String", "CLIENT_SECRET", gradleProperties["CLIENT_SECRET"])
     }
 
     buildTypes {
