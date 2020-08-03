@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_thumbnail_owner"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -81,13 +81,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_watchers"
-                    android:layout_width="20dp"
+                    android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_watchers"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/iv_thumbnail_owner"
                     app:layout_constraintTop_toBottomOf="@+id/tv_author"
                     app:srcCompat="@drawable/ic_watcher"
                     tools:ignore="ContentDescription" />
@@ -100,8 +97,6 @@
                     android:text="@{String.valueOf(item.watcherCount)}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_watchers"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_forks"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/iv_watchers"
                     app:layout_constraintTop_toTopOf="@+id/iv_watchers"
                     tools:text="35000" />
@@ -110,7 +105,7 @@
                     android:id="@+id/iv_forks"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_forks"
                     app:layout_constraintStart_toEndOf="@+id/tv_watchers"
@@ -136,7 +131,7 @@
                     android:id="@+id/iv_issues"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_issues"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -153,6 +148,7 @@
                     android:text="@{String.valueOf(item.issuesCount)}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_issues"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_issues"
                     app:layout_constraintTop_toTopOf="@+id/iv_issues"
                     tools:text="35000" />
