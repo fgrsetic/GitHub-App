@@ -31,6 +31,10 @@ class SearchRepositoryViewModel @Inject constructor(
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcherProvider) {
 
+    private var currentQueryValue: String? = null
+
+    private var currentSearchResult: Flow<PagingData<RepositoryUI>>? = null
+
     private val _navigateToRepositoryDetails = MutableLiveData<RepositoryUI>()
     val navigateToRepositoryDetails: LiveData<RepositoryUI> get() = _navigateToRepositoryDetails
 
@@ -52,8 +56,13 @@ class SearchRepositoryViewModel @Inject constructor(
 
     // 1) Search
     fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
+        val lastResult = currentSearchResult
+        if (queryString == currentQueryValue && lastResult != null) {
+            return lastResult
+        }
+        currentQueryValue = queryString
         val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
-        return getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
+        val newResult = getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
             .map { pagingData ->
                 pagingData.map {
                     it.asPresentationModel()
@@ -63,6 +72,8 @@ class SearchRepositoryViewModel @Inject constructor(
                 // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
             }
             .cachedIn(viewModelScope)
+        currentSearchResult = newResult
+        return newResult
     }
 
     // 2) Navigation
