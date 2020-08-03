@@ -80,15 +80,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         // CombinedLoadStates gives us the load state for the PageSource we defined
         // CombinedLoadStates.refresh - represents the load state for loading the PagingData for the first time
         searchResultAdapter!!.addLoadStateListener { loadState ->
-
-            if (binding.rvSearch.isVisible == loadState.source.refresh is LoadState.Loading
-                && binding.progressBar.isVisible == loadState.source.refresh is LoadState.NotLoading
-                && binding.retryButton.isVisible == loadState.source.refresh is LoadState.Error
-            ) {
-                binding.ivNoSearch.visibility = View.GONE
-            }
             // Only show the list if refresh succeeds
-            binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
+            // binding.rvSearch.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner animation during initial load or refresh
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails
@@ -160,6 +153,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
             override fun afterTextChanged(s: Editable) {
                 viewModel.saveSearchQuery(s.trim().toString())
             }
+
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
