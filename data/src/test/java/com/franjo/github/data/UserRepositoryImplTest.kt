@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
-internal class GithubSearchRepositoryImplTest {
+internal class UserRepositoryImplTest {
 
     private val dispatcherProvider: DispatcherProvider = mockk()
     private var gitHubApiService: GitHubApiService = mockk(relaxed = true)

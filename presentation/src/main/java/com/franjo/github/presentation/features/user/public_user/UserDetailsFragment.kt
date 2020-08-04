@@ -8,6 +8,8 @@ import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetUserData
 import com.franjo.github.presentation.BaseFragment
@@ -25,8 +27,10 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
     @Inject
     lateinit var dispatcherProvider: DispatcherProvider
+
     @Inject
     lateinit var userData: GetUserData
+
     @Inject
     lateinit var userDataPresentation: UserDataPresentation
 
@@ -59,7 +63,16 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
         viewModel.getUserData(repository.author)
 
-        binding.rvUserDetails.adapter = UserDetailsAdapter()
+        binding.rvUserDetails.apply {
+            adapter = UserDetailsAdapter()
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
+
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
