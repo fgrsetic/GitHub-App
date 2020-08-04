@@ -58,7 +58,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         navigateToUserDetails()
         navigateToPrivateUser()
         listenEditTextQuery()
-        // retry button should trigger a reload of the PagingData
+        // Retry button should trigger a reload of the PagingData
         binding.retryButton.setOnClickListener { searchResultAdapter?.retry() }
     }
 
@@ -67,13 +67,13 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
             rowListener = object : OnItemClickListener {
                 override fun onItemClick(item: RepositoryUI?) {
                     item?.let {
-                        viewModel.toRepositoryDetailsNavigate(it)
+                        viewModel.onItemRowClick(it)
                     }
                 }
             },
             iconListener = object : OnIconClickListener {
                 override fun onIconClick(item: RepositoryUI?) {
-                    item?.let { viewModel.toUserDetailsNavigate(it) }
+                    item?.let { viewModel.onItemRowUserIconClicked(it) }
                 }
             })
 
@@ -164,28 +164,24 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     // Navigation
     private fun navigateToRepositoryDetails() {
         viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
-            if (repository != null) {
+            repository.getContentIfNotHandled()?.let {
                 val action =
                     SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
-                        repository
+                        it
                     )
                 NavHostFragment.findNavController(this).navigate(action)
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                viewModel.onRepositoryDetailsNavigated()
             }
         })
     }
 
     private fun navigateToUserDetails() {
         viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
-            if (repository != null) {
+            repository.getContentIfNotHandled()?.let {
                 val action =
                     SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToUserDetailsFragment(
-                        repository
+                        it
                     )
                 NavHostFragment.findNavController(this).navigate(action)
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                viewModel.onUserDetailsNavigated()
             }
         })
     }
@@ -194,12 +190,10 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         viewModel.navigateToPrivateUserDetails.observe(
             viewLifecycleOwner,
             Observer { isPrivateUser ->
-                if (isPrivateUser == true) {
+                isPrivateUser.getContentIfNotHandled()?.let {
                     val action =
                         SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToPrivateUserFragment()
                     NavHostFragment.findNavController(this).navigate(action)
-                    // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                    viewModel.onPrivateUserNavigated()
                 }
             })
     }
@@ -219,7 +213,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         when (item.itemId) {
             R.id.actionSort -> setupConfirmationDialogButtons()
             R.id.actionLogin -> viewModel.startLoginFlow()
-            R.id.actionPrivateUser -> viewModel.toPrivateUserNavigate()
+            R.id.actionPrivateUser -> viewModel.onMenuItemClicked()
         }
         return true
     }

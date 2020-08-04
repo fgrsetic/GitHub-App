@@ -23,13 +23,10 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
     override fun getFragmentView(): Int = R.layout.fragment_user_details
 
-
     @Inject
     lateinit var dispatcherProvider: DispatcherProvider
-
     @Inject
     lateinit var userData: GetUserData
-
     @Inject
     lateinit var userDataPresentation: UserDataPresentation
 
@@ -62,8 +59,7 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
         viewModel.getUserData(repository.author)
 
-        binding.rvUserDetails.adapter =
-            UserDetailsAdapter()
+        binding.rvUserDetails.adapter = UserDetailsAdapter()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

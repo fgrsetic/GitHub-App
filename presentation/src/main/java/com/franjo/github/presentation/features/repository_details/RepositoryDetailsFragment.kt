@@ -47,7 +47,7 @@ class RepositoryDetailsFragment :
         bindAdapter()
 
         binding.ivThumbnail.setOnClickListener {
-            viewModel.toUserDetailsNavigate(repository)
+            viewModel.onUserThumbnailClicked(repository)
         }
 
         navigateToUserDetails()
@@ -67,14 +67,12 @@ class RepositoryDetailsFragment :
 
     private fun navigateToUserDetails() {
         viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
-            if (repository != null) {
+            repository.getContentIfNotHandled()?.let {
                 val action =
                     RepositoryDetailsFragmentDirections.actionRepositoryDetailsFragmentToUserDetailsFragment(
-                        repository
+                        it
                     )
                 NavHostFragment.findNavController(this).navigate(action)
-                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
-                viewModel.onUserDetailsNavigated()
             }
         })
     }
