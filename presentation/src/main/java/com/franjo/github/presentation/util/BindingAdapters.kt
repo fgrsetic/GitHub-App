@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.franjo.github.domain.shared.LoadingApiStatus
 import com.franjo.github.presentation.R
-import com.franjo.github.presentation.features.user_details.user.UserDetailsAdapter
+import com.franjo.github.presentation.features.user.public_user.UserDetailsAdapter
 import com.franjo.github.presentation.model.UserDataRowItem
 
 @BindingAdapter("userDetailsList")

@@ -1,4 +1,4 @@
-package com.franjo.github.presentation.features.user_details.user
+package com.franjo.github.presentation.features.user.public_user
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.UserDataRowItem
 import com.franjo.github.presentation.model.UserUI
 import com.franjo.github.presentation.model.asPresentationModel
-import com.franjo.github.presentation.util.IResourceManager
+import com.franjo.github.presentation.util.UserDataPresentation
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class UserDetailsViewModel @Inject constructor(
     repository: RepositoryUI,
     dispatcherProvider: DispatcherProvider,
-    private val resourcesManager: IResourceManager,
+    private val userDataPresentation: UserDataPresentation,
     private val getUserData: GetUserData
 ) :
     BaseViewModel(dispatcherProvider) {
@@ -49,7 +49,7 @@ class UserDetailsViewModel @Inject constructor(
                 _userData.value = listOf(result)
                 _status.value =
                     LoadingApiStatus.DONE
-                _userRowData.value = getDataForPresentationUI(result)
+                _userRowData.value = userDataPresentation.getDataForPresentationUI(result)
             } catch (e: Exception) {
                 _status.value =
                     LoadingApiStatus.ERROR
@@ -57,43 +57,4 @@ class UserDetailsViewModel @Inject constructor(
             }
         }
     }
-
-    private fun getDataForPresentationUI(userUI: UserUI): List<UserDataRowItem> {
-        val result = mutableListOf<UserDataRowItem>()
-        result.add(
-            UserDataRowItem(
-                resourcesManager.getLocalizedString("username").toString(),
-                userUI.name
-            )
-        )
-        result.add(
-            UserDataRowItem(
-                resourcesManager.getLocalizedString("company").toString(),
-                userUI.company
-            )
-        )
-
-        result.add(
-            UserDataRowItem(
-                resourcesManager.getLocalizedString("blog").toString(),
-                userUI.blog
-            )
-        )
-
-        result.add(
-            UserDataRowItem(
-                resourcesManager.getLocalizedString("location").toString(),
-                userUI.location
-            )
-        )
-
-        result.add(
-            UserDataRowItem(
-                resourcesManager.getLocalizedString("email").toString(),
-                userUI.email
-            )
-        )
-        return result
-    }
-
 }

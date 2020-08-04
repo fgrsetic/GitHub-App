@@ -1,4 +1,4 @@
-package com.franjo.github.presentation.features.user_details.user
+package com.franjo.github.presentation.features.user.public_user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

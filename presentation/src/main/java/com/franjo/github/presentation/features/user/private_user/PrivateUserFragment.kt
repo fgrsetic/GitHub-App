@@ -1,4 +1,4 @@
-package com.franjo.github.presentation.features.user_details.private_user
+package com.franjo.github.presentation.features.user.private_user
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,7 @@ import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
 import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentPrivateUserBinding
-import com.franjo.github.presentation.features.user_details.user.UserDetailsAdapter
+import com.franjo.github.presentation.features.user.public_user.UserDetailsAdapter
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

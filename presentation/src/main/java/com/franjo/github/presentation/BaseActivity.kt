@@ -14,7 +14,6 @@ import com.franjo.github.domain.shared.CODE_PARAMETER
 import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.presentation.databinding.ActivityBaseBinding
 import com.franjo.github.presentation.features.search.SearchRepositoryViewModel
-import com.franjo.github.presentation.features.user_details.private_user.PrivateUserViewModel
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.activity_base.*
@@ -29,9 +28,6 @@ class BaseActivity : AppCompatActivity() {
 
     @Inject
     lateinit var searchRepositoryViewModel: SearchRepositoryViewModel
-
-    @Inject
-    lateinit var privateUserViewModel: PrivateUserViewModel
 
     private lateinit var binding: ActivityBaseBinding
 

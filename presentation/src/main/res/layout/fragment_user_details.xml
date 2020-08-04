@@ -12,13 +12,13 @@
 
         <variable
             name="viewModel"
-            type="com.franjo.github.presentation.features.user_details.user.UserDetailsViewModel" />
+            type="com.franjo.github.presentation.features.user.public_user.UserDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.user_details.user.UserDetailsFragment">
+        tools:context=".features.user_details.user.private_user.user.UserDetailsFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageView"

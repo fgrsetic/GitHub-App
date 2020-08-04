@@ -66,9 +66,10 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         searchResultAdapter = SearchRepositoryAdapter(
             rowListener = object : OnItemClickListener {
                 override fun onItemClick(item: RepositoryUI?) {
-                    item?.let { viewModel.toRepositoryDetailsNavigate(it) }
+                    item?.let {
+                        viewModel.toRepositoryDetailsNavigate(it)
+                    }
                 }
-
             },
             iconListener = object : OnIconClickListener {
                 override fun onIconClick(item: RepositoryUI?) {

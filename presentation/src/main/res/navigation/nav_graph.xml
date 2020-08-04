@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/userDetailsFragment"
-        android:name="com.franjo.github.presentation.features.user_details.user.UserDetailsFragment"
+        android:name="com.franjo.github.presentation.features.user.public_user.UserDetailsFragment"
         android:label="User details"
         tools:layout="@layout/fragment_user_details">
 
@@ -87,7 +87,7 @@
 
     <fragment
         android:id="@+id/privateUserFragment"
-        android:name="com.franjo.github.presentation.features.user_details.private_user.PrivateUserFragment"
+        android:name="com.franjo.github.presentation.features.user.private_user.PrivateUserFragment"
         android:label="Private user" />
 
 </navigation>

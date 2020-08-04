@@ -81,10 +81,11 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_watchers"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_watchers"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
                     app:layout_constraintTop_toBottomOf="@+id/tv_author"
                     app:srcCompat="@drawable/ic_watcher"
                     tools:ignore="ContentDescription" />
@@ -93,17 +94,19 @@
                     android:id="@+id/tv_watchers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{String.valueOf(item.watcherCount)}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_watchers"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_forks"
                     app:layout_constraintStart_toEndOf="@+id/iv_watchers"
                     app:layout_constraintTop_toTopOf="@+id/iv_watchers"
                     tools:text="35000" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_forks"
-                    android:layout_width="20dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -117,24 +120,23 @@
                     android:id="@+id/tv_forks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{String.valueOf(item.forkCount)}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_forks"
                     app:layout_constraintEnd_toStartOf="@+id/iv_issues"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/iv_forks"
                     app:layout_constraintTop_toTopOf="@+id/iv_forks"
                     tools:text="35000" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_issues"
-                    android:layout_width="20dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_issues"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/tv_forks"
                     app:layout_constraintTop_toBottomOf="@+id/tv_author"
                     app:srcCompat="@drawable/ic_issue"
@@ -144,7 +146,8 @@
                     android:id="@+id/tv_issues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{String.valueOf(item.issuesCount)}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_issues"
@@ -152,6 +155,22 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_issues"
                     app:layout_constraintTop_toTopOf="@+id/iv_issues"
                     tools:text="35000" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="128dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintGuide_begin="128dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,10 +1,10 @@
 package com.franjo.github.presentation.di
 
-import com.franjo.github.presentation.features.user_details.private_user.PrivateUserFragment
 import com.franjo.github.presentation.features.repository_details.RepositoryDetailsFragment
 import com.franjo.github.presentation.features.search.SearchRepositoryFragment
 import com.franjo.github.presentation.features.search.SortDialogFragment
-import com.franjo.github.presentation.features.user_details.user.UserDetailsFragment
+import com.franjo.github.presentation.features.user.private_user.PrivateUserFragment
+import com.franjo.github.presentation.features.user.public_user.UserDetailsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import javax.inject.Scope

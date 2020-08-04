@@ -8,13 +8,13 @@
 
         <variable
             name="viewModel"
-            type="com.franjo.github.presentation.features.user_details.private_user.PrivateUserViewModel" />
+            type="com.franjo.github.presentation.features.user.private_user.PrivateUserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.user_details.private_user.PrivateUserFragment">
+        tools:context=".features.user_details.user.private_user.PrivateUserFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvUserDetails"
