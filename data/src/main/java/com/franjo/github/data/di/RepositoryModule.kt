@@ -2,8 +2,8 @@ package com.franjo.github.data.di
 
 import android.app.Application
 import androidx.paging.PagingData
-import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.data.network.service.GitHubApiService2
+import com.franjo.github.data.network.service.GitHubPublicUserApiService
+import com.franjo.github.data.network.service.GitHubPrivateUserApiService
 import com.franjo.github.data.repository.*
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.*
@@ -19,16 +19,16 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesGithubSearchRepositoryImpl(
-        gitHubApiService: GitHubApiService
+        gitHubPublicUserApiService: GitHubPublicUserApiService
     ): IGithubSearchRepository<Flow<PagingData<Repo>>> =
-        GithubSearchRepositoryImpl(gitHubApiService)
+        GithubSearchRepositoryImpl(gitHubPublicUserApiService)
 
     @Provides
     @Singleton
     fun providesUserRepositoryImpl(
         dispatcher: DispatcherProvider,
-        gitHubApiService: GitHubApiService
-    ): IUserRepository = UserRepositoryImpl(dispatcher, gitHubApiService)
+        gitHubPublicUserApiService: GitHubPublicUserApiService
+    ): IUserRepository = UserRepositoryImpl(dispatcher, gitHubPublicUserApiService)
 
     @Provides
     @Singleton
@@ -39,11 +39,11 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepositoryImpl(
-        apiService: GitHubApiService,
-        apiService2: GitHubApiService2,
+        apiServicePublicUser: GitHubPublicUserApiService,
+        privateUserApiService: GitHubPrivateUserApiService,
         encryptedPrefs: IEncryptedPrefs
     ): IAuthenticationRepository =
-        AuthenticationRepositoryImpl(apiService, apiService2, encryptedPrefs)
+        AuthenticationRepositoryImpl(apiServicePublicUser, privateUserApiService, encryptedPrefs)
 
     @Provides
     @Singleton

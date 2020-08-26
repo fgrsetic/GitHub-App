@@ -1,6 +1,6 @@
 package com.franjo.github.data.network.service
 
-const val BASE_URL_SEARCH = "https://api.github.com/"
+const val BASE_URL_PUBLIC_USER = "https://api.github.com/"
 
 const val BASE_URL_PRIVATE_USER = "https://github.com/"
 

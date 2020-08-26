@@ -2,7 +2,7 @@ package com.franjo.github.data.repository
 
 import androidx.paging.PagingSource
 import com.franjo.github.data.network.dto.github_repository.asDomainObject
-import com.franjo.github.data.network.service.GitHubApiService
+import com.franjo.github.data.network.service.GitHubPublicUserApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.shared.IN_QUALIFIER
 import com.franjo.github.domain.shared.STARTING_PAGE_INDEX
@@ -12,7 +12,7 @@ import retrofit2.HttpException
 // Defines the source of data and how to retrieve data from that source
 // It asynchronously loads the data
 class GithubSearchPagingSource (
-    private val apiService: GitHubApiService,
+    private val apiServicePublicUser: GitHubPublicUserApiService,
     private val query: String,
     private val sortBy: String
 ) : PagingSource<Int, Repo>() {
@@ -29,7 +29,7 @@ class GithubSearchPagingSource (
         val apiQuery = query + IN_QUALIFIER
         return try {
             val response =
-                apiService.searchRepositories(apiQuery, sortBy, position, params.loadSize)
+                apiServicePublicUser.searchRepositories(apiQuery, sortBy, position, params.loadSize)
             val repos = response.asDomainObject()
             LoadResult.Page(
                 data = repos,

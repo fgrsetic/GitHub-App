@@ -4,6 +4,7 @@
     <color name="colorPrimary">#4A4550</color>
     <color name="colorPrimaryDark">#1A1A1B</color>
     <color name="colorAccent">#FF7043</color>
+    <color name="colorText">#4A4550</color>
     <color name="rv_background">#60ECEAEF</color>
     <color name="tabLayoutBackground">#60ECEAEF</color>
 </resources>

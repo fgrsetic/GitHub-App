@@ -9,7 +9,7 @@ import com.franjo.github.domain.shared.SORT_STARS
 import retrofit2.Response
 import retrofit2.http.*
 
-interface GitHubApiService {
+interface GitHubPublicUserApiService {
 
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
     // Get repos initially ordered by stars.
@@ -35,7 +35,7 @@ interface GitHubApiService {
 
 }
 
-interface GitHubApiService2 {
+interface GitHubPrivateUserApiService {
     @POST(AUTHORIZATION_TOKEN_PATH)
     suspend fun getAccessToken(@Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
 }

@@ -9,8 +9,8 @@
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="android:backgroundTint">@android:color/white</item>
-        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <item name="android:textColorSecondary">@color/colorText</item>
     </style>
 
 </resources>
