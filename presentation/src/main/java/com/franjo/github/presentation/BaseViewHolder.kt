@@ -18,18 +18,13 @@ class BaseViewHolder(private val binding: ViewDataBinding) :
     fun bind(item: Any?, listener: OnItemClickListener?) {
         binding.setVariable(BR.item, item)
         binding.setVariable(BR.rowListener, listener)
-        // This is important, because it forces the data binding to execute immediately,
-        // which allows the RecyclerView to make the correct view size measurements
         binding.executePendingBindings()
     }
 
     fun bind(item: Any?, listener: OnIconClickListener?) {
         binding.setVariable(BR.item, item)
         binding.setVariable(BR.iconListener, listener)
-        // This is important, because it forces the data binding to execute immediately,
-        // which allows the RecyclerView to make the correct view size measurements
         binding.executePendingBindings()
     }
-
 
 }

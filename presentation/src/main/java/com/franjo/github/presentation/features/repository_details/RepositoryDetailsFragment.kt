@@ -1,6 +1,5 @@
 package com.franjo.github.presentation.features.repository_details
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +14,6 @@ import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentRepositoryDetailsBinding
 import com.franjo.github.presentation.model.RepositoryUI
 import com.google.android.material.tabs.TabLayoutMediator
-import dagger.android.support.AndroidSupportInjection
 
 class RepositoryDetailsFragment :
     BaseFragment<FragmentRepositoryDetailsBinding>() {
@@ -24,11 +22,6 @@ class RepositoryDetailsFragment :
 
     private lateinit var viewModel: RepositoryDetailsViewModel
     private lateinit var repository: RepositoryUI
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +52,11 @@ class RepositoryDetailsFragment :
 
         binding.viewPager.adapter = repositoryInfoAdapter
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager,
-            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                tab.text = tabTitles[position]
-            }).attach()
+        TabLayoutMediator(
+            binding.tabLayout, binding.viewPager
+        ) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
     }
 
     private fun navigateToUserDetails() {

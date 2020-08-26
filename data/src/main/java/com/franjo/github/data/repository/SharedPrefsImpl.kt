@@ -6,8 +6,7 @@ import androidx.preference.PreferenceManager
 import com.franjo.github.domain.repository.ISharedPrefs
 import java.util.concurrent.ConcurrentHashMap
 
-class SharedPrefsImpl(private val context: Context?) :
-    ISharedPrefs {
+class SharedPrefsImpl(private val context: Context?) : ISharedPrefs {
 
     @Volatile
     private var cacheBoolean = ConcurrentHashMap<String, Boolean>()

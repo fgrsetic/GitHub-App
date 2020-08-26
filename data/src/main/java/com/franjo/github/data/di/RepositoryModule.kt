@@ -19,7 +19,6 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesGithubSearchRepositoryImpl(
-        dispatcher: DispatcherProvider,
         gitHubApiService: GitHubApiService
     ): IGithubSearchRepository<Flow<PagingData<Repo>>> =
         GithubSearchRepositoryImpl(gitHubApiService)
@@ -40,7 +39,6 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepositoryImpl(
-        dispatcherProvider: DispatcherProvider,
         apiService: GitHubApiService,
         apiService2: GitHubApiService2,
         encryptedPrefs: IEncryptedPrefs

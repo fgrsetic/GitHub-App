@@ -43,16 +43,13 @@ class UserDetailsViewModel @Inject constructor(
     fun getUserData(query: String) {
         viewModelScope.launch {
             try {
-                _status.value =
-                    LoadingApiStatus.LOADING
+                _status.value = LoadingApiStatus.LOADING
                 val result = getUserData.execute(query).asPresentationModel()
                 _userData.value = listOf(result)
-                _status.value =
-                    LoadingApiStatus.DONE
+                _status.value = LoadingApiStatus.DONE
                 _userRowData.value = userDataPresentation.getDataForPresentationUI(result)
             } catch (e: Exception) {
-                _status.value =
-                    LoadingApiStatus.ERROR
+                _status.value = LoadingApiStatus.ERROR
                 _userRowData.value = ArrayList()
             }
         }

@@ -36,9 +36,9 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
 
     // With access token in header we can fetch private user data
-    override suspend fun getAuthenticatedUser(token: String)
+    override suspend fun getAuthenticatedUser(accessToken: String)
             : AuthenticatedUser {
-        return apiService.getAuthenticatedUserData("token $token").asDomainObject()
+        return apiService.getAuthenticatedUserData("token $accessToken").asDomainObject()
     }
 
 }

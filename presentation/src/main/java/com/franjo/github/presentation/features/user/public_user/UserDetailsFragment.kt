@@ -37,10 +37,6 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
     private lateinit var viewModel: UserDetailsViewModel
     private lateinit var repository: RepositoryUI
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

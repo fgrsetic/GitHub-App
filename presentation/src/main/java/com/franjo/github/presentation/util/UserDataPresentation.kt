@@ -1,6 +1,7 @@
 package com.franjo.github.presentation.util
 
 import android.app.Application
+import com.franjo.github.presentation.R
 import com.franjo.github.presentation.model.UserDataRowItem
 import com.franjo.github.presentation.model.UserUI
 import javax.inject.Inject
@@ -12,34 +13,34 @@ class UserDataPresentation @Inject constructor(val app: Application) {
         val result = mutableListOf<UserDataRowItem>()
         result.add(
             UserDataRowItem(
-                resourcesManager.getLocalizedString("username").toString(),
+                resourcesManager.getLocalizedString(R.string.username.toString()).toString(),
                 userUI.name
             )
         )
         result.add(
             UserDataRowItem(
-                resourcesManager.getLocalizedString("company").toString(),
+                resourcesManager.getLocalizedString(R.string.company.toString()).toString(),
                 userUI.company
             )
         )
 
         result.add(
             UserDataRowItem(
-                resourcesManager.getLocalizedString("blog").toString(),
+                resourcesManager.getLocalizedString(R.string.blog.toString()).toString(),
                 userUI.blog
             )
         )
 
         result.add(
             UserDataRowItem(
-                resourcesManager.getLocalizedString("location").toString(),
+                resourcesManager.getLocalizedString(R.string.location.toString()).toString(),
                 userUI.location
             )
         )
 
         result.add(
             UserDataRowItem(
-                resourcesManager.getLocalizedString("email").toString(),
+                resourcesManager.getLocalizedString(R.string.email.toString()).toString(),
                 userUI.email
             )
         )

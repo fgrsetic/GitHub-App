@@ -281,12 +281,11 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="?colorPrimary"
             android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:tabBackground="@android:color/white"
+            app:tabBackground="@color/tabLayoutBackground"
             app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextColor="@color/colorPrimary" />

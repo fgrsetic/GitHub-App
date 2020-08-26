@@ -22,12 +22,6 @@ class PrivateUserFragment : BaseFragment<FragmentPrivateUserBinding>() {
     @Inject
     lateinit var encryptedPrefs: IEncryptedPrefs
 
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)

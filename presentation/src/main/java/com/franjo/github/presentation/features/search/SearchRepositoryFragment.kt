@@ -22,8 +22,10 @@ import com.franjo.github.presentation.OnIconClickListener
 import com.franjo.github.presentation.OnItemClickListener
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBinding
+import com.franjo.github.presentation.features.login.LoginViewModel
 import com.franjo.github.presentation.features.search.SortDialogFragment.Companion.TAG
 import com.franjo.github.presentation.model.RepositoryUI
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,6 +38,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
 
     @Inject
     lateinit var viewModel: SearchRepositoryViewModel
+    @Inject
+    lateinit var loginViewModel: LoginViewModel
 
     private var searchJob: Job? = null
     private var searchResultAdapter: SearchRepositoryAdapter? = null
@@ -212,7 +216,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionSort -> setupConfirmationDialogButtons()
-            R.id.actionLogin -> viewModel.startLoginFlow()
+            R.id.actionLogin -> loginViewModel.startLoginFlow()
             R.id.actionPrivateUser -> viewModel.onMenuItemClicked()
         }
         return true

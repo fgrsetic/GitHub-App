@@ -16,11 +16,11 @@ const val USER_PATH = "/users/{userName}"
 // 5. App uses the authorization token to request an access token
 
 const val AUTHORIZE_USER_URL =  "https://github.com/login/oauth/authorize"
-const val AUTHORIZATION_TOKEN_ENDPOINT = "login/oauth/access_token"
+const val AUTHORIZATION_TOKEN_PATH = "login/oauth/access_token"
 
 // 6. Save token to secured prefs
 // 7. Access token can be used for all following requests
-const val AUTHENTICATED_USER_ENDPOINT = "/user"
+const val AUTHENTICATED_USER_PATH = "/user"
 
 
 

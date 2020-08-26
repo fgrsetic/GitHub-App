@@ -8,14 +8,15 @@ def gradleProperties = new Properties()
 gradleProperties.load(new FileInputStream(gradlePropertiesFile))
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion version_compile_sdk
+    buildToolsVersion version_build_tools
 
     defaultConfig {
         applicationId "com.franjo.github"
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion version_min_sdk
+        targetSdkVersion version_target_sdk
+        versionCode version_code
+        versionName version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "CLIENT_ID", gradleProperties["CLIENT_ID"])
@@ -29,12 +30,6 @@ android {
             manifestPlaceholders = [enableCrashReporting: "true"]
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildToolsVersion '29.0.3'
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
@@ -56,10 +51,10 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$version_paging"
 
     // Dagger
-    api "com.google.dagger:dagger:$version_dagger"
+    implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
-    api "com.google.dagger:dagger-android:$version_dagger"
-    api "com.google.dagger:dagger-android-support:$version_dagger"
+    implementation "com.google.dagger:dagger-android:$version_dagger"
+    implementation "com.google.dagger:dagger-android-support:$version_dagger"
     kapt "com.google.dagger:dagger-android-processor:$version_dagger"
 
 }

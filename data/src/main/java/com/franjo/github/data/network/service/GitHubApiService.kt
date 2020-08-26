@@ -11,7 +11,6 @@ import retrofit2.http.*
 
 interface GitHubApiService {
 
-
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
     // Get repos initially ordered by stars.
     @GET(SEARCH_REPOSITORY_PATH)
@@ -31,14 +30,12 @@ interface GitHubApiService {
         "Content-Type: application/json",
         "Accept: application/json"
     )
-    @GET(AUTHENTICATED_USER_ENDPOINT)
-    suspend fun getAuthenticatedUserData(@Header("Authorization") token: String): AuthenticatedUserResponse
+    @GET(AUTHENTICATED_USER_PATH)
+    suspend fun getAuthenticatedUserData(@Header("Authorization") accessToken: String): AuthenticatedUserResponse
 
 }
 
 interface GitHubApiService2 {
-
-    @POST(AUTHORIZATION_TOKEN_ENDPOINT)
+    @POST(AUTHORIZATION_TOKEN_PATH)
     suspend fun getAccessToken(@Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
-
 }

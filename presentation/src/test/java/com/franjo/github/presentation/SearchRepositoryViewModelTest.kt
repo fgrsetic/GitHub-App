@@ -34,8 +34,6 @@ internal class SearchRepositoryViewModelTest {
     private val dispatcherProvider: DispatcherProvider = mockk()
     private val state: SavedStateHandle = mockk()
     private val sharedPrefs = mockk<ISharedPrefs>(relaxed = true)
-    private val getAccessToken: GetAccessToken = mockk()
-    private val getLogin: GetLogin = mockk()
     private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>> = mockk()
     private lateinit var viewModel: SearchRepositoryViewModel
 
@@ -48,8 +46,6 @@ internal class SearchRepositoryViewModelTest {
                 dispatcherProvider,
                 state,
                 sharedPrefs,
-                getAccessToken,
-                getLogin,
                 getSearchedRepositories
             )
     }

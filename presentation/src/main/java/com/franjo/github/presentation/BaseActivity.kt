@@ -3,6 +3,7 @@ package com.franjo.github.presentation
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -10,10 +11,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.CODE_PARAMETER
 import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.presentation.databinding.ActivityBaseBinding
-import com.franjo.github.presentation.features.search.SearchRepositoryViewModel
+import com.franjo.github.presentation.features.authorization.AccessTokenViewModel
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.activity_base.*
@@ -25,9 +27,8 @@ class BaseActivity : AppCompatActivity() {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
     @Inject
-    lateinit var searchRepositoryViewModel: SearchRepositoryViewModel
+    lateinit var accessTokenViewModel: AccessTokenViewModel
 
     private lateinit var binding: ActivityBaseBinding
 
@@ -70,7 +71,7 @@ class BaseActivity : AppCompatActivity() {
         if (uri != null && uri.toString().startsWith(REDIRECT_URI_CALLBACK)) {
             val code = uri.getQueryParameter(CODE_PARAMETER)
             if (code != null) {
-                searchRepositoryViewModel.accessToken(code)
+                accessTokenViewModel.accessToken(code)
             }
         }
     }

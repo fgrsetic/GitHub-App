@@ -9,14 +9,14 @@ def gradleProperties = new Properties()
 gradleProperties.load(new FileInputStream(gradlePropertiesFile))
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    compileSdkVersion version_compile_sdk
+    buildToolsVersion version_build_tools
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion version_min_sdk
+        targetSdkVersion version_target_sdk
+        versionCode version_code
+        versionName version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,11 +34,6 @@ android {
 
     packagingOptions {
         exclude("META-INF/LICENSE*")
-    }
-
-    compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
 
     kotlinOptions {
@@ -86,7 +81,7 @@ dependencies {
     implementation "androidx.preference:preference:$version_preferences"
 
     // Encrypted shared preferences
-    implementation 'androidx.security:security-crypto:1.1.0-alpha01'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha02'
     
     // Test
     testImplementation "io.mockk:mockk:$version_mockK"

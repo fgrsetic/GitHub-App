@@ -13,9 +13,9 @@ import com.franjo.github.domain.shared.SORT_FORKS
 import com.franjo.github.domain.shared.SORT_REPO_KEY
 import com.franjo.github.domain.shared.SORT_STARS
 import com.franjo.github.domain.shared.SORT_UPDATES
-import com.franjo.github.presentation.databinding.SortDialogFragmentBinding
+import com.franjo.github.presentation.databinding.FragmentSortDialogBinding
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.sort_dialog_fragment.*
+import kotlinx.android.synthetic.main.fragment_sort_dialog.*
 import javax.inject.Inject
 
 
@@ -39,7 +39,7 @@ class SortDialogFragment : DialogFragment() {
     ): View? {
         isCancelable = true
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val binding = SortDialogFragmentBinding.inflate(inflater)
+        val binding = FragmentSortDialogBinding.inflate(inflater)
         return binding.root
     }
 
