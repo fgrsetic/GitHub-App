@@ -61,7 +61,7 @@ class SearchRepositoryViewModel @Inject constructor(
         val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
         val newResult = getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
             .map { pagingData ->
-                pagingData.map {repo ->
+                pagingData.map { repo ->
                     repo.asPresentationModel()
                 }
                 // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope

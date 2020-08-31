@@ -17,6 +17,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
 
+    // Timber logging
+    implementation "com.jakewharton.timber:timber:$version_timber"
+
     // Test
     testImplementation "junit:junit:$version_junit"
     testImplementation "io.mockk:mockk:$version_mockK"

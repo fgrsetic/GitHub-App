@@ -69,7 +69,7 @@ data class RepositoryItem(
     @Json(name = "forks")
     val forks: Int = 0,
     @Json(name = "forks_count")
-    val forksCount: Int = 0,
+    val forksCount: Int,
     @Json(name = "forks_url")
     val forksUrl: String? = "",
     @Json(name = "full_name")
@@ -126,10 +126,12 @@ data class RepositoryItem(
     val nodeId: String? = "",
     @Json(name = "notifications_url")
     val notificationsUrl: String? = "",
+
     @Json(name = "open_issues")
     val openIssues: Int = 0,
     @Json(name = "open_issues_count")
-    val openIssuesCount: Int = 0,
+    val openIssuesCount: Int,
+
     @Json(name = "owner")
     val owner: RepositoryOwner = RepositoryOwner(),
     @Json(name = "private")
@@ -147,7 +149,7 @@ data class RepositoryItem(
     @Json(name = "ssh_url")
     val sshUrl: String? = "",
     @Json(name = "stargazers_count")
-    val stargazersCount: Int = 0,
+    val stargazersCount: Int,
     @Json(name = "stargazers_url")
     val stargazersUrl: String? = "",
     @Json(name = "statuses_url")
@@ -171,7 +173,7 @@ data class RepositoryItem(
     @Json(name = "watchers")
     val watchers: Int = 0,
     @Json(name = "watchers_count")
-    val watchersCount: Int = 0
+    val watchersCount: Int
 )
 
 fun RepositoryApiResponse.asDomainObject(): List<Repo> {
@@ -181,8 +183,8 @@ fun RepositoryApiResponse.asDomainObject(): List<Repo> {
             name = it.name.orEmpty(),
             author = it.owner.login.orEmpty(),
             thumbnail = it.owner.avatarUrl.orEmpty(),
-            watchers = it.watchers,
-            forks = it.forksCount,
+            watcherCount = it.watchersCount,
+            forksCount = it.forksCount,
             issuesCount = it.openIssuesCount,
             starsCount = it.stargazersCount,
             programmingLanguage = it.language.orEmpty(),

@@ -82,6 +82,9 @@ dependencies {
 
     // Encrypted shared preferences
     implementation 'androidx.security:security-crypto:1.1.0-alpha02'
+
+    // Timber logging
+    implementation "com.jakewharton.timber:timber:$version_timber"
     
     // Test
     testImplementation "io.mockk:mockk:$version_mockK"

@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.LoadState
@@ -25,7 +24,6 @@ import com.franjo.github.presentation.databinding.FragmentSearchRepositoryBindin
 import com.franjo.github.presentation.features.login.LoginViewModel
 import com.franjo.github.presentation.features.search.SortDialogFragment.Companion.TAG
 import com.franjo.github.presentation.model.RepositoryUI
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,6 +50,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.viewModel = viewModel
+
+        hideKeyboardFrom(requireContext(), binding.rvSearch)
 
         val query = viewModel.getSearchQuery()
 
@@ -167,7 +167,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
 
     // Navigation
     private fun navigateToRepositoryDetails() {
-        viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, Observer { repository ->
+        viewModel.navigateToRepositoryDetails.observe(viewLifecycleOwner, { repository ->
             repository.getContentIfNotHandled()?.let {
                 val action =
                     SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToRepositoryDetailsFragment(
@@ -179,7 +179,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     }
 
     private fun navigateToUserDetails() {
-        viewModel.navigateToUserDetails.observe(viewLifecycleOwner, Observer { repository ->
+        viewModel.navigateToUserDetails.observe(viewLifecycleOwner, { repository ->
             repository.getContentIfNotHandled()?.let {
                 val action =
                     SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToUserDetailsFragment(
@@ -193,7 +193,7 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
     private fun navigateToPrivateUser() {
         viewModel.navigateToPrivateUserDetails.observe(
             viewLifecycleOwner,
-            Observer { isPrivateUser ->
+            { isPrivateUser ->
                 isPrivateUser.getContentIfNotHandled()?.let {
                     val action =
                         SearchRepositoryFragmentDirections.actionSearchRepositoryFragmentToPrivateUserFragment()

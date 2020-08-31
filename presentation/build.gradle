@@ -103,6 +103,9 @@ dependencies {
     // Circle image view library
     implementation "de.hdodenhof:circleimageview:$version_circleimageview"
 
+    // Timber logging
+    implementation "com.jakewharton.timber:timber:$version_timber"
+
     // Test
     testImplementation "junit:junit:$version_junit"
     testImplementation "io.mockk:mockk:$version_mockK"

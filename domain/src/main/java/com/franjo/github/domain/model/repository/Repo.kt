@@ -2,6 +2,7 @@ package com.franjo.github.domain.model.repository
 
 
 data class Repo(
+    val id: Int = 0,
     val author: String = "",
     val archiveUrl: String = "",
     val archived: Boolean = false,
@@ -24,7 +25,7 @@ data class Repo(
     val eventsUrl: String = "",
     val fork: Boolean = false,
     val forks: Int = 0,
-    val forksCount: Int = 0,
+    val forksCount: Int,
     val forksUrl: String = "",
     val fullName: String = "",
     val gitCommitsUrl: String = "",
@@ -39,7 +40,6 @@ data class Repo(
     val homepage: String = "",
     val hooksUrl: String = "",
     val htmlUrl: String = "",
-    val id: Int = 0,
     val issueCommentUrl: String = "",
     val issueEventsUrl: String = "",
     val issuesUrl: String = "",
@@ -56,7 +56,7 @@ data class Repo(
     val openIssues: Int = 0,
     val ownerHtmlUrl: String,
     val ownerUrl: String,
-    val issuesCount: Int = 0,
+    val issuesCount: Int,
     val `private`: Boolean = false,
     val pullsUrl: String = "",
     val pushedAt: String = "",
@@ -64,7 +64,7 @@ data class Repo(
     val score: Double = 0.0,
     val size: Int = 0,
     val sshUrl: String = "",
-    val starsCount: Int = 0,
+    val starsCount: Int,
     val stargazersUrl: String = "",
     val statusesUrl: String = "",
     val subscribersUrl: String = "",
@@ -77,7 +77,7 @@ data class Repo(
     val updatedAt: String = "",
     val url: String = "",
     val watchers: Int = 0,
-    val watcherCount: Int = 0
+    val watcherCount: Int
 )
 
 
