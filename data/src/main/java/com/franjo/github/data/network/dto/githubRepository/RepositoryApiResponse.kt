@@ -1,4 +1,4 @@
-package com.franjo.github.data.network.dto.github_repository
+package com.franjo.github.data.network.dto.githubRepository
 
 import com.franjo.github.domain.model.repository.Repo
 import com.squareup.moshi.Json

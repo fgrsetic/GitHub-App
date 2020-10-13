@@ -6,13 +6,16 @@ import com.franjo.github.data.di.NetworkModule
 import com.franjo.github.data.di.RepositoryModule
 import com.franjo.github.domain.di.DispatcherModule
 import com.franjo.github.presentation.di.ActivityModule
+import com.franjo.github.presentation.di.AndroidResourceModule
 import com.franjo.github.presentation.di.FragmentModule
 import com.franjo.github.presentation.di.SaveStateHandleModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Singleton
 @Component(
     modules = [
@@ -24,7 +27,8 @@ import javax.inject.Singleton
         ActivityModule::class,
         FragmentModule::class,
         DispatcherModule::class,
-        SaveStateHandleModule::class
+        SaveStateHandleModule::class,
+        AndroidResourceModule::class
     ]
 )
 interface ApplicationComponent {

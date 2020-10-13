@@ -1,31 +1,32 @@
-package com.franjo.github.data.network.dto.github_user
+package com.franjo.github.data.network.dto.githubUser
 
-import com.franjo.github.domain.model.user.AuthenticatedUser
+import com.franjo.github.domain.model.user.User
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+
 @JsonClass(generateAdapter = true)
-data class AuthenticatedUserResponse(
+data class UserApiResponse(
     @Json(name = "avatar_url")
-    val avatarUrl: String,
+    val avatarUrl: String? = "",
     @Json(name = "bio")
-    val bio: String?,
+    val bio: String? = "",
     @Json(name = "blog")
-    val blog: String,
+    val blog: String? = "",
     @Json(name = "company")
-    val company: String?,
+    val company: String? = "",
     @Json(name = "created_at")
-    val createdAt: String,
+    val createdAt: String? = "",
     @Json(name = "email")
-    val email: String?,
+    val email: String? = "",
     @Json(name = "events_url")
-    val eventsUrl: String,
+    val eventsUrl: String? = "",
     @Json(name = "followers")
-    val followers: Int,
+    val followers: Int = 0,
     @Json(name = "followers_url")
-    val followersUrl: String,
+    val followersUrl: String? = "",
     @Json(name = "following")
-    val following: Int,
+    val following: Int = 0,
     @Json(name = "following_url")
     val followingUrl: String? = "",
     @Json(name = "gists_url")
@@ -72,38 +73,23 @@ data class AuthenticatedUserResponse(
     val url: String? = ""
 )
 
-fun AuthenticatedUserResponse.asDomainObject(): AuthenticatedUser {
-    return AuthenticatedUser(
-        avatarUrl = this.avatarUrl,
-        bio = this.bio.orEmpty(),
-        blog = this.blog,
-        company = this.company.orEmpty(),
-        createdAt = this.createdAt,
+fun UserApiResponse.asDomainObject(): User {
+    return User(
+        name = name.orEmpty(),
+        company = company.orEmpty(),
+        blog = blog.orEmpty(),
+        location = location.orEmpty(),
         email = this.email.orEmpty(),
-        eventsUrl = this.eventsUrl,
-        following = this.following,
-        followers = this.followers,
-        followersUrl = this.followersUrl,
-        followingUrl = this.followingUrl.orEmpty(),
-        gistsUrl = this.gistsUrl.orEmpty(),
-        gravatarId = this.gravatarId.orEmpty(),
         hireable = this.hireable.orEmpty(),
-        htmlUrl = this.htmlUrl.orEmpty(),
-        id = this.id,
-        location = this.location.orEmpty(),
-        login = this.login.orEmpty(),
-        name = this.name.orEmpty(),
-        nodeId = this.nodeId.orEmpty(),
-        organizationsUrl = this.organizationsUrl.orEmpty(),
-        publicGists = this.publicGists,
+        bio = this.bio.orEmpty(),
         publicRepos = this.publicRepos,
-        receivedEventsUrl = this.receivedEventsUrl.orEmpty(),
-        reposUrl = this.reposUrl.orEmpty(),
-        siteAdmin = this.siteAdmin,
-        starredUrl = this.starredUrl.orEmpty(),
-        subscriptionsUrl = this.subscriptionsUrl.orEmpty(),
-        type = this.type.orEmpty(),
+        publicGists = this.publicGists,
+        followers = this.followers,
+        following = this.following,
+        createdAt = this.createdAt.orEmpty(),
         updatedAt = this.updatedAt.orEmpty(),
+        htmlUrl = this.htmlUrl.orEmpty(),
         url = this.url.orEmpty()
     )
+
 }

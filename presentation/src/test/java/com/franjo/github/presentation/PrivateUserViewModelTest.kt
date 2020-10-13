@@ -5,7 +5,7 @@ import com.franjo.github.domain.model.user.AuthenticatedUser
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetAuthenticatedUser
 import com.franjo.github.presentation.features.user.private_user.PrivateUserViewModel
-import com.franjo.github.presentation.util.UserDataPresentation
+import com.franjo.github.presentation.util.UserDataPresentationMapper
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +22,7 @@ internal class PrivateUserViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     private val dispatcherProvider: DispatcherProvider = mockk()
-    private val userDataPresentation: UserDataPresentation = mockk()
+    private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
     private val getAuthenticatedUser: GetAuthenticatedUser = mockk()
     private lateinit var viewModel: PrivateUserViewModel
 
@@ -31,7 +31,7 @@ internal class PrivateUserViewModelTest {
         clearAllMocks()
         coEvery { dispatcherProvider.provideUIContext() } returns Dispatchers.Unconfined
         viewModel =
-            PrivateUserViewModel(dispatcherProvider, getAuthenticatedUser, userDataPresentation)
+            PrivateUserViewModel(dispatcherProvider, getAuthenticatedUser, userDataPresentationMapper)
     }
 
     @Test

@@ -51,12 +51,11 @@ dependencies {
     implementation "androidx.core:core-ktx:$version_core"
 
     // Coroutines for getting off the UI thread
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 
     // Retrofit for networking
     api "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    api "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     api "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
 
     // OkHttp - efficient HTTP client
@@ -85,6 +84,9 @@ dependencies {
 
     // Timber logging
     implementation "com.jakewharton.timber:timber:$version_timber"
+
+    // Dropbox store
+    implementation "com.dropbox.mobile.store:store4:$version_dropbox_store"
     
     // Test
     testImplementation "io.mockk:mockk:$version_mockK"

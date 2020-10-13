@@ -1,9 +1,10 @@
 package com.franjo.github.data.di
 
 import com.franjo.github.data.BuildConfig
-import com.franjo.github.data.network.service.*
+import com.franjo.github.data.network.service.BASE_URL
+import com.franjo.github.data.network.service.GitHubApiService
+import com.franjo.github.data.network.service.HeaderInterceptor
 import com.franjo.github.domain.repository.IEncryptedPrefs
-import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -14,7 +15,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -30,19 +30,6 @@ class NetworkModule {
             .build()
     }
 
-
-    // Public
-    @Provides
-    @Singleton
-    @Named("okHttp_public")
-    fun providePublicOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        if (BuildConfig.DEBUG) {
-            builder.addInterceptor(httpLoggingInterceptor)
-        }
-        return builder.build()
-    }
-
     // OkHttp logging messages -> verbose logcat
     @Provides
     @Singleton
@@ -53,79 +40,41 @@ class NetworkModule {
         return logger
     }
 
-    // Retrofit class generates an implementation of the GitHubPublicUserApiService interface
     @Provides
     @Singleton
-    @Named("retrofit_public")
-    fun provideRetrofitPublic(@Named("okHttp_public") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(BASE_URL_PUBLIC_USER)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
-    }
+    fun provideHeaderInterceptor(encryptedPrefs: IEncryptedPrefs): Interceptor =
+        HeaderInterceptor(encryptedPrefs)
+
 
     @Provides
     @Singleton
-    fun providePublicApiService( @Named("retrofit_public") retrofit: Retrofit): GitHubPublicUserApiService {
-        return retrofit.create(GitHubPublicUserApiService::class.java)
-    }
-
-
-
-    // Private
-    @Provides
-    @Singleton
-    @Named("okHttp_private")
-    fun providePrivateOkHttpClient(
-        headerInterceptor: Interceptor,
+    fun provideOkHttpClient(
+        headerInterceptor: HeaderInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-            .addInterceptor(headerInterceptor)
-
+        val builder = OkHttpClient.Builder().addInterceptor(headerInterceptor)
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(httpLoggingInterceptor)
         }
         return builder.build()
     }
 
-    // Send token with application/json in header
+    // Retrofit class generates an implementation of the GitHubPublicUserApiService interface
     @Provides
     @Singleton
-    fun provideEncodingInterceptor(encryptedPrefs: IEncryptedPrefs): Interceptor {
-        return Interceptor { chain ->
-            val original = chain.request()
-            // Send access token for authorization
-            val token = encryptedPrefs.getValue(ACCESS_TOKEN_KEY, "")
-
-            val newRequest = original.newBuilder()
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .addHeader("Authorization", "token $token")
-                .build()
-
-            return@Interceptor chain.proceed(newRequest)
-        }
-    }
-
-    @Provides
-    @Singleton
-    @Named("retrofit_private")
-    fun provideRetrofitPrivate(@Named("okHttp_private") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
+    fun provideRetrofitPublic(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(BASE_URL_PRIVATE_USER)
+            .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }
 
+
     @Provides
     @Singleton
-    fun providePrivateApiService( @Named("retrofit_private") retrofit: Retrofit): GitHubPrivateUserApiService {
-        return retrofit.create(GitHubPrivateUserApiService::class.java)
-    }
+    fun providePrivateApiService(retrofit: Retrofit): GitHubApiService =
+        retrofit.create(GitHubApiService::class.java)
 
 }

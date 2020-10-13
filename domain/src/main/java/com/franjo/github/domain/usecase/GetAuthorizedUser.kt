@@ -9,6 +9,6 @@ class GetAuthenticatedUser @Inject constructor(
 ) {
 
     // Fetch authorized user result if access token is success
-    suspend fun execute(token: String): AuthenticatedUser =
-        repository.getAuthenticatedUser(token)
+    suspend fun execute(): AuthenticatedUser =
+        repository.getAuthenticatedUser()
 }

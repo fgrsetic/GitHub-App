@@ -31,8 +31,7 @@ class PrivateUserFragment : BaseFragment<FragmentPrivateUserBinding>() {
         super.onActivityCreated(savedInstanceState)
         binding.viewModel = viewModel
 
-        val token = encryptedPrefs.getValue(ACCESS_TOKEN_KEY, "")
-        viewModel.loadPrivateUser(token)
+        viewModel.loadPrivateUser()
 
         binding.rvUserDetails.adapter =
             UserDetailsAdapter()

@@ -8,9 +8,9 @@ class AndroidResourceManager @Inject constructor(
 ) : IResourceManager {
 
 
-    override fun getLocalizedString(stringKey: String?): String? {
+    override fun getLocalizedString(stringKey: Int): String {
         val stringId: Int = application.applicationContext.resources.getIdentifier(
-            stringKey,
+            stringKey.toString(),
             "string",
             application.applicationContext.packageName
         )
@@ -23,5 +23,5 @@ class AndroidResourceManager @Inject constructor(
 }
 
 interface IResourceManager {
-    fun getLocalizedString(stringKey: String?): String?
+    fun getLocalizedString(stringKey: Int): String
 }

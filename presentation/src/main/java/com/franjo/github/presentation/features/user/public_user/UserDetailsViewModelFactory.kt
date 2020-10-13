@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetUserData
 import com.franjo.github.presentation.model.RepositoryUI
-import com.franjo.github.presentation.util.UserDataPresentation
+import com.franjo.github.presentation.util.UserDataPresentationMapper
 
 class UserDetailsViewModelFactory (
     private val repository: RepositoryUI,
     private val dispatcherProvider: DispatcherProvider,
-    private val userDataPresentation: UserDataPresentation,
+    private val userDataPresentationMapper: UserDataPresentationMapper,
     private val getUserData: GetUserData
 ) : ViewModelProvider.Factory {
 
@@ -20,7 +20,7 @@ class UserDetailsViewModelFactory (
             return UserDetailsViewModel(
                 repository,
                 dispatcherProvider,
-                userDataPresentation,
+                userDataPresentationMapper,
                 getUserData
             ) as T
         }

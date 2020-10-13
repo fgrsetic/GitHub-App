@@ -1,15 +1,16 @@
 package com.franjo.github.data.network.service
 
-import com.franjo.github.data.network.dto.github_repository.RepositoryApiResponse
-import com.franjo.github.data.network.dto.github_user.AuthenticatedUserResponse
-import com.franjo.github.data.network.dto.github_user.UserApiResponse
+import com.franjo.github.data.network.dto.githubRepository.RepositoryApiResponse
+import com.franjo.github.data.network.dto.githubUser.AuthenticatedUserResponse
+import com.franjo.github.data.network.dto.githubUser.UserApiResponse
 import com.franjo.github.data.network.dto.token.AccessTokenResponse
 import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
+import com.franjo.github.domain.shared.ResultWrapper
 import com.franjo.github.domain.shared.SORT_STARS
 import retrofit2.Response
 import retrofit2.http.*
 
-interface GitHubPublicUserApiService {
+interface GitHubApiService {
 
     // https://api.github.com/search/repositories?q=te&sort=forks&page=1&per_page=30
     // Get repos initially ordered by stars.
@@ -22,20 +23,19 @@ interface GitHubPublicUserApiService {
     ): RepositoryApiResponse
 
     @GET(USER_PATH)
-    suspend fun getUserDataAsync(
+    suspend fun getUserData(
         @Path("userName") userName: String
-    ): UserApiResponse
+    ): Response<UserApiResponse>
 
-    @Headers(
-        "Content-Type: application/json",
-        "Accept: application/json"
-    )
+    // Get access token to make request with token for authenticated user
+    @POST
+    suspend fun getAccessToken(
+        @Url url: String,
+        @Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
+
+    // Get authenticated user after sending token
     @GET(AUTHENTICATED_USER_PATH)
-    suspend fun getAuthenticatedUserData(@Header("Authorization") accessToken: String): AuthenticatedUserResponse
+    suspend fun getAuthenticatedUserData(): AuthenticatedUserResponse
 
 }
 
-interface GitHubPrivateUserApiService {
-    @POST(AUTHORIZATION_TOKEN_PATH)
-    suspend fun getAccessToken(@Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
-}

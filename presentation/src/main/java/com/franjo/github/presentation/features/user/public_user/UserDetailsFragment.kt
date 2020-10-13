@@ -1,12 +1,13 @@
 package com.franjo.github.presentation.features.user.public_user
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +18,7 @@ import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentUserDetailsBinding
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.UserUI
-import com.franjo.github.presentation.util.UserDataPresentation
-import dagger.android.support.AndroidSupportInjection
+import com.franjo.github.presentation.util.UserDataPresentationMapper
 import javax.inject.Inject
 
 class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
@@ -32,7 +32,7 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
     lateinit var userData: GetUserData
 
     @Inject
-    lateinit var userDataPresentation: UserDataPresentation
+    lateinit var userDataPresentationMapper: UserDataPresentationMapper
 
     private lateinit var viewModel: UserDetailsViewModel
     private lateinit var repository: RepositoryUI
@@ -51,7 +51,7 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
             UserDetailsViewModelFactory(
                 repository,
                 dispatcherProvider,
-                userDataPresentation,
+                userDataPresentationMapper,
                 userData
             )
         viewModel = ViewModelProvider(this, modelFactory).get(UserDetailsViewModel::class.java)
@@ -69,6 +69,13 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
             )
         }
 
+        observeError()
+    }
+
+    private fun observeError() {
+        viewModel.error.observe(viewLifecycleOwner, { error ->
+            Toast.makeText(context, error, LENGTH_SHORT).show()
+        })
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -80,7 +87,7 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionWeb -> viewModel.userData.value?.get(0)?.let { openBrowser(it) }
+            R.id.actionWeb -> viewModel.userData.value?.let { openBrowser(it) }
         }
         return true
     }
@@ -93,4 +100,6 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
             }
         }
     }
+
+
 }

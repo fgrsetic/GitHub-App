@@ -3,7 +3,7 @@ package com.franjo.github.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.franjo.github.data.network.service.GitHubPublicUserApiService
+import com.franjo.github.data.network.service.GitHubApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.IGithubSearchRepository
 import com.franjo.github.domain.shared.PAGE_SIZE
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 class GithubSearchRepositoryImpl @Inject constructor(
-    private val apiServicePublicUser: GitHubPublicUserApiService
+    private val apiService: GitHubApiService
 ) : IGithubSearchRepository<Flow<PagingData<Repo>>> {
 
     // Search repositories where names match the query
@@ -24,7 +24,7 @@ class GithubSearchRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
             pagingSourceFactory = {
-                GithubSearchPagingSource(apiServicePublicUser, query, sortBy)
+                GithubSearchPagingSource(apiService, query, sortBy)
             }
         ).flow
     }

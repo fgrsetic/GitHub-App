@@ -6,5 +6,5 @@ interface IAuthenticationRepository {
 
     suspend fun getAccessToken(code: String)
 
-    suspend fun getAuthenticatedUser(token: String): AuthenticatedUser
+    suspend fun getAuthenticatedUser(): AuthenticatedUser
 }

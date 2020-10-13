@@ -9,14 +9,14 @@ import com.franjo.github.domain.usecase.GetAuthenticatedUser
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.UserDataRowItem
 import com.franjo.github.presentation.model.asPresentationModel
-import com.franjo.github.presentation.util.UserDataPresentation
+import com.franjo.github.presentation.util.UserDataPresentationMapper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PrivateUserViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val getAuthenticatedUser: GetAuthenticatedUser,
-    private val userDataPresentation: UserDataPresentation
+    private val mapper: UserDataPresentationMapper
 ) : BaseViewModel(dispatcherProvider) {
 
 
@@ -27,13 +27,13 @@ class PrivateUserViewModel @Inject constructor(
     val userList: LiveData<List<UserDataRowItem>> get() = _userList
 
 
-    fun loadPrivateUser(token: String?) {
+    fun loadPrivateUser() {
         viewModelScope.launch {
             try {
                 _status.value = LoadingApiStatus.LOADING
-                val userUIResult = token?.let { getAuthenticatedUser.execute(it).asPresentationModel() }
+                val userUIResult = getAuthenticatedUser.execute().asPresentationModel()
                 _status.value = LoadingApiStatus.DONE
-                _userList.value = userUIResult?.let { userDataPresentation.getDataForPresentationUI(it) }
+                _userList.value = userUIResult.let { mapper.getDataForPresentationUI(it) }
             } catch (e: Exception) {
                 _status.value = LoadingApiStatus.ERROR
             }

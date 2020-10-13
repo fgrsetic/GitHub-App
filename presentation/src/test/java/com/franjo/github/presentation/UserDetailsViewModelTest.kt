@@ -6,7 +6,7 @@ import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.usecase.GetUserData
 import com.franjo.github.presentation.features.user.public_user.UserDetailsViewModel
 import com.franjo.github.presentation.model.RepositoryUI
-import com.franjo.github.presentation.util.UserDataPresentation
+import com.franjo.github.presentation.util.UserDataPresentationMapper
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -24,7 +24,7 @@ internal class UserDetailsViewModelTest {
 
     private val dispatcherProvider: DispatcherProvider = mockk()
     private val repository: RepositoryUI = mockk()
-    private val userDataPresentation: UserDataPresentation = mockk()
+    private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
     private val getUserData: GetUserData = mockk()
     private lateinit var viewModel: UserDetailsViewModel
 
@@ -33,7 +33,7 @@ internal class UserDetailsViewModelTest {
         clearAllMocks()
         coEvery { dispatcherProvider.provideUIContext() } returns Dispatchers.Unconfined
         viewModel =
-            UserDetailsViewModel(repository, dispatcherProvider, userDataPresentation, getUserData)
+            UserDetailsViewModel(repository, dispatcherProvider, userDataPresentationMapper, getUserData)
     }
 
     @Test

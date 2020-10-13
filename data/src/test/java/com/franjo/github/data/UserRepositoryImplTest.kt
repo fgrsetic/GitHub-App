@@ -1,7 +1,7 @@
 package com.franjo.github.data
 
-import com.franjo.github.data.network.dto.github_user.UserApiResponse
-import com.franjo.github.data.network.dto.github_user.asDomainObject
+import com.franjo.github.data.network.dto.githubUser.UserApiResponse
+import com.franjo.github.data.network.dto.githubUser.asDomainObject
 import com.franjo.github.data.network.service.GitHubPublicUserApiService
 import com.franjo.github.data.repository.UserRepositoryImpl
 import com.franjo.github.domain.shared.DispatcherProvider
