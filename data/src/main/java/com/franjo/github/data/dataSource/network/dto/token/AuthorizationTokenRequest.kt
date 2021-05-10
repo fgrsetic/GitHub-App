@@ -1,4 +1,4 @@
-package com.franjo.github.data.network.dto.token
+package com.franjo.github.data.dataSource.network.dto.token
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

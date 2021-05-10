@@ -1,8 +1,11 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: "kotlin-kapt"
-apply plugin: "androidx.navigation.safeargs.kotlin"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
 
 android {
     compileSdkVersion version_compile_sdk
@@ -43,10 +46,11 @@ android {
 dependencies {
     implementation project(":domain")
 
+    // Jetpack
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
     implementation "com.google.android.material:material:$version_material"
-    implementation "androidx.preference:preference:$version_preferences"
+    implementation "androidx.preference:preference-ktx:$version_preferences"
     implementation "androidx.viewpager2:viewpager2:$version_view_pager2"
 
     // Kotlin
@@ -70,40 +74,40 @@ dependencies {
 
     // OkHttp - efficient HTTP client
     implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
 
     // Moshi for parsing the JSON format
     implementation "com.squareup.moshi:moshi:$version_moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
+    // Glide for images
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+    kapt "com.github.bumptech.glide:compiler:$version_glide"
+
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:$version_paging"
 
-    // Dagger
+    // DI
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
-
-    // Dagger android
     implementation "com.google.dagger:dagger-android:$version_dagger"
     implementation "com.google.dagger:dagger-android-support:$version_dagger"
     kapt "com.google.dagger:dagger-android-processor:$version_dagger"
 
-    // ViewModel and LiveData (arch components)
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
-
-    // Glide for images
-    implementation "com.github.bumptech.glide:glide:$version_glide"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle_extensions"
 
     // Multidex
     implementation "com.android.support:multidex:$version_multidex"
 
-    // Leak library
+    // Memory leaky
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
 
     // Circle image view library
     implementation "de.hdodenhof:circleimageview:$version_circleimageview"
 
-    // Timber logging
+    // Logging
     implementation "com.jakewharton.timber:timber:$version_timber"
 
     // Test

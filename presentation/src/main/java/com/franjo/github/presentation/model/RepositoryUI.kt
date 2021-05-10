@@ -2,7 +2,7 @@ package com.franjo.github.presentation.model
 
 import android.os.Parcelable
 import com.franjo.github.domain.model.repository.Repo
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RepositoryUI(

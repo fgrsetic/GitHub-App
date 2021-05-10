@@ -4,7 +4,7 @@ import android.app.Application
 import javax.inject.Inject
 
 class AndroidResourceManager @Inject constructor(
-    val application: Application
+    private val application: Application
 ) : IResourceManager {
 
 

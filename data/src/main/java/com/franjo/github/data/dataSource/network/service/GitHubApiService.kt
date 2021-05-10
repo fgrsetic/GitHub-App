@@ -1,11 +1,10 @@
-package com.franjo.github.data.network.service
+package com.franjo.github.data.dataSource.network.service
 
-import com.franjo.github.data.network.dto.githubRepository.RepositoryApiResponse
-import com.franjo.github.data.network.dto.githubUser.AuthenticatedUserResponse
-import com.franjo.github.data.network.dto.githubUser.UserApiResponse
-import com.franjo.github.data.network.dto.token.AccessTokenResponse
-import com.franjo.github.data.network.dto.token.AuthorizationTokenRequest
-import com.franjo.github.domain.shared.ResultWrapper
+import com.franjo.github.data.dataSource.network.dto.githubRepository.RepositoryApiResponse
+import com.franjo.github.data.dataSource.network.dto.githubUser.AuthenticatedUserResponse
+import com.franjo.github.data.dataSource.network.dto.githubUser.UserApiResponse
+import com.franjo.github.data.dataSource.network.dto.token.AccessTokenResponse
+import com.franjo.github.data.dataSource.network.dto.token.AuthorizationTokenRequest
 import com.franjo.github.domain.shared.SORT_STARS
 import retrofit2.Response
 import retrofit2.http.*
@@ -25,17 +24,16 @@ interface GitHubApiService {
     @GET(USER_PATH)
     suspend fun getUserData(
         @Path("userName") userName: String
-    ): Response<UserApiResponse>
+    ): UserApiResponse
 
     // Get access token to make request with token for authenticated user
     @POST
     suspend fun getAccessToken(
         @Url url: String,
-        @Body authorizationTokenBody: AuthorizationTokenRequest): Response<AccessTokenResponse>
+        @Body authorizationTokenBody: AuthorizationTokenRequest
+    ): Response<AccessTokenResponse>
 
     // Get authenticated user after sending token
     @GET(AUTHENTICATED_USER_PATH)
     suspend fun getAuthenticatedUserData(): AuthenticatedUserResponse
-
 }
-

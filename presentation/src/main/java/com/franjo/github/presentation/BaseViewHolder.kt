@@ -26,5 +26,4 @@ class BaseViewHolder(private val binding: ViewDataBinding) :
         binding.setVariable(BR.iconListener, listener)
         binding.executePendingBindings()
     }
-
 }

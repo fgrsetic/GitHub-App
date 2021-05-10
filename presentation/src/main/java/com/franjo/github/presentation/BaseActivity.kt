@@ -3,22 +3,19 @@ package com.franjo.github.presentation
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.franjo.github.domain.repository.ISharedPrefs
 import com.franjo.github.domain.shared.CODE_PARAMETER
 import com.franjo.github.domain.shared.REDIRECT_URI_CALLBACK
 import com.franjo.github.presentation.databinding.ActivityBaseBinding
 import com.franjo.github.presentation.features.authorization.AccessTokenViewModel
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
-import kotlinx.android.synthetic.main.activity_base.*
 import javax.inject.Inject
 
 // This is a single activity application that uses the Navigation library.
@@ -37,9 +34,11 @@ class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_base)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         findViewById<Toolbar>(R.id.toolbar).setupWithNavController(
             navController,

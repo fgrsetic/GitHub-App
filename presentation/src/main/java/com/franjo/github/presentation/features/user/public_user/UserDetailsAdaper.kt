@@ -59,5 +59,4 @@ class UserDetailsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                 }
             }
     }
-
 }

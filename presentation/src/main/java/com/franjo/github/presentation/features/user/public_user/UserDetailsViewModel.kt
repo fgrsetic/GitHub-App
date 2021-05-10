@@ -1,8 +1,6 @@
 package com.franjo.github.presentation.features.user.public_user
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.franjo.github.domain.shared.DispatcherProvider
 import com.franjo.github.domain.shared.LoadingApiStatus
 import com.franjo.github.domain.shared.ResultWrapper
 import com.franjo.github.domain.usecase.GetUserData
@@ -12,58 +10,47 @@ import com.franjo.github.presentation.model.UserDataRowItem
 import com.franjo.github.presentation.model.UserUI
 import com.franjo.github.presentation.model.asPresentationModel
 import com.franjo.github.presentation.util.UserDataPresentationMapper
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class UserDetailsViewModel @Inject constructor(
     repository: RepositoryUI,
-    dispatcherProvider: DispatcherProvider,
+    dispatcher: CoroutineDispatcher,
     private val mapper: UserDataPresentationMapper,
-    private val getUserData: GetUserData
+    val getUserData: GetUserData
 ) :
-    BaseViewModel(dispatcherProvider) {
+    BaseViewModel(dispatcher) {
 
-    private val _userRowData = MutableLiveData<List<UserDataRowItem>>()
-    val userRowData: LiveData<List<UserDataRowItem>> get() = _userRowData
-
-    private val _userData = MutableLiveData<UserUI>()
-    val userData: LiveData<UserUI> get() = _userData
-
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> get() = _error
-
-    private val _status = MutableLiveData<LoadingApiStatus>()
-    val status: LiveData<LoadingApiStatus> get() = _status
-
-    private val _userRepo = MutableLiveData<RepositoryUI>()
-    val userRepo: LiveData<RepositoryUI> get() = _userRepo
+    val userRowData = MutableLiveData<List<UserDataRowItem>>()
+    val userData = MutableLiveData<UserUI>()
+    val error = MutableLiveData<String>()
+    val status = MutableLiveData<LoadingApiStatus>()
+    val userRepo = MutableLiveData<RepositoryUI>()
 
     init {
-        _userRepo.value = repository
+        userRepo.postValue(repository)
     }
 
-
-    fun getUserData(query: String) {
+    fun getUserDataFor(query: String) {
         viewModelScope.launch {
-            _status.value = LoadingApiStatus.LOADING
-            when (val result = getUserData.execute(query)) {
+            status.value = LoadingApiStatus.LOADING
+            when (val userResult = getUserData(query)) {
                 is ResultWrapper.Success -> {
-                    if (result.data != null) {
-                        val userUI = result.data!!.asPresentationModel()
-                        _userData.value = userUI
-                        _userRowData.value = mapper.getDataForPresentationUI(userUI)
-                    }
-                    _status.value = LoadingApiStatus.DONE
+                    val userUI = userResult.data.asPresentationModel()
+                    userData.postValue(userUI)
+                    userRowData.postValue(mapper.getDataForPresentationUI(userUI))
+                    status.value = LoadingApiStatus.DONE
                 }
                 is ResultWrapper.Error -> {
-                    _error.value = result.error.message
-                    _userRowData.value = ArrayList()
-                    _status.value = LoadingApiStatus.DONE
-                    _status.value = LoadingApiStatus.ERROR
+                    error.postValue(userResult.throwable.message.toString())
+                    userRowData.postValue(ArrayList())
+                    status.value = LoadingApiStatus.DONE
+                    status.value = LoadingApiStatus.ERROR
                 }
+                else -> throw Exception()
             }
-
         }
     }
 }

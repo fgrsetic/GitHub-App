@@ -47,8 +47,8 @@ class SearchRepositoryFragment : BaseFragment<FragmentSearchRepositoryBinding>()
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
         hideKeyboardFrom(requireContext(), binding.rvSearch)

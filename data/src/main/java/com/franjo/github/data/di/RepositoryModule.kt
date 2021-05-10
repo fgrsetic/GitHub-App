@@ -2,17 +2,16 @@ package com.franjo.github.data.di
 
 import android.app.Application
 import androidx.paging.PagingData
-import com.franjo.github.data.dataSource.UserRemoteDataSource
-import com.franjo.github.data.network.service.GitHubApiService
+import com.franjo.github.data.dataSource.network.UserRemoteDataSource
+import com.franjo.github.data.dataSource.network.service.GitHubApiService
 import com.franjo.github.data.repository.*
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.*
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Singleton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 
 @ExperimentalCoroutinesApi
 @Module
@@ -25,7 +24,6 @@ class RepositoryModule {
     ): IGithubSearchRepository<Flow<PagingData<Repo>>> =
         GithubSearchRepositoryImpl(apiService)
 
-    @FlowPreview
     @Provides
     @Singleton
     fun providesUserRepositoryImpl(
@@ -57,5 +55,4 @@ class RepositoryModule {
     @Singleton
     fun provideEncryptedPrefs(app: Application): IEncryptedPrefs =
         EncryptedSharedPrefsImpl(app)
-
 }

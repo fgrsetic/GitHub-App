@@ -3,21 +3,22 @@ package com.franjo.github.presentation.features.user.private_user
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.franjo.github.domain.shared.DispatcherProvider
+import com.franjo.github.domain.di.MainDispatcher
 import com.franjo.github.domain.shared.LoadingApiStatus
 import com.franjo.github.domain.usecase.GetAuthenticatedUser
 import com.franjo.github.presentation.BaseViewModel
 import com.franjo.github.presentation.model.UserDataRowItem
 import com.franjo.github.presentation.model.asPresentationModel
 import com.franjo.github.presentation.util.UserDataPresentationMapper
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PrivateUserViewModel @Inject constructor(
-    dispatcherProvider: DispatcherProvider,
+    @MainDispatcher dispatcher: CoroutineDispatcher,
     private val getAuthenticatedUser: GetAuthenticatedUser,
     private val mapper: UserDataPresentationMapper
-) : BaseViewModel(dispatcherProvider) {
+) : BaseViewModel(dispatcher) {
 
 
     private val _status = MutableLiveData<LoadingApiStatus>()

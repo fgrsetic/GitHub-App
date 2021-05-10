@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>detekt report</title>
+    <style>
+h2 {
+  background-color: #666666;
+  padding: 0.2em;
+  color: #ffffff;
+}
+h3 {
+  background-color:#f8dfdf;
+  padding:0.5em;
+}
+.rule {
+  background-color: #dddddd;
+  padding: 0.3em;
+  font-weight: bold;
+}
+.description {
+  color:#000000;
+  padding:0.3em;
+}
+.location {
+  color: #690505;
+  font-family: monospace;
+  display: block;
+}
+.message {
+  font-size: 0.8em;
+  color: #444444;
+  display: block;
+  margin-top: 1pt;
+}
+.rule-container {
+  border: 0.1em dashed #dddddd;
+  padding: 0.1em;
+  line-height: 1.5em;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+pre {
+  border: 1px solid #e0e0e0;
+  overflow: scroll;
+}
+.lineno {
+  color: #999999;
+  background-color: #f0f0f0;
+}
+.error {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AwCFR4T/3uLMgAAADxJREFUCNdNyLERQEAABMCjL4lQwIzcjErpguAL+C9AvgKJDbeD/PRpLdm35Hm+MU+cB+tCKaJW4L4YBy+CAiLJrFs9mgAAAABJRU5ErkJggg==) bottom repeat-x;
+}
+.exception {
+  color: #b60808;
+  display: inline-block;
+  background-color: #ecdada;
+  border-color: #b60808;
+  border-radius: 10px;
+  border: solid 2px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 16px;
+}
+</style>
+</head>
+<body>
+
+<h1>detekt report</h1>
+
+<h2>Metrics</h2>
+
+<div>
+  <ul>
+    <li>2 number of properties</li>
+    <li>6 number of functions</li>
+    <li>6 number of classes</li>
+    <li>3 number of packages</li>
+    <li>5 number of kt files</li>
+  </ul>
+</div>
+
+
+<h2>Complexity Report</h2>
+
+<div>
+  <ul>
+    <li>122 lines of code (loc)</li>
+    <li>90 source lines of code (sloc)</li>
+    <li>45 logical lines of code (lloc)</li>
+    <li>9 comment lines of code (cloc)</li>
+    <li>7 cyclomatic complexity (mcc)</li>
+    <li>1 cognitive complexity</li>
+    <li>13 number of total code smells</li>
+    <li>10% comment source ratio</li>
+    <li>155 mcc per 1,000 lloc</li>
+    <li>288 code smells per 1,000 lloc</li>
+  </ul>
+</div>
+
+
+<h2>Findings</h2>
+<div>Total: 13
+  <h3>comments: 9</h3>
+  <details id="UndocumentedPublicClass" open="open">
+    <summary class="rule-container"><span class="rule">UndocumentedPublicClass: 5 </span><span class="description">Public classes, interfaces and objects require documentation.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/GitHubApplication.kt:13:7</span><span class="message">GitHubApplication is missing required documentation.</span>
+        <pre><code><span class="lineno">  10 </span>import timber.log.Timber
+<span class="lineno">  11 </span>
+<span class="lineno">  12 </span>@ExperimentalCoroutinesApi
+<span class="lineno">  13 </span>class <span class="error">GitHubApplication</span> : Application(), HasAndroidInjector {
+<span class="lineno">  14 </span>
+<span class="lineno">  15 </span>    private lateinit var applicationComponent: ApplicationComponent
+<span class="lineno">  16 </span>
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationComponent.kt:34:11</span><span class="message">ApplicationComponent is missing required documentation.</span>
+        <pre><code><span class="lineno">  31 </span>        AndroidResourceModule::class
+<span class="lineno">  32 </span>    ]
+<span class="lineno">  33 </span>)
+<span class="lineno">  34 </span>interface <span class="error">ApplicationComponent</span> {
+<span class="lineno">  35 </span>
+<span class="lineno">  36 </span>    @Component.Factory
+<span class="lineno">  37 </span>    interface Factory {
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationComponent.kt:37:15</span><span class="message">Factory is missing required documentation.</span>
+        <pre><code><span class="lineno">  34 </span>interface ApplicationComponent {
+<span class="lineno">  35 </span>
+<span class="lineno">  36 </span>    @Component.Factory
+<span class="lineno">  37 </span>    interface <span class="error">Factory</span> {
+<span class="lineno">  38 </span>        fun create(@BindsInstance application: Application): ApplicationComponent
+<span class="lineno">  39 </span>    }
+<span class="lineno">  40 </span>
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationModule.kt:12:7</span><span class="message">ApplicationModule is missing required documentation.</span>
+        <pre><code><span class="lineno">   9 </span>import kotlinx.coroutines.ExperimentalCoroutinesApi
+<span class="lineno">  10 </span>
+<span class="lineno">  11 </span>@Module
+<span class="lineno">  12 </span>class <span class="error">ApplicationModule</span> {
+<span class="lineno">  13 </span>
+<span class="lineno">  14 </span>    @ExperimentalCoroutinesApi
+<span class="lineno">  15 </span>    @Provides
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationModule.kt:24:18</span><span class="message">ApplicationContext is missing required documentation.</span>
+        <pre><code><span class="lineno">  21 </span>@Qualifier
+<span class="lineno">  22 </span>@MustBeDocumented
+<span class="lineno">  23 </span>@Retention(AnnotationRetention.RUNTIME)
+<span class="lineno">  24 </span>annotation class <span class="error">ApplicationContext</span>
+<span class="lineno">  25 </span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <details id="UndocumentedPublicFunction" open="open">
+    <summary class="rule-container"><span class="rule">UndocumentedPublicFunction: 3 </span><span class="description">Public functions require documentation.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationComponent.kt:38:13</span><span class="message">The function create is missing documentation.</span>
+        <pre><code><span class="lineno">  35 </span>
+<span class="lineno">  36 </span>    @Component.Factory
+<span class="lineno">  37 </span>    interface Factory {
+<span class="lineno">  38 </span>        fun <span class="error">create</span>(@BindsInstance application: Application): ApplicationComponent
+<span class="lineno">  39 </span>    }
+<span class="lineno">  40 </span>
+<span class="lineno">  41 </span>    fun inject(githubApplication: GitHubApplication)
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationComponent.kt:41:9</span><span class="message">The function inject is missing documentation.</span>
+        <pre><code><span class="lineno">  38 </span>        fun create(@BindsInstance application: Application): ApplicationComponent
+<span class="lineno">  39 </span>    }
+<span class="lineno">  40 </span>
+<span class="lineno">  41 </span>    fun <span class="error">inject</span>(githubApplication: GitHubApplication)
+<span class="lineno">  42 </span>}
+<span class="lineno">  43 </span>
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/di/ApplicationModule.kt:18:9</span><span class="message">The function provideApplication is missing documentation.</span>
+        <pre><code><span class="lineno">  15 </span>    @Provides
+<span class="lineno">  16 </span>    @Singleton
+<span class="lineno">  17 </span>    @ApplicationContext
+<span class="lineno">  18 </span>    fun <span class="error">provideApplication</span>(application: GitHubApplication): Context = application
+<span class="lineno">  19 </span>}
+<span class="lineno">  20 </span>
+<span class="lineno">  21 </span>@Qualifier
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <details id="UndocumentedPublicProperty" open="open">
+    <summary class="rule-container"><span class="rule">UndocumentedPublicProperty: 1 </span><span class="description">Public properties require documentation.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/GitHubApplication.kt:18:18</span><span class="message">The property androidInjector is missing documentation.</span>
+        <pre><code><span class="lineno">  15 </span>    private lateinit var applicationComponent: ApplicationComponent
+<span class="lineno">  16 </span>
+<span class="lineno">  17 </span>    @Inject
+<span class="lineno">  18 </span>    lateinit var <span class="error">androidInjector</span>: DispatchingAndroidInjector&lt;Any&gt;
+<span class="lineno">  19 </span>    override fun androidInjector(): DispatchingAndroidInjector&lt;Any&gt; = androidInjector
+<span class="lineno">  20 </span>
+<span class="lineno">  21 </span>    override fun onCreate() {
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <h3>empty-blocks: 1</h3>
+  <details id="EmptyKtFile" open="open">
+    <summary class="rule-container"><span class="rule">EmptyKtFile: 1 </span><span class="description">Empty block of code detected. As they serve no purpose they should be removed.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/androidTest/java/com/franjo/github/ExampleInstrumentedTest.kt:1:1</span><span class="message">The empty Kotlin file C:\Users\DELL\PROGRAMMING\AndroidProjects\Projects\KOTLIN\GitHub-App\app\src\androidTest\java\com\franjo\github\ExampleInstrumentedTest.kt can be removed.</span>
+        <pre><code><span class="lineno">   1 </span>
+<span class="lineno">   2 </span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <h3>naming: 1</h3>
+  <details id="InvalidPackageDeclaration" open="open">
+    <summary class="rule-container"><span class="rule">InvalidPackageDeclaration: 1 </span><span class="description">Kotlin source files should be stored in the directory corresponding to its package statement.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/androidTest/java/com/franjo/github/ExampleInstrumentedTest.kt:1:1</span><span class="message">The file does not contain a package declaration.</span>
+        <pre><code><span class="lineno">   1 </span><span class="error"></span>
+<span class="lineno">   2 </span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <h3>potential-bugs: 2</h3>
+  <details id="LateinitUsage" open="open">
+    <summary class="rule-container"><span class="rule">LateinitUsage: 2 </span><span class="description">Usage of lateinit detected. Using lateinit for property initialization is error prone, try using constructor injection or delegation.</span></summary>
+    <ul>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/GitHubApplication.kt:15:5</span><span class="message">Usages of lateinit should be avoided.</span>
+        <pre><code><span class="lineno">  12 </span>@ExperimentalCoroutinesApi
+<span class="lineno">  13 </span>class GitHubApplication : Application(), HasAndroidInjector {
+<span class="lineno">  14 </span>
+<span class="lineno">  15 </span>    <span class="error">private lateinit var applicationComponent: ApplicationComponent</span>
+<span class="lineno">  16 </span>
+<span class="lineno">  17 </span>    @Inject
+<span class="lineno">  18 </span>    lateinit var androidInjector: DispatchingAndroidInjector&lt;Any&gt;
+</code></pre>
+      </li>
+      <li><span class="location">C:/Users/DELL/PROGRAMMING/AndroidProjects/Projects/KOTLIN/GitHub-App/app/src/main/java/com/franjo/github/GitHubApplication.kt:17:5</span><span class="message">Usages of lateinit should be avoided.</span>
+        <pre><code><span class="lineno">  14 </span>
+<span class="lineno">  15 </span>    private lateinit var applicationComponent: ApplicationComponent
+<span class="lineno">  16 </span>
+<span class="lineno">  17 </span>    <span class="error">@Inject</span>
+<span class="lineno">  18 </span><span class="error">    lateinit var androidInjector: DispatchingAndroidInjector&lt;Any&gt;</span>
+<span class="lineno">  19 </span>    override fun androidInjector(): DispatchingAndroidInjector&lt;Any&gt; = androidInjector
+<span class="lineno">  20 </span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
+
+
+generated with <a href="https://detekt.github.io/">detekt version 1.16.0</a> on 2021-05-10 19:39:27 UTC.
+
+</body>
+</html>

@@ -1,15 +1,13 @@
 package com.franjo.github.presentation.features.user.private_user
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import com.franjo.github.domain.repository.IEncryptedPrefs
-import com.franjo.github.domain.shared.ACCESS_TOKEN_KEY
 import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.R
 import com.franjo.github.presentation.databinding.FragmentPrivateUserBinding
 import com.franjo.github.presentation.features.user.public_user.UserDetailsAdapter
-import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class PrivateUserFragment : BaseFragment<FragmentPrivateUserBinding>() {
@@ -19,16 +17,13 @@ class PrivateUserFragment : BaseFragment<FragmentPrivateUserBinding>() {
     @Inject
     lateinit var viewModel: PrivateUserViewModel
 
-    @Inject
-    lateinit var encryptedPrefs: IEncryptedPrefs
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
         viewModel.loadPrivateUser()
@@ -43,5 +38,4 @@ class PrivateUserFragment : BaseFragment<FragmentPrivateUserBinding>() {
         menu.findItem(R.id.actionLogin).isVisible = false
         menu.findItem(R.id.actionPrivateUser).isVisible = false
     }
-
 }

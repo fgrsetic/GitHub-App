@@ -3,7 +3,7 @@ package com.franjo.github.presentation.model
 import android.os.Parcelable
 import com.franjo.github.domain.model.user.AuthenticatedUser
 import com.franjo.github.domain.model.user.User
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserUI(

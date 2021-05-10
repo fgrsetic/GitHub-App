@@ -6,10 +6,12 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Module
 class ApplicationModule {
 
+    @ExperimentalCoroutinesApi
     @Provides
     @Singleton
     @ApplicationContext

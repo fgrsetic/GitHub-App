@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def gradlePropertiesFile = rootProject.file("gradle.properties")
@@ -8,6 +7,7 @@ def gradleProperties = new Properties()
 gradleProperties.load(new FileInputStream(gradlePropertiesFile))
 
 android {
+
     compileSdkVersion version_compile_sdk
     buildToolsVersion version_build_tools
 
@@ -34,9 +34,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
     android.buildFeatures.dataBinding = true
-
 }
 
 dependencies {
@@ -47,17 +45,30 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
 
+    // Retrofit for networking
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+
+    // OkHttp - efficient HTTP client
+    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+
+    // Moshi for parsing the JSON format
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:$version_paging"
 
-    // Dagger
+    // DI
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
     implementation "com.google.dagger:dagger-android:$version_dagger"
     implementation "com.google.dagger:dagger-android-support:$version_dagger"
     kapt "com.google.dagger:dagger-android-processor:$version_dagger"
 
-    // Timber logging
+    // Logging
     implementation "com.jakewharton.timber:timber:$version_timber"
 
 }

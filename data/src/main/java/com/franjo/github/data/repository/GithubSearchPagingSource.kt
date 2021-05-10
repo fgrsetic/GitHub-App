@@ -1,8 +1,9 @@
 package com.franjo.github.data.repository
 
 import androidx.paging.PagingSource
-import com.franjo.github.data.network.dto.githubRepository.asDomainObject
-import com.franjo.github.data.network.service.GitHubApiService
+import androidx.paging.PagingState
+import com.franjo.github.data.dataSource.network.dto.githubRepository.asDomainObject
+import com.franjo.github.data.dataSource.network.service.GitHubApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.shared.IN_QUALIFIER
 import com.franjo.github.domain.shared.STARTING_PAGE_INDEX
@@ -11,7 +12,7 @@ import retrofit2.HttpException
 
 // Defines the source of data and how to retrieve data from that source
 // It asynchronously loads the data
-class GithubSearchPagingSource (
+class GithubSearchPagingSource(
     private val apiService: GitHubApiService,
     private val query: String,
     private val sortBy: String
@@ -41,5 +42,9 @@ class GithubSearchPagingSource (
         } catch (exception: HttpException) {
             return LoadResult.Error(exception)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, Repo>): Int? {
+        TODO("Not yet implemented")
     }
 }

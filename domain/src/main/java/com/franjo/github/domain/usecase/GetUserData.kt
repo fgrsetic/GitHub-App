@@ -9,7 +9,6 @@ class GetUserData @Inject constructor(
     private val userData: IUserRepository
 ) {
 
-    suspend fun execute(query: String): ResultWrapper<User?> =
+    suspend operator fun invoke(query: String): ResultWrapper<User> =
         userData.getUserData(query)
-
 }

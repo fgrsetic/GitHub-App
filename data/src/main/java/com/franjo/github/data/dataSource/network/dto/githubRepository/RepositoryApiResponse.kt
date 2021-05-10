@@ -1,9 +1,8 @@
-package com.franjo.github.data.network.dto.githubRepository
+package com.franjo.github.data.dataSource.network.dto.githubRepository
 
 import com.franjo.github.domain.model.repository.Repo
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-
 
 /**  This is to parse first level of network result
 {
@@ -196,12 +195,3 @@ fun RepositoryApiResponse.asDomainObject(): List<Repo> {
         )
     }
 }
-
-
-
-
-
-
-
-
-

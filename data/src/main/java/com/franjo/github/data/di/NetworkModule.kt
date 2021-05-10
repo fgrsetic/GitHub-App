@@ -1,22 +1,21 @@
 package com.franjo.github.data.di
 
 import com.franjo.github.data.BuildConfig
-import com.franjo.github.data.network.service.BASE_URL
-import com.franjo.github.data.network.service.GitHubApiService
-import com.franjo.github.data.network.service.HeaderInterceptor
+import com.franjo.github.data.dataSource.network.service.BASE_URL
+import com.franjo.github.data.dataSource.network.service.GitHubApiService
+import com.franjo.github.data.dataSource.network.service.HeaderInterceptor
 import com.franjo.github.domain.repository.IEncryptedPrefs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Singleton
-
 
 @Module
 class NetworkModule {
@@ -45,7 +44,6 @@ class NetworkModule {
     fun provideHeaderInterceptor(encryptedPrefs: IEncryptedPrefs): Interceptor =
         HeaderInterceptor(encryptedPrefs)
 
-
     @Provides
     @Singleton
     fun provideOkHttpClient(
@@ -71,10 +69,8 @@ class NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun providePrivateApiService(retrofit: Retrofit): GitHubApiService =
         retrofit.create(GitHubApiService::class.java)
-
 }

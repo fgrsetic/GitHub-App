@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: "kotlin-kapt"
 apply plugin: "de.mannodermaus.android-junit5"
 
@@ -54,22 +53,26 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 
     // Retrofit for networking
-    api "com.squareup.retrofit2:retrofit:$version_retrofit"
-    api "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    api "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
 
     // OkHttp - efficient HTTP client
-    api "com.squareup.okhttp3:okhttp:$version_okhttp"
-    api "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
 
     // Moshi for parsing the JSON format
-    api "com.squareup.moshi:moshi:$version_moshi"
-    api "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
-    // Paging
+    // Glide for images
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+    kapt "com.github.bumptech.glide:compiler:$version_glide"
+
+     // Paging
     implementation "androidx.paging:paging-runtime-ktx:$version_paging"
 
-    // Dagger
+    // DI
     implementation "com.google.dagger:dagger:$version_dagger"
     implementation "com.google.dagger:dagger-android:$version_dagger"
     implementation "com.google.dagger:dagger-android-support:$version_dagger"
@@ -77,17 +80,14 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
 
     // Preferences
-    implementation "androidx.preference:preference:$version_preferences"
+    implementation "androidx.preference:preference-ktx:$version_preferences"
 
     // Encrypted shared preferences
-    implementation 'androidx.security:security-crypto:1.1.0-alpha02'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
 
-    // Timber logging
+    // Logging
     implementation "com.jakewharton.timber:timber:$version_timber"
 
-    // Dropbox store
-    implementation "com.dropbox.mobile.store:store4:$version_dropbox_store"
-    
     // Test
     testImplementation "io.mockk:mockk:$version_mockK"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine_test"
@@ -98,8 +98,6 @@ dependencies {
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$version_junit_api"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$version_junit_api"
-
-
 }
 
 

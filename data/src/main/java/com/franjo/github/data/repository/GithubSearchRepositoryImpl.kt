@@ -3,13 +3,13 @@ package com.franjo.github.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.franjo.github.data.network.service.GitHubApiService
+import com.franjo.github.data.dataSource.network.service.GitHubApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.IGithubSearchRepository
 import com.franjo.github.domain.shared.PAGE_SIZE
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class GithubSearchRepositoryImpl @Inject constructor(
     private val apiService: GitHubApiService

@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.franjo.github.domain.shared.DispatcherProvider
+import com.franjo.github.domain.di.MainDispatcher
 import com.franjo.github.domain.usecase.GetUserData
 import com.franjo.github.presentation.BaseFragment
 import com.franjo.github.presentation.R
@@ -19,6 +20,7 @@ import com.franjo.github.presentation.databinding.FragmentUserDetailsBinding
 import com.franjo.github.presentation.model.RepositoryUI
 import com.franjo.github.presentation.model.UserUI
 import com.franjo.github.presentation.util.UserDataPresentationMapper
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
@@ -26,7 +28,8 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
     override fun getFragmentView(): Int = R.layout.fragment_user_details
 
     @Inject
-    lateinit var dispatcherProvider: DispatcherProvider
+    @MainDispatcher
+    lateinit var dispatcher: CoroutineDispatcher
 
     @Inject
     lateinit var userData: GetUserData
@@ -43,21 +46,21 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         repository = UserDetailsFragmentArgs.fromBundle(requireArguments()).repository
         val modelFactory =
             UserDetailsViewModelFactory(
                 repository,
-                dispatcherProvider,
+                dispatcher,
                 userDataPresentationMapper,
                 userData
             )
         viewModel = ViewModelProvider(this, modelFactory).get(UserDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.getUserData(repository.author)
+        viewModel.getUserDataFor(repository.author)
 
         binding.rvUserDetails.apply {
             adapter = UserDetailsAdapter()
@@ -100,6 +103,4 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
             }
         }
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.franjo.github.domain.usecase
 
 import com.franjo.github.domain.repository.IGithubSearchRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetSearchedRepositories<T> @Inject constructor(

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -28,8 +29,8 @@ class RepositoryDetailsFragment :
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         repository = RepositoryDetailsFragmentArgs.fromBundle(requireArguments()).repository
         val modelFactory = RepositoryDetailsViewModelFactory(repository)

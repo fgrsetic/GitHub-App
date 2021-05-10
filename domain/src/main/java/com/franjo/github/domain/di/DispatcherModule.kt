@@ -1,15 +1,35 @@
 package com.franjo.github.domain.di
 
-import com.franjo.github.domain.shared.DispatcherProvider
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Qualifier
 
 @Module
-class DispatcherModule {
+object DispatcherModule {
 
+    @DefaultDispatcher
     @Provides
-    @Singleton
-    fun providesDispatcherProvider() = DispatcherProvider
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
+    @IODispatcher
+    @Provides
+    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @MainDispatcher
+    @Provides
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class DefaultDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class IODispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class MainDispatcher

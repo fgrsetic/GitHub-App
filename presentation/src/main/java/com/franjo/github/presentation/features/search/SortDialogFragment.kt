@@ -15,7 +15,6 @@ import com.franjo.github.domain.shared.SORT_STARS
 import com.franjo.github.domain.shared.SORT_UPDATES
 import com.franjo.github.presentation.databinding.FragmentSortDialogBinding
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_sort_dialog.*
 import javax.inject.Inject
 
 
@@ -24,6 +23,9 @@ class SortDialogFragment : DialogFragment() {
     companion object {
         val TAG: String = SortDialogFragment::class.java.simpleName
     }
+
+    private var _binding: FragmentSortDialogBinding? = null
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var sharedPrefs: ISharedPrefs
@@ -36,39 +38,41 @@ class SortDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         isCancelable = true
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val binding = FragmentSortDialogBinding.inflate(inflater)
+        _binding = FragmentSortDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         when (sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS) as String) {
-            SORT_STARS -> rb_stars.isChecked = true
-            SORT_FORKS -> rb_forks.isChecked = true
-            SORT_UPDATES -> rb_updates.isChecked = true
+            SORT_STARS -> binding.rbStars.isChecked = true
+            SORT_FORKS -> binding.rbForks.isChecked = true
+            SORT_UPDATES -> binding.rbUpdates.isChecked = true
         }
 
-        rb_stars.setOnClickListener {
+        binding.rbStars.setOnClickListener {
             sharedPrefs.saveValue(SORT_REPO_KEY, SORT_STARS)
             dialog?.dismiss()
         }
 
-        rb_forks.setOnClickListener {
+        binding.rbForks.setOnClickListener {
             sharedPrefs.saveValue(SORT_REPO_KEY, SORT_FORKS)
             dialog?.dismiss()
         }
 
-        rb_updates.setOnClickListener {
+        binding.rbUpdates.setOnClickListener {
             sharedPrefs.saveValue(SORT_REPO_KEY, SORT_UPDATES)
             dialog?.dismiss()
         }
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 

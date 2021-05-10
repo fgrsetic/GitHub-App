@@ -23,7 +23,10 @@ class SearchRepositoryAdapter(
     PagingDataAdapter<RepositoryUI, BaseViewHolder>(DIFF_CALLBACK) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(
             layoutInflater,
@@ -34,7 +37,10 @@ class SearchRepositoryAdapter(
         return BaseViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: BaseViewHolder,
+        position: Int
+    ) {
         val item = getItem(position)
         if (item != null) {
             holder.bind(item, rowListener)
@@ -62,5 +68,4 @@ class SearchRepositoryAdapter(
                 }
             }
     }
-
 }
