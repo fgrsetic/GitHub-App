@@ -1,33 +1,29 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: "kotlin-kapt"
+import com.franjo.github.Libs
+
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
 
 dependencies {
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+    implementation Libs.Kotlin.stdlib
 
-    // Android KTX
-    implementation "androidx.core:core-ktx:$version_core"
+    implementation Libs.Coroutines.core
 
-    // Coroutines for getting off the UI thread
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
+    implementation Libs.Dagger2.dagger
+    kapt Libs.Dagger2.daggerCompiler
 
-    // DI
-    implementation "com.google.dagger:dagger:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$version_timber"
-
-    // Test
-    testImplementation "junit:junit:$version_junit"
-    testImplementation "io.mockk:mockk:$version_mockK"
+    testImplementation Libs.Test.junit
+    // testImplementation Libs.Test.kluent
+    testImplementation Libs.Test.mockito
+    testImplementation Libs.Test.mockitoInline
+    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Coroutines.test
 }
 
-test {
-    useJUnitPlatform()
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"

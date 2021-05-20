@@ -22,76 +22,72 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SearchRepositoryViewModel @Inject constructor(
-    @MainDispatcher dispatcher: CoroutineDispatcher,
-    private val state: SavedStateHandle,
-    private val sharedPrefs: ISharedPrefs,
-    private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
+  @MainDispatcher dispatcher: CoroutineDispatcher,
+  private val state: SavedStateHandle,
+  private val sharedPrefs: ISharedPrefs,
+  private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>>
 ) : BaseViewModel(dispatcher) {
 
-    private var currentQueryValue: String? = null
+  private var currentQueryValue: String? = null
 
-    private var currentSearchResult: Flow<PagingData<RepositoryUI>>? = null
+  private var currentSearchResult: Flow<PagingData<RepositoryUI>>? = null
 
-    private val _navigateToRepositoryDetails = MutableLiveData<Event<RepositoryUI>>()
-    val navigateToRepositoryDetails: LiveData<Event<RepositoryUI>> get() = _navigateToRepositoryDetails
+  private val _navigateToRepositoryDetails = MutableLiveData<Event<RepositoryUI>>()
+  val navigateToRepositoryDetails: LiveData<Event<RepositoryUI>> get() = _navigateToRepositoryDetails
 
-    private val _navigateToUserDetails = MutableLiveData<Event<RepositoryUI>>()
-    val navigateToUserDetails: LiveData<Event<RepositoryUI>> get() = _navigateToUserDetails
+  private val _navigateToUserDetails = MutableLiveData<Event<RepositoryUI>>()
+  val navigateToUserDetails: LiveData<Event<RepositoryUI>> get() = _navigateToUserDetails
 
-    private val _navigateToPrivateUserDetails = MutableLiveData<Event<Boolean>>()
-    val navigateToPrivateUserDetails: LiveData<Event<Boolean>> get() = _navigateToPrivateUserDetails
+  private val _navigateToPrivateUserDetails = MutableLiveData<Event<Boolean>>()
+  val navigateToPrivateUserDetails: LiveData<Event<Boolean>> get() = _navigateToPrivateUserDetails
 
+  // Save query state
+  fun saveSearchQuery(query: String) {
+    state.set(LAST_SEARCH_QUERY, query)
+  }
 
-    // Save query state
-    fun saveSearchQuery(query: String) {
-        state.set(LAST_SEARCH_QUERY, query)
+  fun getSearchQuery(): String {
+    return state.get(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
+  }
+
+  // 1) Search
+  fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
+    val lastResult = currentSearchResult
+    if (queryString == currentQueryValue && lastResult != null) {
+      return lastResult
     }
-
-    fun getSearchQuery(): String {
-        return state.get(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-    }
-
-
-    // 1) Search
-    fun searchRepository(queryString: String): Flow<PagingData<RepositoryUI>> {
-        val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
-            return lastResult
+    currentQueryValue = queryString
+    val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
+    val newResult = getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
+      .map { pagingData ->
+        pagingData.map { repo ->
+          repo.asPresentationModel()
         }
-        currentQueryValue = queryString
-        val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
-        val newResult = getSearchedRepositories.getSearchResultStream(queryString, sortBy as String)
-            .map { pagingData ->
-                pagingData.map { repo ->
-                    repo.asPresentationModel()
-                }
-                // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
-                // If we're doing any operations on the Flow, like map or filter,
-                // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
-            }
-            .cachedIn(viewModelScope)
-        currentSearchResult = newResult
-        return newResult
-    }
+        // cachedIn() method that allows us to cache the content of a Flow<PagingData> in a CoroutineScope
+        // If we're doing any operations on the Flow, like map or filter,
+        // we need to call cachedIn after we execute these operations to ensure we don't need to trigger them again
+      }
+      .cachedIn(viewModelScope)
+    currentSearchResult = newResult
+    return newResult
+  }
 
+  // 2) Navigation
+  fun onItemRowClick(repository: RepositoryUI) {
+    // Trigger the event by setting a new Event as a new value
+    _navigateToRepositoryDetails.value = Event(repository)
+  }
 
-    // 2) Navigation
-    fun onItemRowClick(repository: RepositoryUI) {
-        // Trigger the event by setting a new Event as a new value
-        _navigateToRepositoryDetails.value = Event(repository)
-    }
+  fun onMenuItemClicked() {
+    _navigateToPrivateUserDetails.value = Event(true)
+  }
 
-    fun onMenuItemClicked() {
-        _navigateToPrivateUserDetails.value = Event(true)
-    }
+  fun onItemRowUserIconClicked(repository: RepositoryUI) {
+    _navigateToUserDetails.value = Event(repository)
+  }
 
-    fun onItemRowUserIconClicked(repository: RepositoryUI) {
-        _navigateToUserDetails.value = Event(repository)
-    }
-
-    companion object {
-        const val LAST_SEARCH_QUERY: String = "last_search_query"
-        const val DEFAULT_QUERY = "Android"
-    }
-
+  companion object {
+    const val LAST_SEARCH_QUERY: String = "last_search_query"
+    const val DEFAULT_QUERY = "Android"
+  }
 }

@@ -13,50 +13,51 @@ import com.franjo.github.presentation.model.UserDataRowItem
 
 class UserDetailsAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private val mDiffer = AsyncListDiffer(this,
-        DIFF_CALLBACK
+  private val mDiffer = AsyncListDiffer(
+    this,
+    DIFF_CALLBACK
+  )
+
+  fun submitList(list: List<UserDataRowItem>?) {
+    mDiffer.submitList(list)
+  }
+
+  override fun getItemCount(): Int {
+    return mDiffer.currentList.size
+  }
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    val layoutInflater = LayoutInflater.from(parent.context)
+    val binding = DataBindingUtil.inflate<ViewDataBinding>(
+      layoutInflater,
+      R.layout.item_user_details,
+      parent,
+      false
     )
+    return BaseViewHolder(binding)
+  }
 
-    fun submitList(list: List<UserDataRowItem>?) {
-        mDiffer.submitList(list)
-    }
+  override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    val item = mDiffer.currentList[position]
+    holder.bind(item)
+  }
 
-    override fun getItemCount(): Int {
-        return mDiffer.currentList.size
-    }
+  companion object {
+    private val DIFF_CALLBACK: DiffUtil.ItemCallback<UserDataRowItem> =
+      object : DiffUtil.ItemCallback<UserDataRowItem>() {
+        override fun areItemsTheSame(
+          oldItem: UserDataRowItem,
+          newItem: UserDataRowItem
+        ): Boolean {
+          return oldItem.description == newItem.description
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
-            layoutInflater,
-            R.layout.item_user_details,
-            parent,
-            false
-        )
-        return BaseViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val item = mDiffer.currentList[position]
-        holder.bind(item)
-    }
-
-    companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<UserDataRowItem> =
-            object : DiffUtil.ItemCallback<UserDataRowItem>() {
-                override fun areItemsTheSame(
-                    oldItem: UserDataRowItem,
-                    newItem: UserDataRowItem
-                ): Boolean {
-                    return oldItem.description == newItem.description
-                }
-
-                override fun areContentsTheSame(
-                    oldItem: UserDataRowItem,
-                    newItem: UserDataRowItem
-                ): Boolean {
-                    return oldItem == newItem
-                }
-            }
-    }
+        override fun areContentsTheSame(
+          oldItem: UserDataRowItem,
+          newItem: UserDataRowItem
+        ): Boolean {
+          return oldItem == newItem
+        }
+      }
+  }
 }

@@ -8,13 +8,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AccessTokenViewModel @Inject constructor(
-    @MainDispatcher dispatcher: CoroutineDispatcher,
-    private val getAccessToken: GetAccessToken
+  @MainDispatcher dispatcher: CoroutineDispatcher,
+  private val getAccessToken: GetAccessToken
 ) : BaseViewModel(dispatcher) {
 
-    // Access token after authorization
-    fun accessToken(code: String) =
-        viewModelScope.launch {
-            getAccessToken.execute(code)
-        }
+  // Access token after authorization
+  fun accessToken(code: String) =
+    viewModelScope.launch {
+      getAccessToken.execute(code)
+    }
 }

@@ -1,39 +1,39 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+import com.franjo.github.Libs
 
-def gradlePropertiesFile = rootProject.file("gradle.properties")
-def gradleProperties = new Properties()
-gradleProperties.load(new FileInputStream(gradlePropertiesFile))
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+   // id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
+
+apply from: rootProject.file('android_build.gradle')
+
+def appId = "com.franjo.github"
+
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
 
 android {
 
-    compileSdkVersion version_compile_sdk
-    buildToolsVersion version_build_tools
-
     defaultConfig {
-        applicationId "com.franjo.github"
-        minSdkVersion version_min_sdk
-        targetSdkVersion version_target_sdk
-        versionCode version_code
-        versionName version_name
+        applicationId appId
+        testApplicationId "${appId}.test"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "CLIENT_ID", gradleProperties["CLIENT_ID"])
-        buildConfigField("String", "CLIENT_SECRET", gradleProperties["CLIENT_SECRET"])
+        buildConfigField("String", "CLIENT_ID", localProperties["CLIENT_ID"])
+        buildConfigField("String", "CLIENT_SECRET", localProperties["CLIENT_SECRET"])
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [enableCrashReporting: "true"]
         }
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
     android.buildFeatures.dataBinding = true
 }
 
@@ -42,33 +42,37 @@ dependencies {
     implementation project(":domain")
     implementation project(":data")
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+    implementation Libs.Kotlin.stdlib
 
-    // Retrofit for networking
-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appCompat
+    implementation Libs.AndroidX.constraintLayout
+    implementation Libs.AndroidX.viewModel
+    implementation Libs.AndroidX.recyclerView
+    implementation Libs.AndroidX.paginate
 
-    // OkHttp - efficient HTTP client
-    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
-    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    implementation Libs.Material.material
 
-    // Moshi for parsing the JSON format
-    implementation "com.squareup.moshi:moshi:$version_moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation Libs.Dagger2.dagger
+    implementation Libs.Dagger2.daggerAndroid
+    kapt Libs.Dagger2.daggerAndroidProcessor
+    kapt Libs.Dagger2.daggerCompiler
 
-    // Paging
-    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
+    implementation Libs.Glide.glide
+    kapt Libs.Glide.compiler
 
-    // DI
-    implementation "com.google.dagger:dagger:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
-    implementation "com.google.dagger:dagger-android:$version_dagger"
-    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
+    implementation Libs.Utils.timber
+    debugImplementation Libs.Utils.leakCanary
 
-    // Logging
-    implementation "com.jakewharton.timber:timber:$version_timber"
+    testImplementation Libs.Test.junit
+//    testImplementation Libs.Test.kluent
+    testImplementation Libs.Test.mockito
+    testImplementation Libs.Test.mockitoInline
+    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Coroutines.test
+    testImplementation Libs.AndroidX.Test.archCore
+
+    androidTestImplementation Libs.AndroidX.Test.extJunit
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
 
 }

@@ -21,36 +21,36 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class UserDetailsViewModelTest {
 
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+  @get:Rule
+  var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
-    private val repository: RepositoryUI = mockk()
-    private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
-    private val getUserData: GetUserData = mockk()
-    private lateinit var viewModel: UserDetailsViewModel
+  private val testDispatcher = TestCoroutineDispatcher()
+  private val repository: RepositoryUI = mockk()
+  private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
+  private val getUserData: GetUserData = mockk()
+  private lateinit var viewModel: UserDetailsViewModel
 
-    @Before
-    fun setUp() {
-        clearAllMocks()
-        viewModel =
-            UserDetailsViewModel(
-                repository,
-                testDispatcher,
-                userDataPresentationMapper,
-                getUserData
-            )
+  @Before
+  fun setUp() {
+    clearAllMocks()
+    viewModel =
+      UserDetailsViewModel(
+        repository,
+        testDispatcher,
+        userDataPresentationMapper,
+        getUserData
+      )
+  }
+
+  @Test
+  fun `successfully call for User data`() = runBlocking {
+    val mockResponse: User = mockk(relaxed = true)
+    coEvery {
+      getUserData.invoke("User")
+    } coAnswers {
+      ResultWrapper.Success(mockResponse)
     }
-
-    @Test
-    fun `successfully call for User data`() = runBlocking {
-        val mockResponse: User = mockk(relaxed = true)
-        coEvery {
-            getUserData.invoke("User")
-        } coAnswers {
-            ResultWrapper.Success(mockResponse)
-        }
-        viewModel.getUserData("User")
-        coVerify(exactly = 1) { getUserData.invoke("User") }
-    }
+    viewModel.getUserData("User")
+    coVerify(exactly = 1) { getUserData.invoke("User") }
+  }
 }

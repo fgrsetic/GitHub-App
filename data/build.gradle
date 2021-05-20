@@ -1,103 +1,57 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: "kotlin-kapt"
-apply plugin: "de.mannodermaus.android-junit5"
+import com.franjo.github.Libs
 
-def gradlePropertiesFile = rootProject.file("gradle.properties")
-def gradleProperties = new Properties()
-gradleProperties.load(new FileInputStream(gradlePropertiesFile))
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: rootProject.file('android_build.gradle')
+
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
 
 android {
-    compileSdkVersion version_compile_sdk
-    buildToolsVersion version_build_tools
 
     defaultConfig {
-        minSdkVersion version_min_sdk
-        targetSdkVersion version_target_sdk
-        versionCode version_code
-        versionName version_name
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "CLIENT_ID", gradleProperties["CLIENT_ID"])
-        buildConfigField("String", "CLIENT_SECRET", gradleProperties["CLIENT_SECRET"])
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    packagingOptions {
-        exclude("META-INF/LICENSE*")
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        buildConfigField("String", "CLIENT_ID", localProperties["CLIENT_ID"])
+        buildConfigField("String", "CLIENT_SECRET", localProperties["CLIENT_SECRET"])
     }
 }
 
 dependencies {
     implementation project(":domain")
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+    implementation Libs.Kotlin.stdlib
 
-    // Android KTX
-    implementation "androidx.core:core-ktx:$version_core"
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appCompat
+    implementation Libs.AndroidX.preferences
+    implementation Libs.AndroidX.security
+    implementation Libs.AndroidX.paginate
 
-    // Coroutines for getting off the UI thread
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    implementation Libs.Coroutines.core
 
-    // Retrofit for networking
-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation Libs.Dagger2.dagger
+    implementation Libs.Dagger2.daggerAndroid
+    kapt Libs.Dagger2.daggerAndroidProcessor
+    kapt Libs.Dagger2.daggerCompiler
 
-    // OkHttp - efficient HTTP client
-    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
-    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    api Libs.Retrofit.retrofit
+    api Libs.Retrofit.moshiConverter
+    api Libs.Retrofit.moshiKotlinAdapter
+    api Libs.Retrofit.coroutinesAdapter
 
-    // Moshi for parsing the JSON format
-    implementation "com.squareup.moshi:moshi:$version_moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    api Libs.OkHttp.okhttp
+    api Libs.OkHttp.loggingInterceptor
 
-    // Glide for images
-    implementation "com.github.bumptech.glide:glide:$version_glide"
-    kapt "com.github.bumptech.glide:compiler:$version_glide"
-
-     // Paging
-    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
-
-    // DI
-    implementation "com.google.dagger:dagger:$version_dagger"
-    implementation "com.google.dagger:dagger-android:$version_dagger"
-    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
-
-    // Preferences
-    implementation "androidx.preference:preference-ktx:$version_preferences"
-
-    // Encrypted shared preferences
-    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$version_timber"
-
-    // Test
-    testImplementation "io.mockk:mockk:$version_mockK"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine_test"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$version_junit_api"
-
-    androidTestImplementation "io.mockk:mockk:$version_mockK"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine_test"
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$version_junit_api"
-
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$version_junit_api"
+    testImplementation Libs.Test.junit
+    // testImplementation Libs.Test.kluent
+    testImplementation Libs.Test.mockito
+    testImplementation Libs.Test.mockitoInline
+    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Coroutines.test
 }
 
 

@@ -7,6 +7,6 @@ import dagger.Provides
 @Module
 class SaveStateHandleModule {
 
-    @Provides
-    fun provideSaveStateHandle() = SavedStateHandle()
+  @Provides
+  fun provideSaveStateHandle() = SavedStateHandle()
 }

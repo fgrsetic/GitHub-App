@@ -25,82 +25,84 @@ import javax.inject.Inject
 
 class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
-    override fun getFragmentView(): Int = R.layout.fragment_user_details
+  override fun getFragmentView(): Int = R.layout.fragment_user_details
 
-    @Inject
-    @MainDispatcher
-    lateinit var dispatcher: CoroutineDispatcher
+  @Inject
+  @MainDispatcher
+  lateinit var dispatcher: CoroutineDispatcher
 
-    @Inject
-    lateinit var userData: GetUserData
+  @Inject
+  lateinit var userData: GetUserData
 
-    @Inject
-    lateinit var userDataPresentationMapper: UserDataPresentationMapper
+  @Inject
+  lateinit var userDataPresentationMapper: UserDataPresentationMapper
 
-    private lateinit var viewModel: UserDetailsViewModel
-    private lateinit var repository: RepositoryUI
+  private lateinit var viewModel: UserDetailsViewModel
+  private lateinit var repository: RepositoryUI
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setHasOptionsMenu(true)
+  }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    repository = UserDetailsFragmentArgs.fromBundle(requireArguments()).repository
+    val modelFactory =
+      UserDetailsViewModelFactory(
+        repository,
+        dispatcher,
+        userDataPresentationMapper,
+        userData
+      )
+    viewModel = ViewModelProvider(this, modelFactory).get(UserDetailsViewModel::class.java)
+    binding.viewModel = viewModel
+
+    viewModel.getUserDataFor(repository.author)
+
+    binding.rvUserDetails.apply {
+      adapter = UserDetailsAdapter()
+      addItemDecoration(
+        DividerItemDecoration(
+          context,
+          LinearLayoutManager.VERTICAL
+        )
+      )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    observeError()
+  }
 
-        repository = UserDetailsFragmentArgs.fromBundle(requireArguments()).repository
-        val modelFactory =
-            UserDetailsViewModelFactory(
-                repository,
-                dispatcher,
-                userDataPresentationMapper,
-                userData
-            )
-        viewModel = ViewModelProvider(this, modelFactory).get(UserDetailsViewModel::class.java)
-        binding.viewModel = viewModel
+  private fun observeError() {
+    viewModel.error.observe(
+      viewLifecycleOwner,
+      { error ->
+        Toast.makeText(context, error, LENGTH_SHORT).show()
+      }
+    )
+  }
 
-        viewModel.getUserDataFor(repository.author)
+  override fun onPrepareOptionsMenu(menu: Menu) {
+    super.onPrepareOptionsMenu(menu)
+    menu.findItem(R.id.actionWeb).isVisible = true
+    menu.findItem(R.id.actionLogin).isVisible = false
+    menu.findItem(R.id.actionPrivateUser).isVisible = false
+  }
 
-        binding.rvUserDetails.apply {
-            adapter = UserDetailsAdapter()
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
-        }
-
-        observeError()
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.actionWeb -> viewModel.userData.value?.let { openBrowser(it) }
     }
+    return true
+  }
 
-    private fun observeError() {
-        viewModel.error.observe(viewLifecycleOwner, { error ->
-            Toast.makeText(context, error, LENGTH_SHORT).show()
-        })
+  private fun openBrowser(user: UserUI) {
+    if (Patterns.WEB_URL.matcher(user.url).matches()) {
+      user.url.let { url ->
+        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        requireContext().startActivity(i)
+      }
     }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.actionWeb).isVisible = true
-        menu.findItem(R.id.actionLogin).isVisible = false
-        menu.findItem(R.id.actionPrivateUser).isVisible = false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionWeb -> viewModel.userData.value?.let { openBrowser(it) }
-        }
-        return true
-    }
-
-    private fun openBrowser(user: UserUI) {
-        if (Patterns.WEB_URL.matcher(user.url).matches()) {
-            user.url.let { url ->
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                requireContext().startActivity(i)
-            }
-        }
-    }
+  }
 }

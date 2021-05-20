@@ -1,21 +1,21 @@
 package com.franjo.github.di
 
 import android.content.Context
-import com.franjo.github.GitHubApplication
+import com.franjo.github.App
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Qualifier
 import javax.inject.Singleton
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Module
 class ApplicationModule {
 
-    @ExperimentalCoroutinesApi
-    @Provides
-    @Singleton
-    @ApplicationContext
-    fun provideApplication(application: GitHubApplication): Context = application
+  @ExperimentalCoroutinesApi
+  @Provides
+  @Singleton
+  @ApplicationContext
+  fun provideApplication(app: App): Context = app
 }
 
 @Qualifier

@@ -8,21 +8,21 @@ import com.franjo.github.presentation.util.Event
 import javax.inject.Inject
 
 class RepositoryDetailsViewModel @Inject constructor(
-    repository: RepositoryUI
+  repository: RepositoryUI
 ) : ViewModel() {
 
-    // Selected Repository LiveData, and initialize during init
-    private val _selectedRepo = MutableLiveData<RepositoryUI>()
-    val selectedRepo: LiveData<RepositoryUI> get() = _selectedRepo
+  // Selected Repository LiveData, and initialize during init
+  private val _selectedRepo = MutableLiveData<RepositoryUI>()
+  val selectedRepo: LiveData<RepositoryUI> get() = _selectedRepo
 
-    private val _navigateToUserDetails by lazy { MutableLiveData<Event<RepositoryUI>>() }
-    val navigateToUserDetails: LiveData<Event<RepositoryUI>> get() = _navigateToUserDetails
+  private val _navigateToUserDetails by lazy { MutableLiveData<Event<RepositoryUI>>() }
+  val navigateToUserDetails: LiveData<Event<RepositoryUI>> get() = _navigateToUserDetails
 
-    init {
-        _selectedRepo.value = repository
-    }
+  init {
+    _selectedRepo.value = repository
+  }
 
-    fun onUserThumbnailClicked(repository: RepositoryUI) {
-        _navigateToUserDetails.value = Event(repository)
-    }
+  fun onUserThumbnailClicked(repository: RepositoryUI) {
+    _navigateToUserDetails.value = Event(repository)
+  }
 }

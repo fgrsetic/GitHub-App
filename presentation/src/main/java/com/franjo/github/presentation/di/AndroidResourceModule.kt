@@ -9,7 +9,7 @@ import dagger.Provides
 @Module
 class AndroidResourceModule {
 
-    @Provides
-    fun provideAndroidResourceManagerImpl(app: Application): IResourceManager =
-        AndroidResourceManager(app)
+  @Provides
+  fun provideAndroidResourceManagerImpl(app: Application): IResourceManager =
+    AndroidResourceManager(app)
 }

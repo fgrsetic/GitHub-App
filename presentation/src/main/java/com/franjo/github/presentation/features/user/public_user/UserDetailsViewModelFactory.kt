@@ -8,22 +8,22 @@ import com.franjo.github.presentation.util.UserDataPresentationMapper
 import kotlinx.coroutines.CoroutineDispatcher
 
 class UserDetailsViewModelFactory(
-    private val repository: RepositoryUI,
-    private val dispatcher: CoroutineDispatcher,
-    private val userDataPresentationMapper: UserDataPresentationMapper,
-    private val getUserData: GetUserData
+  private val repository: RepositoryUI,
+  private val dispatcher: CoroutineDispatcher,
+  private val userDataPresentationMapper: UserDataPresentationMapper,
+  private val getUserData: GetUserData
 ) : ViewModelProvider.Factory {
 
-    @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(UserDetailsViewModel::class.java)) {
-            return UserDetailsViewModel(
-                repository,
-                dispatcher,
-                userDataPresentationMapper,
-                getUserData
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+  @Suppress("unchecked_cast")
+  override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(UserDetailsViewModel::class.java)) {
+      return UserDetailsViewModel(
+        repository,
+        dispatcher,
+        userDataPresentationMapper,
+        getUserData
+      ) as T
     }
+    throw IllegalArgumentException("Unknown ViewModel class")
+  }
 }

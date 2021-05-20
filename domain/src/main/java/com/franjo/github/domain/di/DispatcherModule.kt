@@ -9,17 +9,17 @@ import javax.inject.Qualifier
 @Module
 object DispatcherModule {
 
-    @DefaultDispatcher
-    @Provides
-    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+  @DefaultDispatcher
+  @Provides
+  fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
-    @IODispatcher
-    @Provides
-    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+  @IODispatcher
+  @Provides
+  fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
-    @MainDispatcher
-    @Provides
-    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+  @MainDispatcher
+  @Provides
+  fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }
 
 @Retention(AnnotationRetention.BINARY)

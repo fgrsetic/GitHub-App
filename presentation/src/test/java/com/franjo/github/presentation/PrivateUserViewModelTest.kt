@@ -19,30 +19,30 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class PrivateUserViewModelTest {
 
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+  @get:Rule
+  var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
-    private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
-    private val getAuthenticatedUser: GetAuthenticatedUser = mockk()
-    private lateinit var viewModel: PrivateUserViewModel
+  private val testDispatcher = TestCoroutineDispatcher()
+  private val userDataPresentationMapper: UserDataPresentationMapper = mockk()
+  private val getAuthenticatedUser: GetAuthenticatedUser = mockk()
+  private lateinit var viewModel: PrivateUserViewModel
 
-    @Before
-    fun setUp() {
-        clearAllMocks()
-        viewModel =
-            PrivateUserViewModel(testDispatcher, getAuthenticatedUser, userDataPresentationMapper)
+  @Before
+  fun setUp() {
+    clearAllMocks()
+    viewModel =
+      PrivateUserViewModel(testDispatcher, getAuthenticatedUser, userDataPresentationMapper)
+  }
+
+  @Test
+  fun loadPrivateUser_callAuthenticatedUser_returnsAuthenticatedUser() = runBlocking {
+    val mockResponse: AuthenticatedUser = mockk(relaxed = true)
+    coEvery {
+      getAuthenticatedUser.execute()
+    } coAnswers {
+      mockResponse
     }
-
-    @Test
-    fun loadPrivateUser_callAuthenticatedUser_returnsAuthenticatedUser() = runBlocking {
-        val mockResponse: AuthenticatedUser = mockk(relaxed = true)
-        coEvery {
-            getAuthenticatedUser.execute()
-        } coAnswers {
-            mockResponse
-        }
-        viewModel.loadPrivateUser()
-        coVerify(exactly = 1) { getAuthenticatedUser.execute() }
-    }
+    viewModel.loadPrivateUser()
+    coVerify(exactly = 1) { getAuthenticatedUser.execute() }
+  }
 }

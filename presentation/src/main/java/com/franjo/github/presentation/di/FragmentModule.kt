@@ -12,27 +12,27 @@ import javax.inject.Scope
 @Module
 abstract class FragmentModule {
 
-    @ContributesAndroidInjector
-    @FragmentScope
-    internal abstract fun contributeSearchRepositoryFragment(): SearchRepositoryFragment
+  @ContributesAndroidInjector
+  @FragmentScope
+  internal abstract fun contributeSearchRepositoryFragment(): SearchRepositoryFragment
 
-    @ContributesAndroidInjector
-    @FragmentScope
-    internal abstract fun contributesRepositoryDetailsFragment(): RepositoryDetailsFragment
+  @ContributesAndroidInjector
+  @FragmentScope
+  internal abstract fun contributesRepositoryDetailsFragment(): RepositoryDetailsFragment
 
-    @ContributesAndroidInjector
-    @FragmentScope
-    internal abstract fun contributesSortDialogFragment(): SortDialogFragment
+  @ContributesAndroidInjector
+  @FragmentScope
+  internal abstract fun contributesSortDialogFragment(): SortDialogFragment
 
-    @ContributesAndroidInjector
-    @FragmentScope
-    internal abstract fun contributesUserDetailsFragment(): UserDetailsFragment
+  @ContributesAndroidInjector
+  @FragmentScope
+  internal abstract fun contributesUserDetailsFragment(): UserDetailsFragment
 
-    @ContributesAndroidInjector
-    @FragmentScope
-    internal abstract fun contributeLoginFragment(): PrivateUserFragment
+  @ContributesAndroidInjector
+  @FragmentScope
+  internal abstract fun contributeLoginFragment(): PrivateUserFragment
 
-    @Scope
-    @MustBeDocumented
-    internal annotation class FragmentScope
+  @Scope
+  @MustBeDocumented
+  internal annotation class FragmentScope
 }

@@ -4,7 +4,7 @@ import com.franjo.github.domain.model.user.AuthenticatedUser
 
 interface IAuthenticationRepository {
 
-    suspend fun getAccessToken(code: String)
+  suspend fun getAccessToken(code: String)
 
-    suspend fun getAuthenticatedUser(): AuthenticatedUser
+  suspend fun getAuthenticatedUser(): AuthenticatedUser
 }

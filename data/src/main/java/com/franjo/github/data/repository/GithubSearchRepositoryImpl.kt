@@ -7,25 +7,24 @@ import com.franjo.github.data.dataSource.network.service.GitHubApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.IGithubSearchRepository
 import com.franjo.github.domain.shared.PAGE_SIZE
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 class GithubSearchRepositoryImpl @Inject constructor(
-    private val apiService: GitHubApiService
+  private val apiService: GitHubApiService
 ) : IGithubSearchRepository<Flow<PagingData<Repo>>> {
 
-    // Search repositories where names match the query
-    // The Flow emits a new PagingData whenever new data is loaded by the PagingSource
-    // The Flow is coroutines library for representing an async sequence, or stream, of values
-    override fun getSearchResultStream(query: String, sortBy: String): Flow<PagingData<Repo>> {
-        // The Pager.flow creates a Flow<PagingData> based on a configuration
-        // and a function that defines how to instantiate the PagingSource
-        return Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
-            pagingSourceFactory = {
-                GithubSearchPagingSource(apiService, query, sortBy)
-            }
-        ).flow
-    }
+  // Search repositories where names match the query
+  // The Flow emits a new PagingData whenever new data is loaded by the PagingSource
+  // The Flow is coroutines library for representing an async sequence, or stream, of values
+  override fun getSearchResultStream(query: String, sortBy: String): Flow<PagingData<Repo>> {
+    // The Pager.flow creates a Flow<PagingData> based on a configuration
+    // and a function that defines how to instantiate the PagingSource
+    return Pager(
+      config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+      pagingSourceFactory = {
+        GithubSearchPagingSource(apiService, query, sortBy)
+      }
+    ).flow
+  }
 }

@@ -1,3 +1,5 @@
+import com.franjo.github.Libs
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -6,23 +8,13 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+apply from: rootProject.file('android_build.gradle')
 
 android {
-    compileSdkVersion version_compile_sdk
-    buildToolsVersion version_build_tools
 
     defaultConfig {
-        minSdkVersion version_min_sdk
-        targetSdkVersion version_target_sdk
-        versionCode version_code
-        versionName version_name
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
         vectorDrawables.useSupportLibrary = true
     }
-
-    android.buildFeatures.dataBinding = true
 
     buildTypes {
         release {
@@ -31,11 +23,10 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+    android.buildFeatures.dataBinding = true
 
-    // When using the Android Databinding library, we want to increase the number of errors that javac will print
+    // When using the Android Databinding library,
+    // we want to increase the number of errors that javac will print
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xmaxerrs" << "500"
@@ -46,76 +37,46 @@ android {
 dependencies {
     implementation project(":domain")
 
-    // Jetpack
-    implementation "androidx.appcompat:appcompat:$version_appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
-    implementation "com.google.android.material:material:$version_material"
-    implementation "androidx.preference:preference-ktx:$version_preferences"
-    implementation "androidx.viewpager2:viewpager2:$version_view_pager2"
+    implementation Libs.Kotlin.stdlib
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appCompat
+    implementation Libs.AndroidX.constraintLayout
+    implementation Libs.AndroidX.viewModel
+    implementation Libs.AndroidX.viewModelSaveState
+    implementation Libs.AndroidX.recyclerView
+    implementation Libs.AndroidX.paginate
+    implementation Libs.AndroidX.viewPager2
 
-    // Android KTX
-    implementation "androidx.core:core-ktx:$version_core"
+    implementation Libs.Navigation.navFragment
+    implementation Libs.Navigation.navUi
 
-    // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation Libs.Coroutines.core
 
-    // Coroutines for getting off the UI thread
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    implementation Libs.Material.material
 
-    // Retrofit for networking
-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation Libs.Dagger2.dagger
+    implementation Libs.Dagger2.daggerAndroid
+    kapt Libs.Dagger2.daggerAndroidProcessor
+    kapt Libs.Dagger2.daggerCompiler
 
-    // OkHttp - efficient HTTP client
-    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
-    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    implementation Libs.Glide.glide
+    kapt Libs.Glide.compiler
 
-    // Moshi for parsing the JSON format
-    implementation "com.squareup.moshi:moshi:$version_moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation Libs.Utils.timber
 
-    // Glide for images
-    implementation "com.github.bumptech.glide:glide:$version_glide"
-    kapt "com.github.bumptech.glide:compiler:$version_glide"
+    debugImplementation Libs.Utils.leakCanary
 
-    // Paging
-    implementation "androidx.paging:paging-runtime-ktx:$version_paging"
+    implementation Libs.Image.circleImage
 
-    // DI
-    implementation "com.google.dagger:dagger:$version_dagger"
-    kapt "com.google.dagger:dagger-compiler:$version_dagger"
-    implementation "com.google.dagger:dagger-android:$version_dagger"
-    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
+    testImplementation Libs.Test.junit
+    // testImplementation Libs.Test.kluent
+    testImplementation Libs.Test.mockito
+    testImplementation Libs.Test.mockitoInline
+    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Coroutines.test
+    testImplementation Libs.AndroidX.Test.archCore
 
-    // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle_extensions"
-
-    // Multidex
-    implementation "com.android.support:multidex:$version_multidex"
-
-    // Memory leaky
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$version_leak_canary"
-
-    // Circle image view library
-    implementation "de.hdodenhof:circleimageview:$version_circleimageview"
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$version_timber"
-
-    // Test
-    testImplementation "junit:junit:$version_junit"
-    testImplementation "io.mockk:mockk:$version_mockK"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine_test"
-    testImplementation "androidx.test.ext:junit:$version_androidx_junit_test"
-    testImplementation "androidx.arch.core:core-testing:$version_androidx_core_test"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
-
+    androidTestImplementation Libs.AndroidX.Test.extJunit
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
 }

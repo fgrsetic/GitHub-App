@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GitHub-App</string>
+    <string name="app_name">GitHubRepoFinder</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="details_fragment_label">Repository details</string>

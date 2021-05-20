@@ -12,25 +12,24 @@ import dagger.android.support.AndroidSupportInjection
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    protected lateinit var binding: T
+  protected lateinit var binding: T
 
+  override fun onAttach(context: Context) {
+    AndroidSupportInjection.inject(this)
+    super.onAttach(context)
+  }
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = DataBindingUtil.inflate(inflater, getFragmentView(), container, false)
+    // Set the lifecycleOwner so DataBinding can observe LiveData
+    binding.lifecycleOwner = this
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, getFragmentView(), container, false)
-        // Set the lifecycleOwner so DataBinding can observe LiveData
-        binding.lifecycleOwner = this
+    return binding.root
+  }
 
-        return binding.root
-    }
-
-    abstract fun getFragmentView(): Int
+  abstract fun getFragmentView(): Int
 }

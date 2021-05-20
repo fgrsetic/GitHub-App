@@ -1,0 +1,30 @@
+// This is central place to setup all common gradle properties,
+// such as defining target and minimum sdk's for all other project modules
+
+import com.franjo.github.Versions
+
+android {
+
+    compileSdkVersion Versions.compileSdk
+    buildToolsVersion Versions.buildTools
+
+    defaultConfig {
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+
+        consumerProguardFiles "consumer-rules.pro"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

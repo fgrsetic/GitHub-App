@@ -5,10 +5,10 @@ import com.franjo.github.domain.repository.IAuthenticationRepository
 import javax.inject.Inject
 
 class GetAuthenticatedUser @Inject constructor(
-    private val repository: IAuthenticationRepository
+  private val repository: IAuthenticationRepository
 ) {
 
-    // Fetch authorized user result if access token is success
-    suspend fun execute(): AuthenticatedUser =
-        repository.getAuthenticatedUser()
+  // Fetch authorized user result if access token is success
+  suspend fun execute(): AuthenticatedUser =
+    repository.getAuthenticatedUser()
 }

@@ -25,55 +25,51 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class SearchRepositoryViewModelTest {
 
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+  @get:Rule
+  var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
-    private val state: SavedStateHandle = mockk()
-    private val sharedPrefs = mockk<ISharedPrefs>(relaxed = true)
-    private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>> = mockk()
-    private lateinit var viewModel: SearchRepositoryViewModel
+  private val testDispatcher = TestCoroutineDispatcher()
+  private val state: SavedStateHandle = mockk()
+  private val sharedPrefs = mockk<ISharedPrefs>(relaxed = true)
+  private val getSearchedRepositories: GetSearchedRepositories<Flow<PagingData<Repo>>> = mockk()
+  private lateinit var viewModel: SearchRepositoryViewModel
 
-    @Before
-    fun setUp() {
-        clearAllMocks()
-        viewModel =
-            SearchRepositoryViewModel(
-                testDispatcher,
-                state,
-                sharedPrefs,
-                getSearchedRepositories
-            )
+  @Before
+  fun setUp() {
+    clearAllMocks()
+    viewModel =
+      SearchRepositoryViewModel(
+        testDispatcher,
+        state,
+        sharedPrefs,
+        getSearchedRepositories
+      )
+  }
+
+  @Test
+  fun searchRepository_return_PagingData() = runBlocking {
+    val mockResponse: PagingData<Repo> = mockk(relaxed = true)
+    val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
+
+    val flow = flow {
+      emit(mockResponse)
     }
 
-
-    @Test
-    fun searchRepository_return_PagingData() = runBlocking {
-        val mockResponse: PagingData<Repo> = mockk(relaxed = true)
-        val sortBy = sharedPrefs.getValue(SORT_REPO_KEY, SORT_STARS)
-
-        val flow = flow {
-            emit(mockResponse)
-        }
-
-        coEvery {
-            getSearchedRepositories.hint(Repo::class).hint(Repo::class).getSearchResultStream("User", sortBy as String)
-        } coAnswers {
-            flow
-        }
-
-        // Test
-        val search = viewModel.searchRepository("User")
-
-        coVerify {
-            search.collect { pagingData ->
-                pagingData.map {
-                    it
-                }
-            }
-        }
+    coEvery {
+      getSearchedRepositories.hint(Repo::class).hint(Repo::class).getSearchResultStream("User", sortBy as String)
+    } coAnswers {
+      flow
     }
+
+    // Test
+    val search = viewModel.searchRepository("User")
+
+    coVerify {
+      search.collect { pagingData ->
+        pagingData.map {
+          it
+        }
+      }
+    }
+  }
 }
-
-
-

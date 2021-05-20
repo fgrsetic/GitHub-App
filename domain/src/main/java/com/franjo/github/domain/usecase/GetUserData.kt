@@ -6,9 +6,9 @@ import com.franjo.github.domain.shared.ResultWrapper
 import javax.inject.Inject
 
 class GetUserData @Inject constructor(
-    private val userData: IUserRepository
+  private val userData: IUserRepository
 ) {
 
-    suspend operator fun invoke(query: String): ResultWrapper<User> =
-        userData.getUserData(query)
+  suspend operator fun invoke(author: String): ResultWrapper<User> =
+    userData.getUserData(author)
 }
