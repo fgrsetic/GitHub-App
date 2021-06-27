@@ -1,10 +1,10 @@
 package com.franjo.github.data.dataSource.network.service
 
-import com.franjo.github.data.dataSource.network.dto.repository.RepositoryApiResponse
-import com.franjo.github.data.dataSource.network.dto.token.AccessTokenResponse
-import com.franjo.github.data.dataSource.network.dto.token.AuthorizationTokenRequest
-import com.franjo.github.data.dataSource.network.dto.user.AuthenticatedUserResponse
-import com.franjo.github.data.dataSource.network.dto.user.UserApiResponse
+import com.franjo.github.data.dataSource.network.model.repository.RepositoryApiResponse
+import com.franjo.github.data.dataSource.network.model.token.AccessTokenResponse
+import com.franjo.github.data.dataSource.network.model.token.AccessTokenRequest
+import com.franjo.github.data.dataSource.network.model.user.AuthenticatedUserResponse
+import com.franjo.github.data.dataSource.network.model.user.UserApiResponse
 import com.franjo.github.domain.shared.SORT_STARS
 import retrofit2.http.*
 
@@ -27,14 +27,16 @@ interface GitHubApiService {
     @Path("userName", encoded = true) userName: String
   ): UserApiResponse
 
-  // Get access token to make request with token for authenticated user
+  // Get access token to make request with token for authorization
   @POST
   suspend fun getAccessToken(
     @Url url: String,
-    @Body authorizationTokenBody: AuthorizationTokenRequest
+    @Body accessTokenBody: AccessTokenRequest
   ): AccessTokenResponse
 
   // Get authenticated user after sending token
-  @GET(AUTHENTICATED_USER_PATH)
+  // Use the access token to access the API => needs token in header
+  // look base url => "https://api.github.com/"
+  @GET("user")
   suspend fun getAuthenticatedUserData(): AuthenticatedUserResponse
 }

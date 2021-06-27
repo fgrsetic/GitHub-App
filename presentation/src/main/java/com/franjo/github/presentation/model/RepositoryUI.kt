@@ -17,9 +17,7 @@ data class RepositoryUI(
   val programmingLanguage: String,
   val createdAt: String,
   val updatedAt: String,
-  val htmlUrl: String,
-  val ownerHtmlUrl: String,
-  val ownerUrl: String
+  val htmlUrl: String
 ) : Parcelable
 
 fun Repo.asPresentationModel(): RepositoryUI {
@@ -35,8 +33,6 @@ fun Repo.asPresentationModel(): RepositoryUI {
     programmingLanguage = programmingLanguage,
     createdAt = createdAt,
     updatedAt = updatedAt,
-    htmlUrl = htmlUrl,
-    ownerHtmlUrl = ownerHtmlUrl,
-    ownerUrl = ownerUrl
+    htmlUrl = htmlUrl
   )
 }

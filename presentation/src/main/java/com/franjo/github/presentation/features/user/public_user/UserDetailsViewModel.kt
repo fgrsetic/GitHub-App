@@ -19,7 +19,7 @@ class UserDetailsViewModel @Inject constructor(
   repository: RepositoryUI,
   dispatcher: CoroutineDispatcher,
   private val mapper: UserDataPresentationMapper,
-  private val getUserData: GetUserData
+  val getUserData: GetUserData
 ) :
   BaseViewModel(dispatcher) {
 
@@ -53,7 +53,7 @@ class UserDetailsViewModel @Inject constructor(
           _status.value = LoadingApiStatus.DONE
         }
         is ResultWrapper.Error -> {
-          _error.postValue(userResult.throwable.message.toString())
+          _error.postValue(userResult.error.toString())
           _userRowData.postValue(ArrayList())
           _status.value = LoadingApiStatus.DONE
           _status.value = LoadingApiStatus.ERROR

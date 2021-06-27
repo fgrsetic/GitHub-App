@@ -41,4 +41,8 @@ class EncryptedSharedPrefsImpl(context: Context) : IEncryptedPrefs {
 
   override fun getValue(key: String, defaultValue: String): String? =
     sharedPreferences.getString(key, defaultValue)
+
+  override fun deleteAccessToken() {
+    sharedPreferences.edit().remove(ACCESS_TOKEN_KEY).apply()
+  }
 }

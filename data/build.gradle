@@ -47,11 +47,10 @@ dependencies {
     api Libs.OkHttp.loggingInterceptor
 
     testImplementation Libs.Test.junit
-    // testImplementation Libs.Test.kluent
-    testImplementation Libs.Test.mockito
-    testImplementation Libs.Test.mockitoInline
-    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Test.mockK
     testImplementation Libs.Coroutines.test
+
+    androidTestImplementation Libs.Test.mockK
 }
 
 

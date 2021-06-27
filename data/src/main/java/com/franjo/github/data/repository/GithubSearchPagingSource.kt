@@ -2,7 +2,7 @@ package com.franjo.github.data.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.franjo.github.data.dataSource.network.dto.repository.asDomainObject
+import com.franjo.github.data.dataSource.network.model.repository.asDomainObject
 import com.franjo.github.data.dataSource.network.service.GitHubApiService
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.shared.IN_QUALIFIER

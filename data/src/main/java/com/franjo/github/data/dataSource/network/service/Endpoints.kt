@@ -1,14 +1,17 @@
 package com.franjo.github.data.dataSource.network.service
 
-const val BASE_URL = "https://api.github.com/"
-const val SEARCH_REPOSITORY_PATH = "search/repositories"
-const val USER_PATH = "/users/{userName}"
+object Api {
+  const val BASE_URL = "https://api.github.com/"
+}
 
-// Request a user's Github identity => login feature
-const val AUTHORIZE_USER_URL = "https://github.com/login/oauth/authorize"
+object Authorization {
+  private const val AUTHORIZE_BASE_URL = "https://github.com/login/oauth/"
+  // Request a user's Github identity
+  const val AUTHORIZE_USER_URL = "${AUTHORIZE_BASE_URL}authorize"
+  // Exchange this code for an access token => this uri is overridden and needs no token in header
+  const val AUTHORIZE_TOKEN_URL = "${AUTHORIZE_BASE_URL}access_token"
+}
 
-// Exchange this code for an access token => this uri is overridden and needs no token in header
-const val AUTHORIZATION_TOKEN_URL = "https://github.com/login/oauth/access_token"
 
-// Use the access token to access the API => needs token in header
-const val AUTHENTICATED_USER_PATH = "/user" // look base url => "https://api.github.com/"
+
+

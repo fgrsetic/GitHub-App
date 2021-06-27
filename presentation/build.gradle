@@ -70,13 +70,11 @@ dependencies {
     implementation Libs.Image.circleImage
 
     testImplementation Libs.Test.junit
-    // testImplementation Libs.Test.kluent
-    testImplementation Libs.Test.mockito
-    testImplementation Libs.Test.mockitoInline
-    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Test.mockK
     testImplementation Libs.Coroutines.test
     testImplementation Libs.AndroidX.Test.archCore
 
+    androidTestImplementation Libs.Test.mockK
     androidTestImplementation Libs.AndroidX.Test.extJunit
     androidTestImplementation Libs.AndroidX.Test.espressoCore
 }

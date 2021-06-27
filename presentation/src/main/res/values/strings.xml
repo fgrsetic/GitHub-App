@@ -50,7 +50,6 @@
     <string name="repos_url">Repos URL:</string>
     <string name="starred_url">Starred URL:</string>
 
-
     <string-array name="details_tab_layout_titles">
         <item>About</item>
         <item>Releases</item>
@@ -59,7 +58,15 @@
 
     <string name="action_private_user">Private user</string>
     <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
     <string name="action_sort">Sort</string>
+
+    <!-- Errors -->
+    <string name="network_error_message">Something went wrong. Please try again.</string>
+    <string name="not_found_error_message">The URI requested is invalid or the resource requested does not exists</string>
+    <string name="forbidden_error_message">The request has been refused</string>
+    <string name="unavailable_error_message">The service is up, but overloaded with requests. Try again later.</string>
+    <string name="unknown_error_message">Something went wrong. Please try again.</string>
 
 
 </resources>

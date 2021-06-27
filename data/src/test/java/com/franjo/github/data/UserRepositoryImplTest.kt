@@ -1,7 +1,7 @@
 package com.franjo.github.data
 
 import com.franjo.github.data.dataSource.network.UserRemoteDataSource
-import com.franjo.github.data.dataSource.network.dto.user.UserApiResponse
+import com.franjo.github.data.dataSource.network.model.user.UserApiResponse
 import com.franjo.github.data.repository.UserRepositoryImpl
 import com.franjo.github.domain.model.user.User
 import com.franjo.github.domain.shared.ResultWrapper
@@ -11,8 +11,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 internal class UserRepositoryImplTest {
@@ -21,7 +21,7 @@ internal class UserRepositoryImplTest {
   private lateinit var user: User
   private var mockResponse: UserApiResponse = mockk(relaxed = true)
 
-  @BeforeEach
+  @Before
   fun setUp() {
     clearAllMocks()
     repository = UserRepositoryImpl(dataSource)

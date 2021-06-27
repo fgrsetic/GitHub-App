@@ -12,7 +12,7 @@
 
         <variable
             name="viewModelDetails"
-            type="com.franjo.github.presentation.features.repository_details.RepositoryDetailsViewModel" />
+            type="com.franjo.github.presentation.features.details.RepositoryDetailsViewModel" />
 
         <variable
             name="iconListener"
@@ -285,7 +285,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:tabBackground="@color/tabLayoutBackground"
             app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextColor="@color/colorPrimary" />

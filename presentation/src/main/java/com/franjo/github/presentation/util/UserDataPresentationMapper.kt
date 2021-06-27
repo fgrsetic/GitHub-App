@@ -14,7 +14,6 @@ class UserDataPresentationMapper @Inject constructor(
     userUI?.let {
       result.add(viewModelFor(R.string.username, userUI.name))
       result.add(viewModelFor(R.string.company, userUI.company))
-      result.add(viewModelFor(R.string.blog, userUI.blog))
       result.add(viewModelFor(R.string.location, userUI.location))
       result.add(viewModelFor(R.string.email, userUI.email))
     }

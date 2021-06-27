@@ -4,19 +4,19 @@ object Versions {
   const val compileSdk = 30
   const val targetSdk = 30
   const val minSdk = 23
-  const val buildTools = "30.0.1"
+  const val buildTools = "30.0.2"
   const val versionCode = 1
   const val versionName = "1.0"
   const val ktlint = "0.40.0"
 }
 
 object Libs {
-  const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.0"
+  const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.1"
   const val ktlintGradlePlugin = "org.jlleitschuh.gradle:ktlint-gradle:9.4.1"
   const val detektGradlePlugin = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.16.0"
 
   object Kotlin {
-    private const val version = "1.4.20"
+    private const val version = "1.5.20"
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
     const val androidExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -70,13 +70,11 @@ object Libs {
 
   object Test {
     const val junit = "junit:junit:4.12"
-    const val mockito = "org.mockito:mockito-core:2.28.2"
-    const val mockitoInline = "org.mockito:mockito-inline:3.7.0"
-    const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    const val mockK = "io.mockk:mockk:1.10.6"
   }
 
   object Dagger2 {
-    private const val version = "2.33"
+    private const val version = "2.34"
     const val dagger = "com.google.dagger:dagger:$version"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$version"
     const val daggerAndroid = "com.google.dagger:dagger-android-support:$version"

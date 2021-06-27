@@ -4,11 +4,15 @@ import android.app.Application
 import androidx.paging.PagingData
 import com.franjo.github.data.dataSource.network.UserRemoteDataSource
 import com.franjo.github.data.dataSource.network.service.GitHubApiService
+import com.franjo.github.data.dataSource.network.utils.AuthorizationUtil
+import com.franjo.github.data.dataSource.network.utils.NetworkUtil
 import com.franjo.github.data.repository.*
+import com.franjo.github.domain.di.IODispatcher
 import com.franjo.github.domain.model.repository.Repo
 import com.franjo.github.domain.repository.*
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Singleton
@@ -32,17 +36,25 @@ class RepositoryModule {
 
   @Provides
   @Singleton
-  fun provideLoginRepositoryImpl(
-    app: Application
-  ): ILoginRepository = LoginRepositoryImpl(app)
+  fun providesAuthorizationUtil(): AuthorizationUtil =
+    AuthorizationUtil()
 
   @Provides
   @Singleton
-  fun provideAuthenticationRepositoryImpl(
+  fun provideAuthorizationRepositoryImpl(
     apiService: GitHubApiService,
+    @IODispatcher dispatcher: CoroutineDispatcher,
+    networkUtil: NetworkUtil,
+    authorizationUtil: AuthorizationUtil,
     encryptedPrefs: IEncryptedPrefs
-  ): IAuthenticationRepository =
-    AuthenticationRepositoryImpl(apiService, encryptedPrefs)
+  ): IAuthorizationRepository =
+    AuthorizationRepositoryImpl(
+      apiService,
+      dispatcher,
+      networkUtil,
+      authorizationUtil,
+      encryptedPrefs
+    )
 
   @Provides
   @Singleton

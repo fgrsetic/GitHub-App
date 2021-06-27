@@ -76,11 +76,10 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding>() {
 
   private fun observeError() {
     viewModel.error.observe(
-      viewLifecycleOwner,
-      { error ->
-        Toast.makeText(context, error, LENGTH_SHORT).show()
-      }
-    )
+      viewLifecycleOwner
+    ) { error ->
+      Toast.makeText(context, error, LENGTH_SHORT).show()
+    }
   }
 
   override fun onPrepareOptionsMenu(menu: Menu) {

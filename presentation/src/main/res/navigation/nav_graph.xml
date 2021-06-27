@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchRepositoryFragment">
+    app:startDestination="@id/searchFragment">
 
     <fragment
-        android:id="@+id/searchRepositoryFragment"
-        android:name="com.franjo.github.presentation.features.search.SearchRepositoryFragment"
+        android:id="@+id/searchFragment"
+        android:name="com.franjo.github.presentation.features.search.SearchFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_search_repository">
+        tools:layout="@layout/fragment_search">
 
         <action
-            android:id="@+id/action_searchRepositoryFragment_to_repositoryDetailsFragment"
+            android:id="@+id/action_searchFragment_to_repositoryDetailsFragment"
             app:destination="@id/repositoryDetailsFragment"
             app:enterAnim="@anim/fade_enter"
             app:exitAnim="@anim/fade_exit"
@@ -22,7 +22,7 @@
             app:popExitAnim="@anim/fade_exit" />
 
         <action
-            android:id="@+id/action_searchRepositoryFragment_to_userDetailsFragment"
+            android:id="@+id/action_searchFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment"
             app:enterAnim="@anim/fade_enter"
             app:exitAnim="@anim/fade_exit"
@@ -30,7 +30,7 @@
             app:popExitAnim="@anim/fade_exit" />
 
         <action
-            android:id="@+id/action_searchRepositoryFragment_to_private_user_fragment"
+            android:id="@+id/action_searchFragment_to_private_user_fragment"
             app:destination="@id/privateUserFragment"
             app:enterAnim="@anim/fade_enter"
             app:exitAnim="@anim/fade_exit"
@@ -41,12 +41,19 @@
             android:name="repository"
             app:argType="com.franjo.github.presentation.model.RepositoryUI" />
 
+        <action
+            android:id="@+id/action_searchFragment_to_authorizationFragment"
+            app:destination="@id/authorizationFragment"
+            app:enterAnim="@anim/fade_enter"
+            app:exitAnim="@anim/fade_exit"
+            app:popEnterAnim="@anim/fade_enter"
+            app:popExitAnim="@anim/fade_exit" />
 
     </fragment>
 
     <fragment
         android:id="@+id/repositoryDetailsFragment"
-        android:name="com.franjo.github.presentation.features.repository_details.RepositoryDetailsFragment"
+        android:name="com.franjo.github.presentation.features.details.RepositoryDetailsFragment"
         android:label="@string/details_fragment_label"
         tools:layout="@layout/fragment_repository_details">
 
@@ -89,5 +96,10 @@
         android:id="@+id/privateUserFragment"
         android:name="com.franjo.github.presentation.features.user.private_user.PrivateUserFragment"
         android:label="Private user" />
+
+    <fragment
+        android:id="@+id/authorizationFragment"
+        android:name="com.franjo.github.presentation.features.authorization.AuthorizationFragment"
+        android:label="AuthorizationFragment" />
 
 </navigation>

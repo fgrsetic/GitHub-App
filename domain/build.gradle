@@ -9,17 +9,13 @@ plugins {
 dependencies {
 
     implementation Libs.Kotlin.stdlib
-
     implementation Libs.Coroutines.core
 
     implementation Libs.Dagger2.dagger
     kapt Libs.Dagger2.daggerCompiler
 
     testImplementation Libs.Test.junit
-    // testImplementation Libs.Test.kluent
-    testImplementation Libs.Test.mockito
-    testImplementation Libs.Test.mockitoInline
-    testImplementation Libs.Test.mockitoKotlin
+    testImplementation Libs.Test.mockK
     testImplementation Libs.Coroutines.test
 }
 
